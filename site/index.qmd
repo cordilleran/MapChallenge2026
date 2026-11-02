@@ -1,0 +1,42 @@
+---
+pagetitle: "30 Day Map Challenge 2026"
+format:
+  html:
+    theme: none
+    css: styles.css
+    toc: false
+    title-block-style: none
+    page-layout: custom
+execute:
+  echo: false
+  warning: false
+---
+
+```{r}
+#| results: asis
+library(yaml)
+days <- yaml::read_yaml("days.yml")
+start <- as.Date("2026-11-01")
+lead <- as.POSIXlt(start)$wday                      # 0 = Sunday
+icon <- function(k) paste(readLines(file.path("icons", paste0(k, ".svg")), warn = FALSE), collapse = "")
+esc <- function(x) gsub("&", "&amp;", x, fixed = TRUE)
+n_done <- sum(vapply(days, function(d) d$status == "done", logical(1)))
+tile <- function(d) {
+  st <- d$status
+  inner <- if (nzchar(d$thumb)) sprintf('<img src="%s" alt="%s">', d$thumb, esc(d$theme)) else sprintf('<span class="ico">%s</span>', icon(d$icon))
+  body <- sprintf('<span class="n">%d</span>%s<span class="t">%s</span>', d$day, inner, esc(d$theme))
+  if (nzchar(d$href)) sprintf('<a class="tile %s" href="%s" title="%s">%s</a>', st, d$href, esc(d$theme), body)
+  else sprintf('<div class="tile %s" title="%s">%s</div>', st, esc(d$theme), body)
+}
+cat('<main class="wrap">\n')
+cat('<header><p class="kicker">November 2026</p><h1>30 Day Map Challenge</h1>')
+cat(sprintf('<p class="sub">One map a day. Each tile starts as the theme\'s glyph and becomes the map when it is done. <span class="count">%d of 30</span></p></header>\n', n_done))
+cat('<div class="cal" role="grid" aria-label="November 2026">\n')
+for (w in c("Sun","Mon","Tue","Wed","Thu","Fri","Sat")) cat(sprintf('<div class="wd">%s</div>\n', w))
+for (i in seq_len(lead)) cat('<div class="blank"></div>\n')
+for (d in days) cat(tile(d), "\n")
+cat('</div>\n')
+cat('<ul class="key"><li class="planned"><i></i>planned</li><li class="building"><i></i>building</li><li class="done"><i></i>done</li></ul>\n')
+cat('<footer>Code and output on GitHub. Each map states how it was made, including the AI tools used (Claude Code, Anthropic), and credits its data.</footer>\n')
+cat('</main>\n')
+```

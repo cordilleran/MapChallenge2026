@@ -1,0 +1,20 @@
+day-*/out/*.tmp
+.Rhistory
+*.Rdata
+
+# Quarto build output (internal draft; decide before publishing)
+site/_site/
+site/.quarto/
+
+# Python and editor artefacts
+__pycache__/
+*.py[cod]
+.Rproj.user/
+.DS_Store
+.Rapp.history
+
+# Draft images: only the finals are published (see README)
+day-01/out/day01_draft*
+day-01/out/*.tmp
+# PDFs are served from site/files
+day-01/out/*.pdf

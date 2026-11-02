@@ -1,0 +1,42 @@
+---
+pagetitle: "Day 1 map: every junction on the Kettle River"
+format:
+  html:
+    theme: none
+    css: styles.css
+    include-in-header: leaflet-head.html
+    toc: false
+    title-block-style: none
+    page-layout: custom
+---
+
+::: {.wrap .day}
+
+<nav class="crumb"><a href="index.html">30 Day Map Challenge 2026</a> <span>/</span> <a href="day-01.html">Day 1</a> <span>/</span> Dynamic map</nav>
+
+<header>
+<p class="kicker">Day 1 · Points · dynamic map</p>
+<h1>Every junction on the Kettle River</h1>
+<p class="sub">The same 12,847 junctions as the static maps. Zoom in and smaller streams appear; hover or tap a junction to read its inflows and outflow.</p>
+</header>
+
+```{=html}
+<div class="toolbar" role="group" aria-label="Map controls">
+  <div class="seg"><button id="btn-strahler" type="button" aria-pressed="true">Strahler order</button><button id="btn-shreve" type="button" aria-pressed="false">Shreve magnitude</button></div>
+  <label><input id="chk-amber" type="checkbox" checked> order-rise dots</label>
+  <label><input id="chk-base" type="checkbox"> basemap</label>
+  <span id="mode-note" class="mode-note">Arm length grows with Strahler order.</span>
+</div>
+<div class="mapwrap"><div id="map" role="application" aria-label="Map of confluence glyphs for the Kettle River basin"></div></div>
+<p id="status" class="status" aria-live="polite"></p>
+<div id="info" class="info" aria-live="polite">Hover or tap a junction.</div>
+<script src="vendor/leaflet-1.9.4/leaflet.js"></script>
+<script src="data/day01_junctions.js"></script>
+<script src="js/day01map.js"></script>
+```
+
+<p class="note">One arm points up each joining stream (blue) and one down the outflow (pale); an amber dot marks a junction where the order rises. Arm length is set in screen pixels from the same rules as the static maps and grows gently as you zoom. Arm directions are schematic. The network ends about 20 km above the Columbia, and US headwater channels under 1 km² of upstream area are omitted. Data: BC Freshwater Atlas (contains information licensed under the Open Government Licence - British Columbia); USGS 3D Hydrography Program. Pipeline and map written by Claude Code (Anthropic) from Graham Watt's design; directed, run and reviewed by Graham Watt. Leaflet 1.9.4 (BSD-2-Clause).</p>
+
+<footer>#30DayMapChallenge · Day 1 Points. Contains information licensed under the Open Government Licence - British Columbia. Code MIT, maps CC BY 4.0; see the repository.</footer>
+
+:::

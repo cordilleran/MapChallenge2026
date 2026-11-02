@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "MapChallenge2026: code and maps for the 2026 #30DayMapChallenge"
+type: software
+authors:
+  - family-names: Watt
+    given-names: Graham
+license: MIT
+repository-code: "https://github.com/cordilleran/MapChallenge2026"
+date-released: "2026-11-01"
+abstract: "One map a day in November 2026. Day 1 (Points) draws every stream junction of the Kettle River basin as a glyph whose arm lengths follow Strahler order or Shreve magnitude. The pipeline was written by Claude Code (Anthropic) from the author's design."

@@ -1,0 +1,10 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - files/
+    - js/
+    - data/
+    - vendor/
+    - fonts/
+    - img/

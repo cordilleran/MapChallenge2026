@@ -1,0 +1,18 @@
+# R packages used by Day 1 (versions the maps were made with; R 4.6.1)
+# Active pipeline
+sf==1.1.1
+terra==1.9.34
+dplyr==1.2.1
+igraph==2.3.3
+ggplot2==4.0.3
+ragg==1.5.2
+tidyr==1.3.2
+# Site (Quarto R chunk)
+yaml==2.3.12
+knitr==1.51
+rmarkdown==2.31
+# Exploration scripts only
+DBI==1.3.0
+RSQLite==3.53.2
+nhdplusTools==1.5.2
+# Other software: GRASS GIS 8.4.2, Quarto 1.9

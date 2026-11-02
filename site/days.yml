@@ -1,0 +1,31 @@
+# One entry per day. status: planned | building | done. thumb: path under site/ once the map exists. href: page for that day.
+- {day: 1, theme: "Points", icon: "01-points", status: done, thumb: "img/day01_thumb.png", href: "day-01.html"}
+- {day: 2, theme: "Lines", icon: "02-lines", status: planned, thumb: "", href: ""}
+- {day: 3, theme: "Polygons", icon: "03-polygons", status: planned, thumb: "", href: ""}
+- {day: 4, theme: "Clusters", icon: "04-clusters", status: planned, thumb: "", href: ""}
+- {day: 5, theme: "Senses: Sight", icon: "05-sight", status: planned, thumb: "", href: ""}
+- {day: 6, theme: "Vintage", icon: "06-vintage", status: planned, thumb: "", href: ""}
+- {day: 7, theme: "10 minute map", icon: "07-ten-minute", status: planned, thumb: "", href: ""}
+- {day: 8, theme: "Utopia", icon: "08-utopia", status: planned, thumb: "", href: ""}
+- {day: 9, theme: "Urban-rural", icon: "09-urban-rural", status: planned, thumb: "", href: ""}
+- {day: 10, theme: "Prompting only", icon: "10-prompting", status: planned, thumb: "", href: ""}
+- {day: 11, theme: "Senses: Sound", icon: "11-sound", status: planned, thumb: "", href: ""}
+- {day: 12, theme: "Power", icon: "12-power", status: planned, thumb: "", href: ""}
+- {day: 13, theme: "Interactions", icon: "13-interactions", status: planned, thumb: "", href: ""}
+- {day: 14, theme: "Borgesian map", icon: "14-borgesian", status: planned, thumb: "", href: ""}
+- {day: 15, theme: "Inside out", icon: "15-inside-out", status: planned, thumb: "", href: ""}
+- {day: 16, theme: "Collaborative map", icon: "16-collaborative", status: planned, thumb: "", href: ""}
+- {day: 17, theme: "Light & dark", icon: "17-light-dark", status: planned, thumb: "", href: ""}
+- {day: 18, theme: "NULL", icon: "18-null", status: planned, thumb: "", href: ""}
+- {day: 19, theme: "Senses: Smell", icon: "19-smell", status: planned, thumb: "", href: ""}
+- {day: 20, theme: "Hexagons", icon: "20-hexagons", status: planned, thumb: "", href: ""}
+- {day: 21, theme: "OpenStreetMap", icon: "21-openstreetmap", status: planned, thumb: "", href: ""}
+- {day: 22, theme: "Projections", icon: "22-projections", status: planned, thumb: "", href: ""}
+- {day: 23, theme: "Senses: Taste", icon: "23-taste", status: planned, thumb: "", href: ""}
+- {day: 24, theme: "Network", icon: "24-network", status: planned, thumb: "", href: ""}
+- {day: 25, theme: "Is this a map?", icon: "25-is-this-a-map", status: planned, thumb: "", href: ""}
+- {day: 26, theme: "Water", icon: "26-water", status: planned, thumb: "", href: ""}
+- {day: 27, theme: "New tool", icon: "27-new-tool", status: planned, thumb: "", href: ""}
+- {day: 28, theme: "Senses: Feeling", icon: "28-feeling", status: planned, thumb: "", href: ""}
+- {day: 29, theme: "Raster", icon: "29-raster", status: planned, thumb: "", href: ""}
+- {day: 30, theme: "Pen & paper", icon: "30-pen-paper", status: planned, thumb: "", href: ""}
