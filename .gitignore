@@ -19,5 +19,8 @@ day-*/out/*.png
 day-01/out/day01_draft*
 day-01/out/*.tmp
 # PDFs are served from site/files
-day-01/out/*.pdf
+day-*/out/*.pdf
 day-01/out/*_unthinned*
+
+# R fallback graphics device output
+Rplots.pdf
