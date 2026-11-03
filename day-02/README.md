@@ -27,7 +27,7 @@ How to get the FWA extract: see [Day 1's README](../day-01/README.md#get-the-dat
 2. Join each stream's segments in route-measure order. Segments run upstream, each starting where the last ended (checked: all within 1 m). A run breaks where a non-channel segment interrupts it.
 3. Cut each run into `round(length / 2 km)` equal pieces, at least one: pieces from a long run are 1.3 to 3 km, with no stub at the top; a run under 3 km stays whole (67 % of the 3,399 lengths are under 1.3 km). Each piece takes the highest Strahler order among the segments it covers.
 4. Sinuosity: piece length over the straight distance between its ends. Gradient: the drop between its ends on the DEM (lowest cell within 30 m of each end) over its length.
-5. Map in R (ggplot2): classes 1.03, 1.08, 1.15 and 1.3, from dim river blue to Day 1's amber; line width 0.07 + 0.075 × order (ggplot units).
+5. Measured in BC Albers, the FWA's own projection; drawn in UTM zone 11N (NAD83) with a north arrow to true north and a scale bar from [`shared/R/`](../shared/R/). Map in R (ggplot2): classes 1.03, 1.08, 1.15 and 1.3, from dim river blue to Day 1's amber; line width 0.07 + 0.075 × order (ggplot units).
 
 ## Reproduce
 
@@ -39,7 +39,7 @@ Needs R 4.6 with sf, terra, dplyr, ggplot2, ragg and magick (versions in [`../da
 | 02 | `scripts/02_map.R` | the Letter map, PNG and PDF |
 | 03 | `scripts/03_site_images.R` | page, detail and calendar images (WebP) |
 
-`MC26_BASIN_CODE` picks another basin in the extract by its FWA watershed code; `MC26_WINDOW` changes the length (m).
+`MC26_BASIN_CODE` picks another basin in the extract by its FWA watershed code (with `MC26_MAIN_STEM`, the GNIS name of its main river); `MC26_WINDOW` changes the length (m). Step 01 runs on any basin in the extract; step 02's title, river labels and town are written for the Granby and need editing for another basin.
 
 ## Limits
 

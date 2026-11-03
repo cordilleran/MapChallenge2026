@@ -40,7 +40,7 @@ Contains information licensed under the Open Government Licence - British Columb
 3. A junction is a node with two or more inflows; 251 braid re-joins (inflows that share an upstream split) are excluded.
 4. US headwater branches that never reach 1.5 km² of upstream area on the DEM are dropped, because raw 3DHP has twice the junction density of the BC data (247 against 117 per 100 km²; 123 against 117 after).
 5. Arm direction is the first 150 m of each stream line. Arm length is fixed on the page and converted to ground metres.
-6. Static maps in R (ggplot2); dynamic map in Leaflet on a canvas layer, arm length in screen pixels, smaller streams revealed as you zoom, over a muted shaded relief made from the DEM (`MC26_RELIEF=dark` gives a dark one).
+6. Static maps in R (ggplot2), built in BC Albers and drawn in UTM zone 11N (NAD83) so north is close to page up, with a north arrow to true north and a scale bar from [`shared/R/`](../shared/R/); dynamic map in Leaflet on a canvas layer, arm length in screen pixels, smaller streams revealed as you zoom, over a muted shaded relief made from the DEM (`MC26_RELIEF=dark` gives a dark one).
 
 ## Reproduce
 

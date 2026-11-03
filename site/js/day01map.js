@@ -25,6 +25,18 @@
   var hv = (location.hash || "").replace("#", "").split("/").map(Number);                 // shareable view: #zoom/lat/lng
   if (hv.length === 3 && hv.every(isFinite)) map.setView([hv[1], hv[2]], hv[0]);
   else map.fitBounds(window.DAY01_BOUNDS, { padding: [20, 20] });
+  // Map furniture in the static maps' style (D48): the calendar compass, north half in the accent, and a metric scale.
+  // Web Mercator keeps true north straight up, so the arrow does not turn.
+  var Compass = L.Control.extend({ options: { position: "topright" }, onAdd: function () {
+    var d = L.DomUtil.create("div", "map-compass");
+    d.setAttribute("role", "img"); d.setAttribute("aria-label", "North is up");
+    d.innerHTML = '<svg viewBox="0 -4 24 28" width="34" height="40" aria-hidden="true">' +
+      '<text x="12" y="0" text-anchor="middle">N</text><circle cx="12" cy="12" r="9" class="ring"/>' +
+      '<path d="M12 5 L14 12 L10 12 Z" class="north"/><path d="M14 12 L12 19 L10 12 Z" class="south"/>' +
+      '<circle cx="12" cy="12" r=".8" class="hub"/></svg>';
+    return d; } });
+  new Compass().addTo(map);
+  L.control.scale({ position: "bottomleft", imperial: false, maxWidth: 140 }).addTo(map);
   map.createPane("relief").style.zIndex = 350;             // its own pane under the glyph canvas (overlay pane, 400), so re-adding it never covers the glyphs
   var R = window.DAY01_RELIEF, relief = L.imageOverlay(R.url, R.bounds, { opacity: 1, interactive: false, pane: "relief" }).addTo(map);
   var casing = R.look === "superior";                      // dark casing under the glyphs on the light relief

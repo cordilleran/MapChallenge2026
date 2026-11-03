@@ -1,0 +1,6 @@
+linters: linters_with_defaults(
+    line_length_linter(100),
+    object_usage_linter = NULL,   # constants come from sourced config and look files
+    object_name_linter(styles = c("snake_case", "SNAKE_CASE", "symbols"))
+  )
+exclusions: list("site/_site", "site/.quarto")

@@ -15,6 +15,18 @@ mouth <- read.csv(file.path(DATA_DIR, paste0("mouth3dhp", TAG, "_mag.csv")))
 arms <- arms[arms$conf %in% cf$conf[!cf$braid], ]       # braid re-joins are channels meeting themselves, not junctions (same set as the Leaflet map)
 rises <- cf |> filter(order_changes, !braid)
 
+# ---- draw in UTM 11N (shared look): junctions and each arm's 150 m bearing point are projected, and the bearing is
+# recomputed in the new grid, as step 25 does for Web Mercator. The network itself was built and measured in BC Albers.
+source(file.path(ROOT, "shared", "R", "look.R")); source(file.path(ROOT, "shared", "R", "map_furniture.R"))
+to_display <- function(x, y) st_coordinates(st_transform(st_as_sf(data.frame(x = x, y = y), coords = c("x", "y"), crs = 3005), DISPLAY_CRS))
+in_display <- function(d) {                       # the mouth table has no bearing point: one is made 150 m along the bearing
+  if (is.null(d$bx)) d <- transform(d, bx = nx + 150 * sin(bearing * pi / 180), by = ny + 150 * cos(bearing * pi / 180))
+  n <- to_display(d$nx, d$ny); b <- to_display(d$bx, d$by)
+  transform(d, nx = n[, 1], ny = n[, 2], bx = b[, 1], by = b[, 2], bearing = (atan2(b[, 1] - n[, 1], b[, 2] - n[, 2]) * 180 / pi) %% 360)
+}
+arms <- in_display(arms); mouth <- in_display(mouth)
+rises <- st_transform(rises, DISPLAY_CRS)
+
 # ---- page geometry: Letter in mm, map units in metres ----------------------------------------------------------------
 W <- 215.9; H <- 279.4; MG <- 12
 xr <- range(c(arms$nx, mouth$nx)); yr <- range(c(arms$ny, mouth$ny))
@@ -98,7 +110,10 @@ for (i in seq_along(scale_len)) {
   p <- p + annotate("segment", x = PX(kx + 1), xend = PX(kx + 1 + scale_len[i]), y = PY(yy), yend = PY(yy), colour = ink, linewidth = .5, lineend = "round") +
     text_at(kx + 8, yy - 1.8, sprintf("%s: %.1f", scale_lab[i], scale_len[i]), 4.8, mute, "mono")
 }
-p <- p + text_at(MG + 2, H - 14, credit, 4.6, mute, "sans") +
+north_at <- c(PX(W - MG - 9), PY(MG + 12))                              # top right, beside the header
+p <- p + compass_rose(north_at, true_north_deg(north_at, DISPLAY_CRS), m_per_mm) +
+  scale_ticked(c(PX(W - MG - 8) - nice_km(m_per_mm) * 1000, PY(MG + 25)), m_per_mm) +
+  text_at(MG + 2, H - 14, credit, 4.6, mute, "sans") +
   coord_equal(xlim = c(PX(0), PX(W)), ylim = c(PY(H), PY(0)), expand = FALSE, clip = "off") + theme_void() +
   theme(plot.background = element_rect(fill = bg, colour = NA), plot.margin = margin(0, 0, 0, 0))
 
