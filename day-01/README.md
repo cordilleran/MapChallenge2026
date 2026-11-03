@@ -7,9 +7,9 @@ Every junction in a river network is a point on a map, inheriting the flow from 
 
 An amber dot marks a junction where the Strahler order rises. The last junction, where the Kettle meets the Columbia, is ringed; the Columbia is drawn dashed because it is far larger than anything else on the page.
 
-![Strahler version](out/day01_final_strahler.png)
+![Strahler version](../site/img/day01_strahler_page.webp)
 
-Outputs: `out/day01_final_strahler.png` and `day01_final_shreve.png` (Letter, 300 dpi); the same as vector PDFs in [`site/files/`](../site/files/); the Day 1 page and the dynamic Leaflet map on the [site](https://cordilleran.github.io/MapChallenge2026/day-01.html) (stream names in the readout, shaded relief made from the same DEM).
+Outputs: `out/day01_final_strahler.png` and `day01_final_shreve.png` (Letter, 300 dpi; made by step 24, kept out of git); the web images as WebP in [`site/img/`](../site/img/); the same maps as vector PDFs in [`site/files/`](../site/files/); the Day 1 page and the dynamic Leaflet map on the [site](https://cordilleran.github.io/MapChallenge2026/day-01.html) (stream names in the readout, shaded relief made from the same DEM).
 
 ## Data
 

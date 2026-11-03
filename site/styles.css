@@ -39,6 +39,8 @@ h1{font:400 clamp(36px,6vw,56px)/1.02 var(--serif);letter-spacing:-.01em;margin:
 .t{font:400 11px/1.25 var(--mono);color:var(--ink);letter-spacing:.01em;position:relative;z-index:2}
 .planned .ico{opacity:.5}
 .planned .t{color:var(--muted)}
+.past .face{background:transparent}                /* a day gone by without a map: plain, no tile */
+.past .ico{opacity:.28}
 .building .face{border-color:var(--amber)}
 .building .face::after{content:"";position:absolute;top:8px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--amber)}
 .building .ico{color:var(--amber)}

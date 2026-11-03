@@ -34,10 +34,12 @@ for (i in seq_len(lead)) cat('<div class="blank" aria-hidden="true"></div>\n')
 for (d in days) cat(tile(d), "\n")
 cat('</div>\n')
 cat('<footer>Themes from the <a href="https://30daymapchallenge.com/">30 Day Map Challenge</a>. Code and maps: <a href="https://github.com/cordilleran/MapChallenge2026">github.com/cordilleran/MapChallenge2026</a>. Each map says how it was made, including the AI tools used, and credits its data.</footer>\n')
-# Browser-side: mark today while the month runs, and make the doors open. Without the script, done tiles show the map.
+# Browser-side: mark today while the month runs, mark days gone by without a map ("past"), and make the doors open. Without the script, done tiles show the map.
 cat('<script>(function(){',
   'var cal=document.querySelector(".cal");cal.classList.add("js");',
-  'var t=new Date();if(t.getFullYear()===2026&&t.getMonth()===10){var e=document.querySelector(\'.tile[data-day="\'+t.getDate()+\'"]\');if(e){e.classList.add("today");e.setAttribute("aria-current","date");}}',
+  'var t=new Date(),y=t.getFullYear(),m=t.getMonth(),now=(y>2026||(y===2026&&m>10))?32:(y===2026&&m===10?t.getDate():0);',
+  'var e=document.querySelector(\'.tile[data-day="\'+now+\'"]\');if(e){e.classList.add("today");e.setAttribute("aria-current","date");}',
+  'document.querySelectorAll(".tile:not(.done)").forEach(function(x){if(+x.dataset.day<now)x.classList.add("past");});',   # a day gone by with no map
   'var seen=[];try{seen=JSON.parse(localStorage.getItem("mc26-open")||"[]");}catch(x){}',
   'document.querySelectorAll(".flip").forEach(function(f){var d=f.dataset.day,b=f.querySelector(".front"),a=f.querySelector(".back");',
   'function set(o){f.classList.toggle("open",o);b.tabIndex=o?-1:0;a.tabIndex=o?0:-1;b.setAttribute("aria-hidden",o);a.setAttribute("aria-hidden",!o);}',

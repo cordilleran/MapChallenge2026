@@ -13,7 +13,9 @@ __pycache__/
 .DS_Store
 .Rapp.history
 
-# Draft images: only the finals are published
+# Full-resolution map PNGs stay local (GW 11-02: keep only WebP in git; the site carries WebP and the PDFs)
+day-*/out/*.png
+# Draft images
 day-01/out/day01_draft*
 day-01/out/*.tmp
 # PDFs are served from site/files
