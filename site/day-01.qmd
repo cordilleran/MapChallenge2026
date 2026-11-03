@@ -23,8 +23,8 @@ format:
 ## The two maps, same junctions
 
 <div class="pair">
-<figure><img src="img/day01_strahler_page.png" alt="Kettle River basin drawn as confluence glyphs, arm length by Strahler order"><figcaption><b>A. Strahler order.</b> Arm length is the square root of the stream's order (1 to 8). <a href="files/day01_final_strahler.pdf">Letter PDF</a></figcaption></figure>
-<figure><img src="img/day01_shreve_page.png" alt="Kettle River basin drawn as confluence glyphs, arm length by Shreve magnitude"><figcaption><b>B. Shreve magnitude.</b> Arm length is magnitude to the power 0.146 (1 to 12,894 headwater streams). <a href="files/day01_final_shreve.pdf">Letter PDF</a></figcaption></figure>
+<figure><img src="img/day01_strahler_page.webp" alt="Kettle River basin drawn as confluence glyphs, arm length by Strahler order"><figcaption><b>A. Strahler order.</b> Arm length is the square root of the stream's order (1 to 8). <a href="files/day01_final_strahler.pdf">Letter PDF</a></figcaption></figure>
+<figure><img src="img/day01_shreve_page.webp" alt="Kettle River basin drawn as confluence glyphs, arm length by Shreve magnitude"><figcaption><b>B. Shreve magnitude.</b> Arm length is magnitude to the power 0.146 (1 to 12,894 headwater streams). <a href="files/day01_final_shreve.pdf">Letter PDF</a></figcaption></figure>
 </div>
 
 ## Reading one glyph
@@ -62,9 +62,9 @@ format:
 
 ## Detail at full resolution: the border and the lower Kettle
 
-<figure class="wide"><img src="img/day01_strahler_detail.png" alt="Detail of the lower Kettle basin, Strahler order"><figcaption>A. Strahler order.</figcaption></figure>
-<figure class="wide"><img src="img/day01_shreve_detail.png" alt="Detail of the lower Kettle basin, Shreve magnitude"><figcaption>B. Shreve magnitude. Main stems stand out more; headwater stubs are the same length as in A.</figcaption></figure>
-<figure class="wide"><img src="img/day01_shreve_detail_unthinned.png" alt="The same detail before thinning the US reach"><figcaption>B before thinning. Same area, US reach as it comes from 3DHP: the dense amber cloud south of the border is the difference.</figcaption></figure>
+<figure class="wide"><img src="img/day01_strahler_detail.webp" alt="Detail of the lower Kettle basin, Strahler order"><figcaption>A. Strahler order.</figcaption></figure>
+<figure class="wide"><img src="img/day01_shreve_detail.webp" alt="Detail of the lower Kettle basin, Shreve magnitude"><figcaption>B. Shreve magnitude. Main stems stand out more; headwater stubs are the same length as in A.</figcaption></figure>
+<figure class="wide"><img src="img/day01_shreve_detail_unthinned.webp" alt="The same detail before thinning the US reach"><figcaption>B before thinning. Same area, US reach as it comes from 3DHP: the dense amber cloud south of the border is the difference.</figcaption></figure>
 
 ## Data, method and limits
 
