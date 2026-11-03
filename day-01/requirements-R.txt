@@ -7,6 +7,8 @@ igraph==2.3.3
 ggplot2==4.0.3
 ragg==1.5.2
 tidyr==1.3.2
+magick==2.9.1
+jpeg==0.1.11
 # Site (Quarto R chunk)
 yaml==2.3.12
 knitr==1.51

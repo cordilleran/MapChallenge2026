@@ -16,15 +16,15 @@ format:
 <header>
 <p class="kicker">Day 1 · Points · 1 November 2026</p>
 <h1>Every junction on the Kettle River</h1>
-<p class="sub">Every junction in a river network is a point on a map, inheriting the flow from the main stem and its tributaries. Here each one of 12,847 junctions in the Kettle River basin, from the headwaters in British Columbia to the Columbia River in Washington, is drawn as one small glyph. Nothing else is on the page, so the glyphs draw the basin.</p>
-<p class="sub"><a class="cta" href="day-01-map.html">Open the dynamic map</a> (zoom, hover, Strahler or Shreve)</p>
+<p class="sub">Every junction in a river network is a point on a map, inheriting the flow from the main stem and its tributaries. Here each one of 12,914 junctions in the Kettle River basin, from the headwaters in British Columbia to the Columbia River in Washington, is drawn as one small glyph.</p>
+<p class="sub"><a class="cta" href="day-01-map.html">Open the dynamic map</a> (zoom, hover for stream names and upstream area, Strahler or Shreve)</p>
 </header>
 
 ## The two maps, same junctions
 
 <div class="pair">
 <figure><img src="img/day01_strahler_page.png" alt="Kettle River basin drawn as confluence glyphs, arm length by Strahler order"><figcaption><b>A. Strahler order.</b> Arm length is the square root of the stream's order (1 to 8). <a href="files/day01_final_strahler.pdf">Letter PDF</a></figcaption></figure>
-<figure><img src="img/day01_shreve_page.png" alt="Kettle River basin drawn as confluence glyphs, arm length by Shreve magnitude"><figcaption><b>B. Shreve magnitude.</b> Arm length is magnitude to the power 0.147 (1 to 12,285 headwater streams). <a href="files/day01_final_shreve.pdf">Letter PDF</a></figcaption></figure>
+<figure><img src="img/day01_shreve_page.png" alt="Kettle River basin drawn as confluence glyphs, arm length by Shreve magnitude"><figcaption><b>B. Shreve magnitude.</b> Arm length is magnitude to the power 0.146 (1 to 12,894 headwater streams). <a href="files/day01_final_shreve.pdf">Letter PDF</a></figcaption></figure>
 </div>
 
 ## Reading one glyph
@@ -42,12 +42,13 @@ format:
 <li><b>One arm up each joining stream</b> (blue), pointing the way the stream comes from, and <b>one arm down the outflow</b> (pale).</li>
 <li><b>Arm length</b> grows with the stream's size, on a scale that keeps small tributaries visible next to the main river (table below).</li>
 <li><b>Amber dot:</b> the outflow is a higher order than either inflow. Channels that split and re-join are not counted as junctions.</li>
+<li><b>Amber ring:</b> the last junction, where the Kettle meets the Columbia in Lake Roosevelt. The Columbia is dashed: it is far larger than any stream here and not part of this network.</li>
 </ul>
 </div>
 
 <div class="scales">
-<table><caption>A. Strahler order (square root)</caption><thead><tr><th>Order</th><th>1</th><th>2</th><th>3</th><th>5</th><th>8</th></tr></thead><tbody><tr><th>Arm, mm on Letter</th><td>0.8</td><td>1.1</td><td>1.4</td><td>1.7</td><td>2.2</td></tr></tbody></table>
-<table><caption>B. Shreve magnitude (power 0.147)</caption><thead><tr><th>Sources</th><th>1</th><th>10</th><th>100</th><th>1,000</th><th>10,000</th></tr></thead><tbody><tr><th>Arm, mm on Letter</th><td>0.8</td><td>1.1</td><td>1.6</td><td>2.2</td><td>3.1</td></tr></tbody></table>
+<table><caption>A. Strahler order (square root)</caption><thead><tr><th>Order</th><th>1</th><th>2</th><th>4</th><th>8</th></tr></thead><tbody><tr><th>Arm, mm on Letter</th><td>0.8</td><td>1.1</td><td>1.6</td><td>2.2</td></tr></tbody></table>
+<table><caption>B. Shreve magnitude (power 0.146)</caption><thead><tr><th>Sources</th><th>1</th><th>10</th><th>100</th><th>1,000</th><th>10,000</th></tr></thead><tbody><tr><th>Arm, mm on Letter</th><td>0.8</td><td>1.1</td><td>1.6</td><td>2.2</td><td>3.1</td></tr></tbody></table>
 </div>
 
 <p class="note"><b>Strahler order</b> ranks streams: a headwater stream is order 1, order rises by one only where two streams of equal order meet, and otherwise the stream below keeps the higher order. <b>Shreve magnitude</b> counts: every headwater stream upstream adds one. A river can pass many small tributaries and stay order 6 while its magnitude climbs into the thousands.</p>
@@ -55,8 +56,8 @@ format:
 ## Matching the two sides
 
 <div class="scales">
-<table><caption>Junctions per 100 km², braids excluded</caption><thead><tr><th></th><th>BC (FWA)</th><th>US (3DHP)</th></tr></thead><tbody><tr><th>Raw</th><td>117</td><td>214</td></tr><tr><th>US channels start at 1 km² upstream</th><td>117</td><td>120</td></tr></tbody></table>
-<p class="note" style="margin:0">The two sources draw the same length of stream per area (1.7 and 1.8 km per km²), but 3DHP breaks it into twice as many junctions and starts channels at about half the size (median headwater 0.5 km² against 1.05 km²). One rule on the same DEM, applied to the US side only, brings them level. The pruned lines are headwater branches only; the main chain is never cut.</p>
+<table><caption>Junctions per 100 km², braids excluded</caption><thead><tr><th></th><th>BC (FWA)</th><th>US (3DHP)</th></tr></thead><tbody><tr><th>Raw</th><td>117</td><td>247</td></tr><tr><th>US channels start at 1.5 km² upstream</th><td>117</td><td>123</td></tr></tbody></table>
+<p class="note" style="margin:0">3DHP maps smaller channels than the BC Freshwater Atlas: it starts channels at about half the upstream area (median headwater 0.5 km² against 1.05 km²), so it has twice the junctions per area. One rule on the same DEM, applied to the US side only, brings them close. The pruned lines are headwater branches only; the main chain is never cut.</p>
 </div>
 
 ## Detail at full resolution: the border and the lower Kettle
@@ -70,20 +71,20 @@ format:
 <div class="cols">
 <div>
 
-**Data.** BC streams: BC Freshwater Atlas, watershed group KETL (Open Government Licence - British Columbia). US streams: USGS 3D Hydrography Program flowlines (public domain). Elevation: Graham Watt's patched 30 m DEM (built from the Canadian CDEM and a US extension), used to check line direction, to measure the upstream area behind each US channel for the 1 km² rule, and to cut the basin into local units.
+**Data.** BC streams: BC Freshwater Atlas, watershed group KETL (Open Government Licence - British Columbia). US streams: USGS 3D Hydrography Program flowlines (public domain). Elevation: my previously assembled 30 m DEM (Canadian Digital Elevation Model for BC, Open Government Licence - Canada; USGS 3DEP 1/3 arc-second for Washington, public domain), used to check line direction, to measure upstream area (for the 1.5 km² rule and the dynamic map's readout), to outline the basin, and for the shaded relief.
 
-**Method.** FWA lines are reversed (the extract runs uphill) and joined to 3DHP lines at 41 border bridges. FWA keeps its source order; 3DHP has none, so US order is computed. Shreve magnitude is the sum of inflows. 248 braid re-joins are not counted as junctions. US channels that never reach 1 km² of upstream area (DEM) are pruned, as whole branches only.
+**Method.** The BC lines are reversed (the extract is digitized upstream) and joined to 3DHP lines at 36 border bridges. The network ends where the Kettle meets the Columbia. BC keeps its source order; 3DHP has none, so US order is computed. Shreve magnitude is the sum of inflows. 251 braid re-joins are not counted as junctions. US channels that never reach 1.5 km² of upstream area are pruned, as whole branches only.
 
 </div>
 <div>
 
-**Limits.** The network ends about 20 km above the Columbia, where 3DHP has no line through Lake Roosevelt. The two sources differ in how small a channel they map; the 1 km² rule evens the junction density, but the US reach still has shorter total stream length (1.2 against 1.7 km per km²). Arm directions are schematic. Orders from different map scales are not directly comparable.
+**Limits.** The two sources differ in how small a channel they map; the 1.5 km² rule brings the US junction density close to BC's (123 against 117 per 100 km²), and the US reach then has less stream length per area (1.2 against 1.7 km per km²). Upstream area on the dynamic map is sampled from the DEM and is approximate. Through Lake Roosevelt the Kettle is a line drawn through the reservoir. Arm directions are schematic. Orders from different map scales are not directly comparable.
 
-**How made.** Pipeline written by Claude Code (Anthropic, Sonnet 5.5) from Graham Watt's design; Graham Watt directed, ran and reviewed it. R (sf, terra, igraph, ggplot2) and GRASS 8.4. Code: [github.com/cordilleran/MapChallenge2026](https://github.com/cordilleran/MapChallenge2026).
+**How made.** I developed the concept and directed Claude Code (Anthropic; Claude Sonnet 5.5 and Claude Opus 5.5) to build the project with R (sf, terra, igraph, dplyr, ggplot2, ragg, magick) and GRASS GIS 8.4, with Leaflet and Quarto for these pages. I reviewed the work iteratively before writing and publishing it with Claude's assistance. Code: [github.com/cordilleran/MapChallenge2026](https://github.com/cordilleran/MapChallenge2026).
 
 </div>
 </div>
 
-<footer>#30DayMapChallenge · Day 1 Points. Contains information licensed under the Open Government Licence - British Columbia. Code MIT, maps CC BY 4.0; see the repository.</footer>
+<footer>#30DayMapChallenge · Day 1 Points. Contains information licensed under the Open Government Licence - British Columbia and the Open Government Licence - Canada. Code MIT, maps CC BY 4.0; see the repository.</footer>
 
 :::

@@ -1,8 +1,8 @@
 # Day 1 step 22: Shreve magnitude (number of headwater sources upstream) on the 3DHP-based network.
 # Each headwater segment is 1; a segment below a junction carries the sum of its inflows. At a braid re-join
 # (flagged in step 21) the inflows share upstream sources, so the larger inflow is taken instead of the sum.
-# A divergence passes the full magnitude down each channel (approximation). In: network3dhp.gpkg, arms3dhp.csv.
-# Out: arms3dhp_mag.csv (arms with `mag`), segments magnitude table.
+# A divergence passes the full magnitude down each channel (approximation). In: network3dhp<TAG>.gpkg, arms3dhp<TAG>.csv, mouth3dhp<TAG>.csv.
+# Out: arms3dhp<TAG>_mag.csv (arms with `mag`) and mouth3dhp<TAG>_mag.csv (the Kettle arm at the Columbia, with `mag`).
 .here <- dirname(sub("--file=", "", grep("--file=", commandArgs(FALSE), value = TRUE)[1])); source(file.path(.here, "..", "config.R"))
 suppressMessages({library(sf); library(dplyr); library(igraph)})
 D <- DATA_DIR; out <- file.path(D, paste0("arms3dhp", TAG, "_mag.csv")); stopifnot(!file.exists(out))
@@ -20,3 +20,5 @@ cat("by Strahler order (median magnitude):\n"); print(round(tapply(seg$mag, seg$
 arms <- read.csv(file.path(D, paste0("arms3dhp", TAG, ".csv"))); arms$mag <- seg$mag[match(arms$seg_id, seg$seg_id)]
 mouth_mag <- max(arms$mag[arms$arm == "out"], na.rm = TRUE); cat("largest outflow magnitude (mouth side):", mouth_mag, "\n")
 write.csv(arms, out, row.names = FALSE)
+mouth <- read.csv(file.path(D, paste0("mouth3dhp", TAG, ".csv"))); mouth$mag <- seg$mag[match(mouth$seg_id, seg$seg_id)]   # the Kettle at the Columbia
+write.csv(mouth, file.path(D, paste0("mouth3dhp", TAG, "_mag.csv")), row.names = FALSE); cat("magnitude at the mouth:", paste(mouth$mag[mouth$arm == "kettle"], collapse = ", "), "\n")

@@ -17,14 +17,14 @@ format:
 <header>
 <p class="kicker">Day 1 · Points · dynamic map</p>
 <h1>Every junction on the Kettle River</h1>
-<p class="sub">The same 12,847 junctions as the static maps. Zoom in and smaller streams appear; hover or tap a junction to read its inflows and outflow.</p>
+<p class="sub">The same 12,914 junctions as the static maps. Zoom in and smaller streams appear; hover or tap a junction to read the streams that meet there and the area they drain.</p>
 </header>
 
 ```{=html}
 <div class="toolbar" role="group" aria-label="Map controls">
   <div class="seg"><button id="btn-strahler" type="button" aria-pressed="true">Strahler order</button><button id="btn-shreve" type="button" aria-pressed="false">Shreve magnitude</button></div>
   <label><input id="chk-amber" type="checkbox" checked> order-rise dots</label>
-  <label><input id="chk-base" type="checkbox"> basemap</label>
+  <label><input id="chk-relief" type="checkbox" checked> relief</label>
   <span id="mode-note" class="mode-note">Arm length grows with Strahler order.</span>
 </div>
 <div class="mapwrap"><div id="map" role="application" aria-label="Map of confluence glyphs for the Kettle River basin"></div></div>
@@ -32,11 +32,12 @@ format:
 <div id="info" class="info" aria-live="polite">Hover or tap a junction.</div>
 <script src="vendor/leaflet-1.9.4/leaflet.js"></script>
 <script src="data/day01_junctions.js"></script>
+<script src="data/day01_relief.js"></script>
 <script src="js/day01map.js"></script>
 ```
 
-<p class="note">One arm points up each joining stream (blue) and one down the outflow (pale); an amber dot marks a junction where the order rises. Arm length is set in screen pixels from the same rules as the static maps and grows gently as you zoom. Arm directions are schematic. The network ends about 20 km above the Columbia, and US headwater channels under 1 km² of upstream area are omitted. Data: BC Freshwater Atlas (contains information licensed under the Open Government Licence - British Columbia); USGS 3D Hydrography Program. Pipeline and map written by Claude Code (Anthropic) from Graham Watt's design; directed, run and reviewed by Graham Watt. Leaflet 1.9.4 (BSD-2-Clause).</p>
+<p class="note">One arm points up each joining stream (blue) and one down the outflow (pale); an amber dot marks a junction where the order rises, and the amber ring is the mouth on the Columbia. Arm length is set in screen pixels from the same rules as the static maps and grows gently as you zoom. Arm directions are schematic. US headwater channels under 1.5 km² of upstream area are omitted. Upstream area is sampled from the DEM's flow accumulation near each junction and is approximate. Relief: shaded from my 30 m DEM in the style of my Superior Ice Year lake-floor map, sun from the northwest; the view stops at the edge of the relief. Data: BC Freshwater Atlas (contains information licensed under the Open Government Licence - British Columbia); USGS 3D Hydrography Program. Built with Claude Code (Anthropic); see the Day 1 page for how it was made. Leaflet 1.9.4 (BSD-2-Clause). Nothing on this page is loaded from a third party.</p>
 
-<footer>#30DayMapChallenge · Day 1 Points. Contains information licensed under the Open Government Licence - British Columbia. Code MIT, maps CC BY 4.0; see the repository.</footer>
+<footer>#30DayMapChallenge · Day 1 Points. Contains information licensed under the Open Government Licence - British Columbia and the Open Government Licence - Canada. Code MIT, maps CC BY 4.0; see the repository.</footer>
 
 :::

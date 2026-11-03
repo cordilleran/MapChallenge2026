@@ -12,5 +12,6 @@ input <- function(var, what) {                                               # a
 }
 DATA_DIR <- input("MC26_DATA", "working folder for intermediate and derived Day 1 files, outside the repo")
 dir.create(DATA_DIR, FALSE, TRUE)
-TAG     <- Sys.getenv("MC26_TAG", "_a1")                    # file-name suffix of the thinned network; set MC26_TAG="" for the unthinned one
-MINAREA <- as.numeric(Sys.getenv("MC26_MINAREA", "1"))      # km2 of upstream area under which a 3DHP headwater branch is dropped (0 = off)
+TAG     <- Sys.getenv("MC26_TAG", "_a15")                   # file-name suffix of the thinned network; set MC26_TAG="" for the unthinned one
+MINAREA <- as.numeric(Sys.getenv("MC26_MINAREA", "1.5"))     # km2 of upstream area under which a 3DHP headwater branch is dropped (0 = off)
+MOUTH_LONLAT <- Sys.getenv("MC26_MOUTH", "-118.1089,48.6629")   # lon,lat where the Kettle meets the Columbia (end of the 3DHP Kettle River line in Lake Roosevelt)
