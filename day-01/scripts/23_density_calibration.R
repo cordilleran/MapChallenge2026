@@ -2,7 +2,7 @@
 # Upstream area at each segment's downstream end comes from the DEM accumulation (same grid both sides).
 # Output: printout only plus day01/seg_area_end.csv (segment id, area at the end, side).
 # The threshold table near the end is an approximation (it filters single segments and counts every node with two or more inflows);
-# the density after the real branch pruning is the one printed by step 21 and in the README.
+# the density after the real branch pruning is the one printed by step 21 and in day-01/README.md.
 .here <- dirname(sub("--file=", "", grep("--file=", commandArgs(FALSE), value = TRUE)[1])); source(file.path(.here, "..", "config.R"))
 suppressMessages({library(sf); library(terra); library(dplyr)})
 sf_use_s2(FALSE)

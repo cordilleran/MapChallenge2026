@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run the Day 1 pipeline from the DEM to the finished maps. A step is skipped when its main output already exists, so the script can be rerun.
-# Required environment variables are listed in the README and in day-01/env.example (MC26_DATA, MC26_GRASS_LOC, MC26_DEM, MC26_FWA, MC26_BC50K, MC26_3DHP).
+# Required environment variables are listed in day-01/README.md and in day-01/env.example (MC26_DATA, MC26_GRASS_LOC, MC26_DEM, MC26_FWA, MC26_BC50K, MC26_3DHP).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 D="${MC26_DATA:?set MC26_DATA to the Day 1 working folder}"
@@ -26,4 +26,5 @@ Rscript day-01/scripts/26_relief.R                                              
 Rscript day-01/scripts/27_site_images.R                                              # page images, crops, calendar thumbnail
 mkdir -p site/files
 for f in day-01/out/day01_final_strahler.pdf day-01/out/day01_final_shreve.pdf; do cp -f "$f" site/files/; done   # PDFs are served from site/files
+Rscript site/calendar.R                                                              # the calendar, from site/days.yml
 echo "Done. Build the site with: quarto render site"
