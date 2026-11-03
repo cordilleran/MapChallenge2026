@@ -13,7 +13,7 @@ Each day has its own folder (`day-NN/`) with a README on its data, method, limit
 
 ## How made
 
-I develop each day's concept and direct Claude Code (Anthropic) to build it, and I review the work before publishing. Each day's README names the models and tools used.
+I develop each day's concept and direct Claude Code (Anthropic) to build it, and I review and revise the code and work before publishing. Each day's README names the models and tools used.
 
 ## Licence
 
