@@ -1,7 +1,7 @@
 # One entry per day. status: planned | building | done. thumb: path under site/ once the map exists. href: page for that day.
 - {day: 1, theme: "Points", icon: "01-points", status: done, thumb: "img/day01_thumb.webp", href: "day-01.html"}
 - {day: 2, theme: "Lines", icon: "02-lines", status: done, thumb: "img/day02_thumb.webp", href: "day-02.html"}
-- {day: 3, theme: "Polygons", icon: "03-polygons", status: planned, thumb: "", href: ""}
+- {day: 3, theme: "Polygons", icon: "03-polygons", status: done, thumb: "img/day03_thumb.webp", href: "day-03.html"}
 - {day: 4, theme: "Clusters", icon: "04-clusters", status: planned, thumb: "", href: ""}
 - {day: 5, theme: "Senses: Sight", icon: "05-sight", status: planned, thumb: "", href: ""}
 - {day: 6, theme: "Vintage", icon: "06-vintage", status: planned, thumb: "", href: ""}

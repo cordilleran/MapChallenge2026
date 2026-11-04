@@ -1,0 +1,178 @@
+---
+pagetitle: "Day 3 Polygons: lines on a known world"
+format:
+  html:
+    theme: none
+    css: styles.css
+    toc: false
+    title-block-style: none
+    page-layout: custom
+---
+
+::: {.wrap .day}
+
+<nav class="crumb"><a href="index.html">30 Day Map Challenge 2026</a> <span>/</span> Day 3</nav>
+
+<header>
+<p class="kicker">Day 3 · Polygons · 3 November 2026</p>
+<h1>Lines on a known world</h1>
+<p class="sub">A simulated world where the true answer is known. Choose how it is sampled and how it is cut into polygons, and see how far each number lands from the truth, and why.</p>
+</header>
+
+```{=html}
+<div id="s3-tools">
+<div class="toolbar d3-tools" role="group" aria-label="World">
+  <span class="k3">world</span>
+  <div class="seg" id="s3-world" hidden><button type="button" data-k="textbook" aria-pressed="true">Gaussian</button></div>
+  <button id="s3-newworld" type="button" class="link">new world</button> <span id="s3-seed-v" class="v"></span>
+  <span class="v small">X and Y: two Gaussian random fields, 256 by 256 cells of 200 m</span>
+  <label id="s3-wsdemwrap" hidden><input id="ws-dem" type="range" min="200" max="1600" step="200" value="200" aria-label="DEM resolution"> <span id="ws-dem-v" class="v"></span></label>
+</div>
+<details id="s3-tbwrap" class="tbset"><summary>World settings: how far similarity reaches, and how X and Y relate</summary>
+  <div class="tbgrid">
+    <label>short range ρ (km) <input id="tb-rhoShort" type="range" min="0.2" max="2" step="0.1"> <span id="tb-rhoShort-v" class="v"></span></label>
+    <label>long range ρ (km) <input id="tb-rhoLong" type="range" min="2" max="12" step="0.5"> <span id="tb-rhoLong-v" class="v"></span></label>
+    <label>long-range share <input id="tb-longShare" type="range" min="0" max="1" step="0.05"> <span id="tb-longShare-v" class="v"></span></label>
+    <label>X–Y correlation, short <input id="tb-corShort" type="range" min="-0.95" max="0.95" step="0.05"> <span id="tb-corShort-v" class="v"></span></label>
+    <label>X–Y correlation, long <input id="tb-corLong" type="range" min="-0.95" max="0.95" step="0.05"> <span id="tb-corLong-v" class="v"></span></label>
+    <label>nugget (unshared noise) <input id="tb-nugget" type="range" min="0" max="0.8" step="0.05"> <span id="tb-nugget-v" class="v"></span></label>
+    <label>smoothness ν <select id="tb-nu"><option value="0.5">0.5 (rough)</option><option value="1.5">1.5</option><option value="2.5">2.5 (smooth)</option></select></label>
+    <label>values <select id="tb-marginal"><option value="normal">normal</option><option value="lognormal">lognormal (skewed)</option></select></label>
+  </div>
+  <p class="rline small" id="tb-range"></p>
+</details>
+<div class="toolbar d3-tools" role="group" aria-label="Question">
+  <span class="k3">ask</span>
+  <div class="seg wrapseg" id="s3-est"><button type="button" data-k="mean">Mean</button><button type="button" data-k="varshare">Variance between zones</button><button type="button" data-k="corr">Correlation</button><button type="button" data-k="exceed">Share above</button><button type="button" data-k="rank">Zone ranking</button></div>
+</div>
+<div class="toolbar d3-tools" role="group" aria-label="Variable">
+  <span class="k3">of</span>
+  <select id="s3-var" aria-label="Variable"></select>
+  <label id="s3-var2wrap" hidden>against <select id="s3-var2" aria-label="Second variable"></select></label>
+  <label id="s3-thrwrap" hidden>threshold <input id="s3-thr" type="range"> <span id="s3-thr-v" class="v"></span></label>
+  <span id="s3-methodwrap" hidden><div class="seg" id="s3-method"><button type="button" data-k="cell">Cell first</button><button type="button" data-k="zone">Zone first</button></div></span>
+</div>
+<div class="toolbar d3-tools" role="group" aria-label="Polygons">
+  <span class="k3">zones</span>
+  <div class="seg wrapseg" id="s3-frame"><button type="button" data-k="grid">Grid</button><button type="button" data-k="hex">Hexagons</button><button type="button" data-k="vor">Random Voronoi</button><button type="button" data-k="svor">Site Voronoi</button></div>
+  <label id="s3-sizewrap"><span id="s3-size-k">size</span> <input id="s3-size" type="range" min="0" max="10" step="1"> <span id="s3-size-v" class="v"></span></label>
+  <button id="s3-reshuffle" type="button" class="link" hidden>new seeds</button>
+  <span id="s3-shift" class="v small">drag the map or use arrow keys to shift the zones</span>
+</div>
+<div class="toolbar d3-tools" role="group" aria-label="Sampling">
+  <span class="k3">sites</span>
+  <div class="seg" id="s3-design"><button type="button" data-k="census">Every cell</button><button type="button" data-k="random">Random</button><button type="button" data-k="systematic">Systematic</button><button type="button" data-k="stratified">Stratified by zone</button></div>
+  <label id="s3-nwrap">how many <input id="s3-n" type="range" min="20" max="600" step="10"> <span id="s3-n-v" class="v"></span></label>
+  <label id="s3-betawrap">preference <input id="s3-beta" type="range" min="0" max="3" step="0.25"> <span id="s3-beta-v" class="v amber"></span></label>
+  <button id="s3-redraw" type="button" class="link">new sites</button>
+  <span id="s3-design-note" class="v amber"></span>
+</div>
+<div class="readouts four" aria-live="polite">
+  <div><span class="k">Truth</span><span class="big" id="r-truth"></span></div>
+  <div><span class="k">Every cell, by zone</span><span class="big blue" id="r-census"></span></div>
+  <div><span class="k">Sites, by zone</span><span class="big amber" id="r-est"></span></div>
+  <div><span class="k" id="r-errk">Sites minus truth</span><span class="big" id="r-err"></span></div>
+</div>
+<p class="rline" id="r-line"></p>
+<div class="play">
+  <div><canvas id="s3-map" tabindex="0" role="img" aria-label="Map of the simulated world with the chosen zones and sites"></canvas>
+    <div class="maprow"><svg id="s3-legend" class="legend" role="img" aria-label="Colour scale"></svg>
+    <div class="seg small" id="s3-paint" role="group" aria-label="Paint"><button type="button" data-k="cells">Cells</button><button type="button" data-k="census">Zone means</button><button type="button" data-k="sample">From sites</button></div></div>
+    <p id="s3-info" class="status">Hover or tap the map to read a cell and its zone.</p></div>
+  <div class="plotwrap" style="position:relative">
+    <svg id="s3-curve" role="img" aria-label="The estimate against zone size"></svg>
+    <svg id="s3-sweep" role="img" aria-label="The estimate for 36 shifts of the same zones"></svg>
+    <p class="rline small" id="r-sweep"></p>
+    <div id="s3-tip" class="tip" hidden></div>
+  </div>
+</div>
+<h2>Run it many times</h2>
+<p class="rline">One map is one draw. Redraw one thing at a time and see where the answer lands: a new <b>world</b> from the same recipe, new <b>sites</b> on this world, or the same zones <b>shifted</b>. The spread in each row is what that choice alone contributes.</p>
+<div class="toolbar d3-tools">
+  <button id="s3-run-world" type="button" class="cta">New worlds ×100</button>
+  <button id="s3-run-sample" type="button" class="cta">New sites ×200</button>
+  <button id="s3-run-zoning" type="button" class="cta">New zonings ×200</button>
+  <button id="s3-run-all" type="button" class="link">run all three</button>
+  <span id="s3-repnote" class="v amber"></span>
+</div>
+<div style="position:relative"><svg id="s3-reps" class="wide" role="img" aria-label="Rainclouds of the estimate for each source of variation"></svg></div>
+<div id="s3-reptable" class="reptable"></div>
+<details class="formula" open><summary>How this estimate is computed</summary>
+  <p id="f-words"></p>
+  <p class="maths" id="f-maths"></p>
+  <details><summary>The code that runs</summary><pre><code id="f-code"></code></pre></details>
+</details>
+<details class="formula real"><summary>If these were real data: how to read each measure</summary>
+  <p><b>Mean.</b> Say, mean annual precipitation over a basin from its gauges. With every place measured and zones weighted by area, no zoning can move it; what moves it is where the sites are. Read a gap between <i>every cell</i> and <i>sites</i> as a sampling problem, and ask whether the sites sit where the signal is: valley gauges, snow courses a crew could reach, wells where the problem was reported.</p>
+  <p><b>Variance between zones.</b> Say, a choropleth of a census variable or a climate normal. The share tells you how much of the land's variation a map at that zoning can show, not how variable the land is. Compare places only at the same zone size and shape.</p>
+  <p><b>Correlation.</b> Say, income against health by neighbourhood, or snow against elevation by basin. A correlation across zones describes zones, not people or points (the ecological fallacy). If it changes with zone size, the two variables are linked by processes working at different scales: report the scale with the r, and do not carry it down to individuals.</p>
+  <p><b>Share above.</b> Say, the area above a flood depth, a contaminant limit or a heat threshold. A threshold applied to zone averages misjudges skewed data: averaging pulls peaks under the line (or lifts a low zone over it). Test each place against the threshold first, then add up the share.</p>
+  <p><b>Zone ranking.</b> Say, which sub-basin or neighbourhood gets funded first. A ranking resting on a few sites per zone is noisy; a new survey can change the top zone. Bigger zones rank more steadily and say less about where inside them the need is. Report how many sites stand behind each zone.</p>
+  <p><b>The three rows.</b> In real work there is one world and usually one sample. The <i>worlds</i> row is how far this year or this place may sit from the long-run process; the <i>sites</i> row is the sampling error a survey can report; the <i>zonings</i> row is the part set by whoever drew the lines, and most reports carry no error bar for it. Drawing those lines on purpose to move a result has a name: gerrymandering.</p>
+  <p><b>Independence.</b> A survey's standard error is fair for a statement about this map. A statement about the process behind it (the climate, not this winter) needs the larger spread across worlds, because neighbouring places share their weather and ground.</p>
+</details>
+<details class="formula"><summary>Settings as JSON (replay exactly)</summary>
+  <p class="rline small">Every setting and seed, so a view can be shared or replayed. The page address carries it too.</p>
+  <div class="toolbar"><button id="s3-copy" type="button" class="link">copy settings</button><button id="s3-load" type="button" class="link">load from the box</button><span id="s3-json-note" class="v"></span></div>
+  <textarea id="s3-json" rows="5" spellcheck="false" aria-label="Settings JSON"></textarea>
+</details>
+</div>
+<script src="js/day03simcore.js"></script>
+<script src="js/day03sim.js"></script>
+```
+
+## Things to try
+
+<ul class="tries">
+<li><button class="link" type="button" data-try='{"estimand":"mean","frame":{"kind":"grid","size":4},"sample":{"design":"census","n":200,"seed":9,"beta":0}}'>The mean ignores the lines.</button> With every cell measured, the regional mean is exact under any zoning: an average of zone averages, weighted by size, is the average. Switch to random sites: now the error comes from sampling, not from the lines.</li>
+<li><button class="link" type="button" data-try='{"estimand":"corr","var":"X","var2":"Y","frame":{"kind":"grid","size":0.6},"sample":{"design":"census","n":200,"seed":9,"beta":0}}'>The correlation changes sign.</button> X and Y disagree at short range and agree at long range. Across small zones r is negative; across large ones it is positive (see the curve). Neither is wrong: they answer different questions.</li>
+<li><button class="link" type="button" data-try='{"estimand":"varshare","var":"X","frame":{"kind":"grid","size":2},"sample":{"design":"census","n":200,"seed":9,"beta":0}}'>Krige's curve.</button> The share of variance between zones falls as zones grow, and for a known covariance it falls along a curve you can compute before drawing a single map (grey band).</li>
+<li><button class="link" type="button" data-try='{"estimand":"mean","var":"X","frame":{"kind":"grid","size":4},"sample":{"design":"random","n":200,"seed":9,"beta":1.5}}'>Sites where the signal is.</button> Sites drawn toward high X, the way a network ends up where the snow, the access or the problem is, read the mean high. More sites do not fix it; try 600. Then set preference to zero.</li>
+<li><button class="link" type="button" data-try='{"worldParams":{"marginal":"lognormal"},"estimand":"exceed","var":"X","thr":1.6,"method":"zone","frame":{"kind":"grid","size":8},"sample":{"design":"census","n":200,"seed":9,"beta":0}}'>A threshold of averages.</button> On skewed values, the share of ground above a threshold read from zone averages (zone first) misses most of it. Shrink the zones and watch the zone-first answer climb toward the truth; then switch to cell first.</li>
+<li><button class="link" type="button" data-try='{"estimand":"rank","var":"X","frame":{"kind":"grid","size":2},"sample":{"design":"random","n":150,"seed":9,"beta":0}}'>Would you fund the right zone?</button> With 150 sites in 2 km zones the ranking of zones from the sites is noisy. Try 8 km zones: the ranking firms up, and each zone says less.</li>
+<li><button class="link" type="button" data-try='{"estimand":"mean","var":"X","frame":{"kind":"grid","size":4},"sample":{"design":"random","n":200,"seed":9,"beta":0}}'>When independence fails.</button> Run new sites, then new worlds, and read the last column of the table: the textbook standard error holds for new sites on this map, and falls short across worlds. Then lengthen the long range in the world settings and run new worlds again: the shortfall grows.</li>
+</ul>
+
+## Reading it
+
+<div class="cols">
+<div>
+
+**Why a simulated world.** With real data a map can only show that two numbers differ. Here the truth is known, so every estimate has an error, and the error splits into bias (where the cloud sits) and spread (how wide it is). The caveats of real data become dials: how far similarity reaches, where the sites go, what the lines follow.
+
+**Three sources of spread.** The rows below the map redraw one thing at a time. *New worlds* is the variation in the process itself; *new sites* is sampling; *new zonings* is the modifiable areal unit problem proper, the part that is pure choice of lines. The grey line in the first row is the mean over worlds: the process truth, which a single map only estimates.
+
+**When independence fails.** For the mean, the last column compares the textbook standard error (sites treated as independent) with the actual spread of the plain site mean. Over *new sites* on one map they agree: random sites are random, however alike neighbouring cells are. Over *new worlds* the spread is larger, and grows with how far similarity reaches, because nearby cells share the same weather and terrain and a whole map can run high or low. Which one matters depends on the question: the mean of this map (a survey's question) or the mean of the process that made it (a modeller's).
+
+</div>
+<div>
+
+**The world.** X and Y are each a mix of a short-range and a long-range Gaussian random field (Matérn covariance), with their own X to Y correlation at each range, plus unshared noise (the nugget). They are simulated on a torus by FFT (circulant embedding), so the map has no edges; the settings panel changes every part of the recipe. A lognormal option gives skewed values, like precipitation or snow.
+
+**Next.** A watershed world (a grown river network, BEC-like zones, PUB signatures and a beaver dam rule after BRAT) is held for a later day.
+
+</div>
+</div>
+
+## Method and limits
+
+<div class="cols">
+<div>
+
+**Method.** 256 by 256 cells of 200 m (51.2 km a side). Zones are sets of cells; each zone's value is the mean of its sites; regional values weight zones by their cells, over zones holding a site. Stratified sites are allocated to zones in proportion to size. Preferential sites are drawn without replacement with weights e<sup>βz</sup>, z the standardized X. Replicates run in a Web Worker. The engine is checked against Krige's expected curve and an input variogram, and the census mean is checked to equal the truth under every zoning.
+
+**Limits.** Stationary fields: the same recipe everywhere, which real landscapes are not. The correlation counts each zone once, not by area. Hexagons and Voronoi zones are staircased on the 200 m cells.
+
+</div>
+<div>
+
+**Further reading.** Openshaw's first MAUP experiment, re-run in the [Learn-MAUP vignette](https://giscience-research.github.io/Learn-MAUP/); Jelinski and Wu (1996), *Landscape Ecology* 11, 129–140; Friedrichs-Manthey et al. (2020), *Ecology and Evolution* 10, on MAUP in freshwater models; Kallio et al. (2022), *Environmental Modelling & Software* 157, on spatial bias in runoff products.
+
+**How made.** I chose the theme and the questions and directed Claude Code (Anthropic; Claude Opus 5.5) to build it. A first version on real snow data (SNODAS and snow courses) is kept for a later day; this one replaces its data with simulated worlds. Plain JavaScript with Quarto, nothing loaded from a third party. I reviewed the work before publishing.
+
+</div>
+</div>
+
+<footer>#30DayMapChallenge · Day 3 Polygons. All data on this page are simulated in your browser. Code MIT, maps CC BY 4.0; see the repository.</footer>
+
+:::
