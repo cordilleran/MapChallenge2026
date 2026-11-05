@@ -1,0 +1,200 @@
+---
+pagetitle: "Day 4 Clusters: one storm night, four scales"
+format:
+  html:
+    theme: none
+    css: styles.css
+    toc: false
+    title-block-style: none
+    page-layout: custom
+---
+
+::: {.wrap .day}
+
+<nav class="crumb"><a href="index.html">30 Day Map Challenge 2026</a> <span>/</span> Day 4</nav>
+
+<header>
+<p class="kicker">Day 4 · Clusters · 4 November 2026</p>
+<h1>One storm night, four scales</h1>
+<p class="sub">Lightning over central British Columbia on the night of 30 June to 1 July 2021, as the GOES-17 satellite saw it. Zoom from cells down to single flashes, decide what counts as a cluster, then ask whether flashes that are close in space and time stay close once you ride along with the storm.</p>
+</header>
+
+```{=html}
+<div id="d4-tools">
+<p class="rline">Drag to pan, scroll or pinch to zoom. Zoomed out, each colour is one convective cell found by DBSCAN (grey flashes belong to no cell). Zoomed in, each flash is drawn at the size the satellite measured, with its groups as dots.</p>
+<div class="toolbar d3-tools" role="group" aria-label="Map layers">
+  <span class="k3">map</span>
+  <div class="seg" id="d4-band" role="group" aria-label="Zoom band"><button type="button" data-k="auto" aria-pressed="true">Auto</button><button type="button" data-k="cells">Cells</button><button type="button" data-k="flashes">Flashes</button></div>
+  <label><input id="d4-tracks" type="checkbox" checked> cell tracks</label>
+  <label><input id="d4-par" type="checkbox"> parallax whiskers</label>
+</div>
+<p id="d4-par-note" class="rline small" hidden>Each line points from a flash toward the satellite, which sits over the equator at 137 W. Its length is tan(view angle) × 3 km, the shift a 3 km error in the assumed cloud-top height would cause: 5 to 6.5 km here, about one GLM pixel.</p>
+<div class="toolbar d3-tools" role="group" aria-label="Time">
+  <span class="k3">time</span>
+  <button id="d4-play" type="button" class="cta" aria-pressed="false">Play</button>
+  <input id="d4-t" type="range" min="0" max="642" step="1" value="300" aria-label="Start of the time window, minutes after 20:00 UTC" style="width:min(320px,52vw)">
+  <div class="seg" id="d4-win" role="group" aria-label="Window length"><button type="button" data-k="10">10 min</button><button type="button" data-k="30">30 min</button><button type="button" data-k="60">1 h</button><button type="button" data-k="0" aria-pressed="true">Whole night</button></div>
+</div>
+<p class="rline small"><span id="d4-clock"></span> <span id="d4-reduced" hidden>Play is off because your system asks for reduced motion: use the slider.</span></p>
+<div class="toolbar d3-tools" role="group" aria-label="DBSCAN">
+  <span class="k3">cells</span>
+  <label>radius ε <input id="d4-eps" type="range" min="2" max="25" step="0.5" aria-label="DBSCAN radius in kilometres"> <span id="d4-eps-v" class="v"></span></label>
+  <label>time scale <input id="d4-ts" type="range" min="0.1" max="3" step="0.1" aria-label="Kilometres per minute"> <span id="d4-ts-v" class="v"></span></label>
+  <label>minimum flashes <input id="d4-mp" type="range" min="3" max="30" step="1" aria-label="DBSCAN minimum points"> <span id="d4-mp-v" class="v"></span></label>
+  <span id="d4-cl-note" class="v amber"></span>
+</div>
+<p class="rline small">A flash joins a cell when at least this many flashes lie within ε. Time scale says how many kilometres one minute apart counts as: raise it and flashes must be closer in time to join; lower it and time matters less. At 1, flashes a minute apart count as 1 km apart.</p>
+<div class="readouts six" aria-live="polite">
+  <div><span class="k">Flashes in view</span><span class="big" id="r4-view">–</span></div>
+  <div><span class="k">Cells, whole night</span><span class="big blue" id="r4-cells">–</span></div>
+  <div><span class="k">In no cell</span><span class="big" id="r4-noise">–</span></div>
+  <div><span class="k">Median lifetime</span><span class="big" id="r4-life">–</span></div>
+  <div><span class="k">Median radius</span><span class="big" id="r4-rad">–</span></div>
+  <div><span class="k">Median rate per cell</span><span class="big" id="r4-rate">–</span></div>
+</div>
+<div class="play">
+  <div><canvas id="d4-map" tabindex="0" role="img" aria-label="Map of lightning flashes over central British Columbia in BC Albers. Arrow keys pan, plus and minus zoom."></canvas>
+    <div class="maprow"><div class="seg small" role="group" aria-label="Zoom"><button id="d4-zin" type="button" aria-label="Zoom in">+</button><button id="d4-zout" type="button" aria-label="Zoom out">&minus;</button><button id="d4-zreset" type="button">Reset view</button></div>
+    <span id="d4-band-note" class="v small"></span></div>
+    <p id="d4-info" class="status">Hover or tap a flash to read it.</p></div>
+  <div class="plotwrap">
+    <svg id="d4-kd" role="img" aria-label="Sorted distance from each flash to its nearest neighbours, with the current DBSCAN radius as a line"></svg>
+    <p class="rline small" id="d4-kd-line"></p>
+    <p class="rline small">The curve is the k-distance plot: for each flash, the distance to its kth neighbour in space and scaled time, largest first. A radius drawn near the knee, where the curve turns from steep to flat, separates dense flashes from scattered ones.</p>
+  </div>
+</div>
+
+<h2 id="d4-knox">How do flashes cluster?</h2>
+<p class="rline">Count every pair of flashes by how far apart they are and how long apart they happened. Then shuffle the times among the same places, 39 times, and count again. The colour is observed pairs divided by the shuffled average: orange means more pairs than where-alone would give, blue fewer. This uses every flash of the night, not just the view.</p>
+<div class="toolbar d3-tools" role="group" aria-label="Frame">
+  <span class="k3">frame</span>
+  <div class="seg wrapseg" id="d4-frame" role="group" aria-label="Frame of reference"><button type="button" data-k="ground">Ground</button><button type="button" data-k="era5" aria-pressed="true">Storm: ERA5 steering</button><button type="button" data-k="fit">Storm: self-fitted, circular</button><button type="button" data-k="custom">Custom</button></div>
+  <span id="d4-custom" class="toolbar d3-tools" style="margin:0" hidden>
+    <label>speed <input id="d4-cu" type="range" min="0" max="120" step="1" aria-label="Custom speed in kilometres per hour"> <span id="d4-cu-v" class="v"></span></label>
+    <label>toward <input id="d4-cd" type="range" min="0" max="360" step="1" aria-label="Custom direction in degrees clockwise from grid north"> <span id="d4-cd-v" class="v"></span></label>
+  </span>
+  <div class="seg" id="d4-nperm" role="group" aria-label="Permutations"><button type="button" data-k="39" aria-pressed="true">39 permutations</button><button type="button" data-k="99">99 permutations</button></div>
+</div>
+<p class="rline small"><b id="d4-knox-name"></b> <span id="d4-prog" class="amber"></span></p>
+<div class="play">
+  <div class="plotwrap" style="position:relative">
+    <svg id="d4-heat" role="img" aria-label="Heat map of flash pairs by distance and time lag, observed over expected"></svg>
+    <div id="d4-tip" class="tip" hidden></div>
+    <p class="rline small"><label style="cursor:pointer"><input id="d4-dots" type="checkbox"> mark cells outside the shuffle band</label> <span id="d4-dots-n" class="v"></span><br>Dots, when on, mark cells outside the 2.5 to 97.5% band of the shuffles: filled for more pairs than chance, open for fewer. With this many pairs almost every cell differs from chance, so read the colour (how much more or fewer), not the dots. Hover or tap a cell to read it.</p>
+  </div>
+  <div class="plotwrap">
+    <svg id="d4-vec" role="img" aria-label="Arrows for the ERA5 steering wind and the motion fitted from the cells" style="max-width:240px"></svg>
+    <p class="rline small"><b class="amber">ERA5 steering</b>, night mean weighted by flashes: <span id="d4-v-era"></span><br><b class="blue">Fitted from cells</b> (self-fitted, circular): <span id="d4-v-fit"></span></p>
+    <p class="rline small" style="margin-bottom:0">Share of excess pairs within 15 km (lags to 1 h)</p>
+    <table id="d4-conc" class="conc"><thead><tr><th scope="col">Frame</th><th scope="col">Removed</th><th scope="col">Share</th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<h2>What the air was doing</h2>
+<p class="rline">ERA5 reanalysis at the flashes, each hour, one axis per panel. The shaded band is the map's time window. Flashes peak between 01 and 03 UTC (6 to 8 pm Pacific); CAPE keeps rising after they fade. Late hours rest on few flashes, so read their values loosely.</p>
+<div id="d4-cov" class="cov"></div>
+
+<details class="formula"><summary>Settings as JSON (replay exactly)</summary>
+  <p class="rline small">Every setting, so a view can be shared or replayed. The page address carries it too.</p>
+  <div class="toolbar"><button id="d4-copy" type="button" class="link">copy settings</button><button id="d4-load" type="button" class="link">load from the box</button><span id="d4-json-note" class="v"></span></div>
+  <textarea id="d4-json" rows="6" spellcheck="false" aria-label="Settings JSON"></textarea>
+</details>
+
+</div>
+<script src="data/day04_glm.js"></script>
+<script src="data/day04_era5.js"></script>
+<script src="data/day04_base.js"></script>
+<script src="js/day04core.js"></script>
+<script src="js/day04.js"></script>
+```
+
+## Things to try
+
+<ul class="tries">
+<li><button class="link" type="button" data-try='{"eps":8,"tScale":1,"minPts":6,"band":"cells","win":0}'>Cells, not storms.</button> At 8 km and 1 km per minute the night splits into about 130 cells, each a few kilometres across and tens of minutes long. The grey flashes are the ones no cell claims.</li>
+<li><button class="link" type="button" data-try='{"eps":25,"tScale":1,"minPts":6,"band":"cells","win":0}'>Too generous: one blob.</button> At 25 km nearly every flash chains to a neighbour, so a handful of huge clusters swallow whole storms and almost nothing is left as noise. Look at the k-distance line: it sits above the knee.</li>
+<li><button class="link" type="button" data-try='{"eps":3,"tScale":1,"minPts":20,"band":"cells","win":0}'>Too strict: all noise.</button> Ask for 20 flashes within 3 km and almost no place qualifies. The cells that remain are the densest bursts, and the rest of the night turns grey.</li>
+<li><button class="link" type="button" data-try='{"frame":"ground","_go":"d4-knox"}'>The ridge that moves.</button> In the ground frame the excess pairs do not sit at zero distance: they slide out along distance as the lag grows, because the cells are travelling.</li>
+<li><button class="link" type="button" data-try='{"frame":"era5","_go":"d4-knox"}'>Fold it back.</button> Remove the ERA5 steering wind and the excess pulls in toward zero distance. It is a partial fold, not a collapse: at the default settings the share of excess within 15 km rises from about 15% to 25% (see the table beside the arrows). What stays out is growth on the flanks, and the limit of using one velocity for the whole night.</li>
+<li><button class="link" type="button" data-try='{"frame":"fit","_go":"d4-knox"}'>Is the fit circular?</button> The motion fitted from the cells uses the same flashes that the test then counts, so it can only flatter itself. Compare its arrow with the ERA5 arrow, which knows nothing about the lightning: the fitted frame scores a little higher (about 28%), as it would.</li>
+<li><button class="link" type="button" data-try='{"band":"flashes","view":{"cx":1107,"cy":879,"w":40},"win":30,"t":305,"parallax":true}'>How coarse is a flash?</button> Near the densest cell, each flash is a disc of a hundred or more square kilometres, and the parallax whisker is about as long as a disc's radius. The satellite is a long way off, and its pixels are large. The stripes you see in the cells band are the satellite's pixel grid seen from far off nadir (columns about 9 km apart).</li>
+</ul>
+
+<details class="formula"><summary>Reading it</summary>
+<p><b>The map.</b> The satellite reports flashes already grouped (pixels lit in the same instant form a group, groups linked in space and time form a flash). The cells band groups flashes again, with DBSCAN, to find convective cells: each one a thunderstorm updraft that stays lit for a while. The flashes band shows the satellite's own grouping, flash by flash.</p>
+<p><b>The k-distance plot.</b> DBSCAN has two settings, a radius and a minimum count, and together they state what you mean by a cluster. The plot shows how crowded each flash's neighbourhood is, so you can see which radii split dense bursts from scatter and which ones glue everything together.</p>
+<p><b>First and second order.</b> A map of points can be clustered for two reasons. The rate may vary: storms happen where the air is unstable, so flashes pile up there. Or the points may interact: within a cell, flashes come in bursts, so flashes close in space also tend to be close in time. The first is a property of the place, the second of the process. The pair count with shuffled times holds the first fixed (same places, same moments, only the pairing changes) and asks about the second.</p>
+<p><b>The moving-frame test.</b> Cells drift with the wind that steers them. In the ground frame, two flashes from one cell an hour apart sit tens of kilometres apart, so the excess runs out along distance as the lag grows. Subtract the storm's motion from every flash's position, and if the excess collapses toward zero distance, most of the clustering was advection plus the life of a cell. What stays at larger distance is growth: new cells forming on the flanks of old ones.</p>
+<p><b>The air.</b> Steering wind explains the drift. Shear organises storms and lets them live longer. Lapse rate and CAPE are the fuel, but fuel alone does not set the count: CAPE stays high after the flashes fade, so something else (the lift that sets storms off, not shown here) decides when they start and stop.</p>
+</details>
+
+<details class="formula"><summary>If you used this for real</summary>
+<p><b>Choosing DBSCAN settings is a claim about scale.</b> A radius of 8 km and a minute-to-kilometre ratio of 1 say that a cell is a few kilometres wide and lives for tens of minutes. A different pair of numbers says something else and gets a different map. Report the pair, show the neighbourhood plot, and test whether your conclusion survives a range of settings before you trust one set.</p>
+<p><b>Cells are not storms.</b> A cell here is a dense clump of flashes. A real storm is made of many cells, some born as others die. Linking cells through time into storms needs a tracking rule, and that is a separate piece of work.</p>
+<p><b>A permutation null holds some things fixed.</b> Shuffling times among fixed places keeps the map of where lightning struck and the timing of the night, and asks only whether the two go together. At the start and end of the night there are few flashes, so the shuffle is not a fair baseline there. With 39 shuffles the band edges are rough; 99 steadies them. The band is not corrected for the 360 cells, so about one cell in twenty would be outside it by chance; here nearly all are, which is why the dots are off by default.</p>
+<p><b>A fitted frame is a check, not a test.</b> If you remove a motion estimated from the same points, the excess is bound to tighten. An independent motion (here, wind from a reanalysis) is the fair comparison.</p>
+<p><b>Use the units of the question.</b> Distances here are kilometres in BC Albers. A different projection, or a different time zone for the clock, would change none of the clustering but would change what a reader thinks they see.</p>
+</details>
+
+<details class="formula"><summary>Method and limits</summary>
+<p><b>Lightning.</b> GOES-17 Geostationary Lightning Mapper, Level 2 flash, group and event files (LCFA), 2,340 files from 30 June 20:00 to 1 July 08:59 UTC. The box from 51.2 to 55.2 N holds 6,547 flashes and 40,200 groups. Locations are projected to BC Albers (EPSG:3005). Time is in minutes after 20:00 UTC; Pacific daylight time is seven hours behind.</p>
+<p><b>Instrument limits.</b> The satellite sits over the equator at 137.2 W, so British Columbia is far off nadir, with view angles of 60 to 65 degrees. Pixels are larger there, detection efficiency is lower, and locations carry a parallax shift because the satellite places each flash at an assumed cloud-top height. GLM reports total lightning (in-cloud and cloud-to-ground) and does not separate them. The flash grouping is NOAA's and is taken as given. The parallax whisker has bearing equal to the azimuth toward the sub-satellite point, treated as a grid bearing (the grid convergence in this box is a few degrees, small against the 5 to 6.5 km length), and length tan(view angle) × 3 km.</p>
+<p><b>DBSCAN.</b> Euclidean distance in (x, y, scaled time), neighbours within ε inclusive, the point counted in its own neighbourhood. The code was checked to give the same labels as scikit-learn on these flashes. Cell lifetime is the span between first and last flash; radius is the root-mean-square distance from the centroid; rate is flashes over lifetime in minutes (at least one minute). The k-distance plot counts other points only, so it uses k = minimum flashes minus one.</p>
+<p><b>The pair count.</b> Pairs are counted once, lag is the absolute time difference, with 5 km by 10 min bins out to 100 km and 3 h. Positions in a storm frame are x − u t and y − v t for a velocity (u, v) in km/h. The null permutes the times among the fixed ground locations, then moves into the frame, then counts again. Colour is observed over the permutation mean. The band is the 2.5 and 97.5 percentiles of the permutations.</p>
+<p><b>ERA5.</b> Steering wind is the mean of the 850, 700, 500 and 300 hPa winds, rotated to BC Albers grid axes, taken at the flashes within 30 minutes of each hour and weighted by flash count. Night values: steering 51 km/h toward 359 degrees (grid north), bulk shear 23 m/s, lapse rate 7.5 °C/km, CAPE about 1,330 J/kg, total column water 29 kg/m². The 500 hPa height is estimated from the hypsometric equation.</p>
+<p><b>Pixel grid.</b> Group and flash positions sit on a lattice: about half of the groups (43% of flashes) lie within 1 km of lines about 9 km apart, against a quarter expected by chance. The stripes in the cells band are the satellite's pixel grid seen from far off nadir; positions are finer than a pixel only because each group is an energy-weighted centre of lit pixels.</p>
+<p><b>Limits.</b> One night, one sensor, far off nadir. The storm frame is one velocity for the whole night and the whole province. The cell tracks are the flash centroid in up to eight time slices, not a tracking algorithm. Physics scales quoted for cells and storms are general meteorology, not measured here.</p>
+<p><b>Data and licences.</b> Lightning: NOAA GOES-17 GLM (public domain). Weather: ERA5, Copernicus Climate Change Service (contains modified Copernicus information). Relief: Terrain Tiles on AWS (Mapzen; SRTM, GMTED and others). Water and places: Natural Earth (public domain). Plain JavaScript with Quarto, nothing loaded from a third party.</p>
+<p><b>How made.</b> I chose the theme, the storm night and the tooling approach as a learning project in spatial statistics, and welcome contributions from domain experts in these fields. I directed Claude Code (Anthropic; Claude Opus 5.5 and Claude Sonnet 5.5) to build it: Python (xarray, pandas, pyproj) to prepare the GOES-17 and ERA5 data, and plain JavaScript with Quarto for this page, nothing loaded from a third party. The code was reviewed by Gemini 4 Argon and Gemini 3.8 Flash, and each finding was checked against the code. I reviewed the work before publishing.</p>
+</details>
+
+<details class="formula refs"><summary>Sources, software and how to learn from this page</summary>
+<p><b>Use it as a learning project.</b> Everything here can be rerun. The code is at <a href="https://github.com/cordilleran/MapChallenge2026/tree/main/day-04">github.com/cordilleran/MapChallenge2026, folder day-04</a>: scripts 01 to 04 fetch and prepare the lightning, weather and basemap (the README gives the run order and the settings), and the tests check the clustering against scikit-learn and the pair count against a brute-force count. The engine that runs on this page is <a href="https://github.com/cordilleran/MapChallenge2026/blob/main/site/js/day04core.js">site/js/day04core.js</a>, plain JavaScript you can read top to bottom. "Settings as JSON" above replays any view exactly. One path through the reading: Goodman et al. (2013) and Rudlosky et al. (2019) for what a flash is; Knox (1964) for the pair count; Gabriel and Diggle (2009) for its formal form; Ester et al. (1996) for DBSCAN; then change the radius and the frame here and watch what moves.</p>
+<p><b>The instrument</b></p>
+<ul class="bib">
+<li>Goodman, S. J., Blakeslee, R. J., Koshak, W. J., et al. (2013). The GOES-R Geostationary Lightning Mapper (GLM). <i>Atmospheric Research</i>, 125–126, 34–49. <a href="https://doi.org/10.1016/j.atmosres.2013.01.006">https://doi.org/10.1016/j.atmosres.2013.01.006</a> <span class="why">How pixels become events, groups and flashes.</span></li>
+<li>Rudlosky, S. D., Goodman, S. J., Virts, K. S., and Bruning, E. C. (2019). Initial Geostationary Lightning Mapper observations. <i>Geophysical Research Letters</i>, 46(2), 1097–1104. <a href="https://doi.org/10.1029/2018gl081052">https://doi.org/10.1029/2018gl081052</a> <span class="why">Flash and pixel sizes, detection efficiency.</span></li>
+<li>Bruning, E. C., Tillier, C. E., Edgington, S. F., et al. (2019). Meteorological imagery for the Geostationary Lightning Mapper. <i>Journal of Geophysical Research: Atmospheres</i>, 124(24), 14285–14309. <a href="https://doi.org/10.1029/2019jd030874">https://doi.org/10.1029/2019jd030874</a> <span class="why">The flash rule as one space-time distance.</span></li>
+<li>Mach, D. M., Christian, H. J., Blakeslee, R. J., et al. (2007). Performance assessment of the Optical Transient Detector and Lightning Imaging Sensor. <i>Journal of Geophysical Research: Atmospheres</i>, 112(D9). <a href="https://doi.org/10.1029/2006jd007787">https://doi.org/10.1029/2006jd007787</a> <span class="why">How flash counts change with the grouping thresholds.</span></li>
+</ul>
+<p><b>The physics</b></p>
+<ul class="bib">
+<li>Deierling, W., and Petersen, W. A. (2008). Total lightning activity as an indicator of updraft characteristics. <i>Journal of Geophysical Research: Atmospheres</i>, 113(D16). <a href="https://doi.org/10.1029/2007jd009598">https://doi.org/10.1029/2007jd009598</a> <span class="why">Flash rate and updraft volume.</span></li>
+<li>Bruning, E. C., and MacGorman, D. R. (2013). Theory and observations of controls on lightning flash size spectra. <i>Journal of the Atmospheric Sciences</i>, 70(12), 4012–4029. <a href="https://doi.org/10.1175/jas-d-12-0289.1">https://doi.org/10.1175/jas-d-12-0289.1</a> <span class="why">Small, frequent flashes near strong updrafts.</span></li>
+<li>Hersbach, H., Bell, B., Berrisford, P., et al. (2020). The ERA5 global reanalysis. <i>Quarterly Journal of the Royal Meteorological Society</i>, 146(730), 1999–2049. <a href="https://doi.org/10.1002/qj.3803">https://doi.org/10.1002/qj.3803</a> <span class="why">The reanalysis behind the steering wind and the covariates.</span></li>
+</ul>
+<p><b>Clustering and space-time interaction</b></p>
+<ul class="bib">
+<li>Ester, M., Kriegel, H.-P., Sander, J., and Xu, X. (1996). A density-based algorithm for discovering clusters in large spatial databases with noise. In <i>Proceedings of the Second International Conference on Knowledge Discovery and Data Mining (KDD-96)</i>, 226–231. AAAI Press. <a href="https://www.aaai.org/Papers/KDD/1996/KDD96-037.pdf">aaai.org/Papers/KDD/1996/KDD96-037.pdf</a> <span class="why">DBSCAN, cited as the source of the method.</span></li>
+<li>Birant, D., and Kut, A. (2007). ST-DBSCAN: An algorithm for clustering spatial–temporal data. <i>Data &amp; Knowledge Engineering</i>, 60(1), 208–221. <a href="https://doi.org/10.1016/j.datak.2006.01.013">https://doi.org/10.1016/j.datak.2006.01.013</a> <span class="why">A different space-time variant; this page uses plain DBSCAN on scaled time.</span></li>
+<li>Knox, E. G. (1964). The detection of space-time interactions. <i>Journal of the Royal Statistical Society, Series C (Applied Statistics)</i>, 13(1), 25–30. <a href="https://doi.org/10.2307/2985220">https://doi.org/10.2307/2985220</a> <span class="why">The pair count by distance and time, cited as the source of the method.</span></li>
+<li>Gabriel, E., and Diggle, P. J. (2009). Second-order analysis of inhomogeneous spatio-temporal point process data. <i>Statistica Neerlandica</i>, 63(1), 43–51. <a href="https://doi.org/10.1111/j.1467-9574.2008.00407.x">https://doi.org/10.1111/j.1467-9574.2008.00407.x</a> <span class="why">The space-time K function: the formal version of the heat map.</span></li>
+<li>Martínez, A., Comas, C., and Blanch, A. (2026). Modeling mountain accidents and assessing risk through spatio-temporal point processes. <i>Stochastic Environmental Research and Risk Assessment</i>, 40(8). <a href="https://doi.org/10.1007/s00477-026-03338-4">https://doi.org/10.1007/s00477-026-03338-4</a> <span class="why">A worked example with one global test in place of many pointwise bands.</span></li>
+<li>Duarte, A. R., Silva, S. B., Oliveira, F. L. P., Almeida, A. C. L., and Duczmal, L. H. (2021). Space-time border analysis to evaluate and detect clusters. <i>Communications in Statistics: Simulation and Computation</i>, 52(6), 2275–2289. <a href="https://doi.org/10.1080/03610918.2021.1914094">https://doi.org/10.1080/03610918.2021.1914094</a> <span class="why">Scan statistics, another family; it needs an exposure model.</span></li>
+<li>Getis, A., and Ord, J. K. (1992). The analysis of spatial association by use of distance statistics. <i>Geographical Analysis</i>, 24(3), 189–206. <a href="https://doi.org/10.1111/j.1538-4632.1992.tb00261.x">https://doi.org/10.1111/j.1538-4632.1992.tb00261.x</a> <span class="why">Hot-spot statistics, held for a later hexagon map.</span></li>
+</ul>
+<p><b>Data</b></p>
+<ul class="bib">
+<li>GOES-R Algorithm Working Group and GOES-R Series Program (2018). <i>NOAA GOES-R Series Geostationary Lightning Mapper (GLM) Level 2 Lightning Detection: Events, Groups, and Flashes</i> [GOES-17, 30 June to 1 July 2021]. NOAA National Centers for Environmental Information. <a href="https://doi.org/10.7289/V5KH0KK6">https://doi.org/10.7289/V5KH0KK6</a></li>
+<li>Hersbach, H., Bell, B., Berrisford, P., et al. (2018). <i>ERA5 hourly data on pressure levels from 1940 to present</i>. Copernicus Climate Change Service (C3S) Climate Data Store. <a href="https://doi.org/10.24381/cds.bd0915c6">https://doi.org/10.24381/cds.bd0915c6</a> (accessed 4 November 2026)</li>
+<li>Hersbach, H., Bell, B., Berrisford, P., et al. (2018). <i>ERA5 hourly data on single levels from 1940 to present</i>. Copernicus Climate Change Service (C3S) Climate Data Store. <a href="https://doi.org/10.24381/cds.adbb2d47">https://doi.org/10.24381/cds.adbb2d47</a> (accessed 4 November 2026)</li>
+<li>Terrain Tiles on AWS (Mapzen; SRTM, GMTED and others), Terrarium format, zoom 8. <a href="https://registry.opendata.aws/terrain-tiles/">registry.opendata.aws/terrain-tiles</a></li>
+<li>Natural Earth, 1:10m physical vectors (public domain). <a href="https://www.naturalearthdata.com">naturalearthdata.com</a></li>
+</ul>
+<p><b>Software</b> (versions used)</p>
+<ul class="bib">
+<li>Harris, C. R., Millman, K. J., van der Walt, S. J., et al. (2020). Array programming with NumPy. <i>Nature</i>, 585, 357–362. <a href="https://doi.org/10.1038/s41586-020-2649-2">https://doi.org/10.1038/s41586-020-2649-2</a> (NumPy 2.5.0)</li>
+<li>McKinney, W. (2010). Data structures for statistical computing in Python. <i>Proceedings of the 9th Python in Science Conference</i>, 56–61. <a href="https://doi.org/10.25080/Majora-92bf1922-00a">https://doi.org/10.25080/Majora-92bf1922-00a</a> (pandas 3.0.3)</li>
+<li>Hoyer, S., and Hamman, J. (2017). xarray: N-D labeled arrays and datasets in Python. <i>Journal of Open Research Software</i>, 5(1), 10. <a href="https://doi.org/10.5334/jors.148">https://doi.org/10.5334/jors.148</a> (xarray 2026.7.0, with dask 2026.8.0 and netCDF4 1.7.4)</li>
+<li>Virtanen, P., Gommers, R., Oliphant, T. E., et al. (2020). SciPy 1.0: fundamental algorithms for scientific computing in Python. <i>Nature Methods</i>, 17, 261–272. <a href="https://doi.org/10.1038/s41592-019-0686-2">https://doi.org/10.1038/s41592-019-0686-2</a> (SciPy 1.18.0)</li>
+<li>Pedregosa, F., Varoquaux, G., Gramfort, A., et al. (2011). Scikit-learn: machine learning in Python. <i>Journal of Machine Learning Research</i>, 12, 2825–2830. <a href="https://jmlr.org/papers/v12/pedregosa11a.html">jmlr.org/papers/v12/pedregosa11a.html</a> (scikit-learn 1.9.0, used to check the DBSCAN)</li>
+<li>pyproj 3.7.2 (PROJ), GeoPandas 1.1.3, Shapely 2.1.2, Rasterio 1.5.0, PyArrow 25.0.1, Pillow 13.0.0 and cdsapi 0.7.7, for projection, vectors, rasters, tables, images and the ERA5 download.</li>
+<li>Quarto 1.9.38, <a href="https://quarto.org">quarto.org</a>, for this page; plain JavaScript in the browser; Node.js 22 and headless Chromium for the tests.</li>
+</ul>
+</details>
+
+<p class="rline small">The storm crossed the territories of many Nations; <a href="https://cordilleran.github.io/sonify-viz/lightning.html">the lightning piece</a> holds a draft land acknowledgement for its southern part.</p>
+
+<footer>#30DayMapChallenge · Day 4 Clusters. Lightning: GOES-17 GLM, NOAA (public domain). Weather: ERA5, Copernicus Climate Change Service (contains modified Copernicus information). Relief: Terrain Tiles (Mapzen and AWS; SRTM, GMTED and others). Water and places: Natural Earth. Code MIT, maps CC BY 4.0; see the repository.</footer>
+
+:::

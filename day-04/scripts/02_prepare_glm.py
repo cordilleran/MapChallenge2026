@@ -1,0 +1,89 @@
+"""Day 4: GLM flashes and groups for the storm night, to analysis tables and site data.
+
+Reads the GOES-17 GLM L2 LCFA files (30 Jun 20:00 to 1 Jul 09:00 UTC 2021)
+held for the lightning project, keeps flashes in the wide box (48-56 N,
+128-114 W) and their groups, projects to BC Albers (EPSG:3005), adds the
+satellite view geometry (view zenith angle; azimuth toward the sub-satellite
+point), and writes:
+  day-04/data/flashes.parquet, groups.parquet   (analysis tables, full precision)
+  site/data/day04_glm.js                         (quantised arrays for the page)
+Raw files are read only. Run (Python with numpy, pandas, xarray, netCDF4, pyproj, pyarrow):
+  MC26_GLM_DIR=/path/to/goes17_glm/2021 python3 -I day-04/scripts/02_prepare_glm.py
+"""
+import glob, json, os
+import numpy as np, pandas as pd, xarray as xr
+from pyproj import Transformer, Geod
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+SRC = os.environ["MC26_GLM_DIR"]  # folder holding <doy>/<hour>/OR_GLM-L2-LCFA_*.nc; see day-04/env.example
+BOX = dict(lat0=48, lat1=56, lon0=-128, lon1=-114)
+T0 = np.datetime64("2021-06-30T20:00:00")          # page time zero (UTC)
+SAT_LON, SAT_H, RE = -137.2, 35786e3, 6378137.0    # GOES-17 nadir, height above equator
+
+files = sorted(glob.glob(os.path.join(SRC, "*", "*", "*.nc")))
+if len(files) != 2340:
+    raise SystemExit(f"expected 2340 GLM files, found {len(files)}")
+fl, gr = [], []
+for f in files:
+    with xr.open_dataset(f) as d:
+        la, lo = d.flash_lat.values, d.flash_lon.values
+        keep = (la >= BOX["lat0"]) & (la <= BOX["lat1"]) & (lo >= BOX["lon0"]) & (lo <= BOX["lon1"])
+        if not keep.any():
+            continue
+        ids = d.flash_id.values[keep]
+        fl.append(pd.DataFrame(dict(
+            file=os.path.basename(f), flash_id=ids, lat=la[keep], lon=lo[keep],
+            t_first=d.flash_time_offset_of_first_event.values[keep],
+            t_last=d.flash_time_offset_of_last_event.values[keep],
+            area_m2=d.flash_area.values[keep], energy_j=d.flash_energy.values[keep],
+            qf=d.flash_quality_flag.values[keep])))
+        gp = d.group_parent_flash_id.values
+        gk = np.isin(gp, ids)
+        gr.append(pd.DataFrame(dict(
+            file=os.path.basename(f), parent=gp[gk], lat=d.group_lat.values[gk], lon=d.group_lon.values[gk],
+            t=d.group_time_offset.values[gk], area_m2=d.group_area.values[gk], energy_j=d.group_energy.values[gk])))
+F = pd.concat(fl, ignore_index=True); G = pd.concat(gr, ignore_index=True)
+F = F.sort_values("t_first").reset_index(drop=True)
+F["fid"] = np.arange(len(F))
+key = dict(zip(zip(F.file, F.flash_id, strict=True), F.fid, strict=True))
+G["fid"] = [key[k] for k in zip(G.file, G.parent, strict=True)]
+G = G.sort_values("t").reset_index(drop=True)
+
+sec = lambda s: (s.values - T0) / np.timedelta64(1, "ms") / 1000.0
+F["ts"] = sec(F.t_first); F["dur_s"] = (F.t_last - F.t_first).dt.total_seconds(); G["ts"] = sec(G.t)
+tr = Transformer.from_crs(4326, 3005, always_xy=True)
+for D in (F, G):
+    D["x"], D["y"] = tr.transform(D.lon.values, D.lat.values)
+
+# View geometry: vector from ground point to satellite (spherical Earth is enough for a display cue).
+def view(lat, lon):
+    la, lo = np.radians(lat), np.radians(lon); sl = np.radians(SAT_LON)
+    p = RE * np.c_[np.cos(la) * np.cos(lo), np.cos(la) * np.sin(lo), np.sin(la)]
+    s = (RE + SAT_H) * np.array([np.cos(sl), np.sin(sl), 0.0])
+    v = s - p; v /= np.linalg.norm(v, axis=1)[:, None]
+    up = p / RE
+    vza = np.degrees(np.arccos(np.sum(v * up, 1)))
+    return vza
+F["vza_deg"] = view(F.lat.values, F.lon.values)
+az, _, _ = Geod(ellps="WGS84").inv(F.lon.values, F.lat.values, np.full(len(F), SAT_LON), np.zeros(len(F)))
+F["az_sat_deg"] = az  # bearing from the flash toward the sub-satellite point (clockwise from north)
+
+os.makedirs(os.path.join(ROOT, "day-04", "data"), exist_ok=True)
+F.drop(columns=["file"]).to_parquet(os.path.join(ROOT, "day-04/data/flashes.parquet"), index=False)
+G.drop(columns=["file"]).to_parquet(os.path.join(ROOT, "day-04/data/groups.parquet"), index=False)
+
+# Site arrays: x, y in 10 m units; t in 0.1 s; area in km2 x100; energy in fJ.
+q = lambda a, s: np.round(np.asarray(a) * s).astype(np.int64).tolist()
+site = dict(
+    note="GOES-17 GLM L2 LCFA, NOAA (public domain). BC Albers EPSG:3005. Time zero 2021-06-30 20:00 UTC.",
+    t0="2021-06-30T20:00:00Z", units=dict(xy="10 m", t="0.1 s", area="0.01 km2", energy="fJ", vza="0.1 deg", az="0.1 deg"),
+    flash=dict(x=q(F.x, .1), y=q(F.y, .1), t=q(F.ts, 10), area=q(F.area_m2 / 1e6, 100), energy=q(F.energy_j, 1e15),
+               ng=G.groupby("fid").size().reindex(F.fid, fill_value=0).tolist(), vza=q(F.vza_deg, 10), az=q(F.az_sat_deg, 10)),
+    group=dict(x=q(G.x, .1), y=q(G.y, .1), t=q(G.ts, 10), f=G.fid.tolist()))
+with open(os.path.join(ROOT, "site/data/day04_glm.js"), "w") as fh:
+    fh.write("/* Day 4 GLM flashes and groups. Generated by day-04/scripts/02_prepare_glm.py; do not edit. */\n")
+    fh.write("window.D4GLM = " + json.dumps(site, separators=(",", ":")) + ";\n")
+print(f"flashes {len(F)}  groups {len(G)}  lat {F.lat.min():.2f}-{F.lat.max():.2f}  lon {F.lon.min():.2f}-{F.lon.max():.2f}")
+print(f"time {F.ts.min()/3600:.2f}-{F.ts.max()/3600:.2f} h  vza {F.vza_deg.min():.1f}-{F.vza_deg.max():.1f}  az {F.az_sat_deg.min():.0f}-{F.az_sat_deg.max():.0f}")
+print("x", F.x.min(), F.x.max(), "y", F.y.min(), F.y.max())
+print("site js KB", os.path.getsize(os.path.join(ROOT, "site/data/day04_glm.js")) // 1024)

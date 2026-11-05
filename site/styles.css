@@ -201,3 +201,22 @@ svg.wide .lg{font:500 12px var(--mono);fill:#e9f1f5}
 .tries button.link{font:600 15px var(--serif);color:var(--river)}
 @media (max-width:760px){.readouts.four{grid-template-columns:1fr 1fr}.k3{min-width:0}}
 [hidden]{display:none!important}
+/* Day 4 clusters */
+.readouts.six{grid-template-columns:repeat(3,minmax(0,1fr))}
+#d4-map{aspect-ratio:5/4;height:auto}
+.play .plotwrap{min-width:0}
+.cov{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:8px 0 6px}
+.cov>div{min-width:0}
+.conc{margin-top:8px}
+.conc caption{font:500 11px var(--mono);letter-spacing:.04em}
+.conc th,.conc td{font:400 12px var(--mono);padding:5px 6px}
+.conc thead th{text-align:right}
+.conc thead th:first-child{text-align:left}
+.conc tr.cur th,.conc tr.cur td{color:var(--amber)}
+#d4-heat{cursor:crosshair}
+#d4-tools .seg.small button{min-width:34px}
+@media (max-width:760px){.readouts.six{grid-template-columns:1fr 1fr}#d4-map{aspect-ratio:1/1}}
+.refs .bib{list-style:none;padding:0;margin:4px 0 14px}
+.refs .bib li{padding-left:1.6em;text-indent:-1.6em;margin:0 0 7px;font:400 15px/1.5 var(--serif);color:var(--ink)}
+.refs .bib a{overflow-wrap:anywhere}
+.refs .why{color:var(--muted,inherit);font-style:italic}
