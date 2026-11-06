@@ -1,0 +1,237 @@
+{
+ "note": "station: the MLP station point as recorded, observer on its 30 m DEM cell + 1.6 m. highpoint: the highest DEM cell of the 3x3 window around it, + 1.6 m (D93).",
+ "packs_highpoint": {
+  "main": {
+   "url": "img/day05/vs_pack_hp_main.png",
+   "size_bytes": 154150
+  },
+  "forest10": {
+   "url": "img/day05/vs_pack_hp_forest10.png",
+   "size_bytes": 167869
+  },
+  "forest20": {
+   "url": "img/day05/vs_pack_hp_forest20.png",
+   "size_bytes": 175322
+  },
+  "forest30": {
+   "url": "img/day05/vs_pack_hp_forest30.png",
+   "size_bytes": 175656
+  },
+  "drone": {
+   "url": "img/day05/vs_pack_hp_drone.png",
+   "size_bytes": 187601
+  }
+ },
+ "stations": {
+  "84": {
+   "station": {
+    "x": -1367940.82,
+    "y": 217579.65,
+    "lat": 49.103232,
+    "lon": -114.023494,
+    "dem_m": 2731.39,
+    "observer_m": 2732.99,
+    "visible_km2": 436.6,
+    "area_km2": {
+     "main": 436.55,
+     "forest10": 417.79,
+     "forest20": 402.77,
+     "forest30": 390.5,
+     "drone": 590.4
+    }
+   },
+   "highpoint": {
+    "x": -1367985.0,
+    "y": 217575.0,
+    "lat": 49.103075,
+    "lon": -114.024054,
+    "dem_m": 2734.98,
+    "observer_m": 2736.58,
+    "visible_km2": 447.0,
+    "area_km2": {
+     "main": 446.98,
+     "forest10": 427.59,
+     "forest20": 411.97,
+     "forest30": 399.21,
+     "drone": 591.05
+    }
+   },
+   "offset_m": 44.4
+  },
+  "85": {
+   "station": {
+    "x": -1365623.76,
+    "y": 220952.08,
+    "lat": 49.138364,
+    "lon": -114.006758,
+    "dem_m": 2108.61,
+    "observer_m": 2110.21,
+    "visible_km2": 52.7,
+    "area_km2": {
+     "main": 52.69,
+     "forest10": 51.92,
+     "forest20": 50.7,
+     "forest30": 49.54,
+     "drone": 99.39
+    }
+   },
+   "highpoint": {
+    "x": -1365615.0,
+    "y": 220935.0,
+    "lat": 49.13824,
+    "lon": -114.006575,
+    "dem_m": 2110.83,
+    "observer_m": 2112.43,
+    "visible_km2": 59.0,
+    "area_km2": {
+     "main": 58.95,
+     "forest10": 58.03,
+     "forest20": 56.48,
+     "forest30": 55.05,
+     "drone": 100.75
+    }
+   },
+   "offset_m": 19.2
+  },
+  "86": {
+   "station": {
+    "x": -1375860.42,
+    "y": 226043.96,
+    "lat": 49.154908,
+    "lon": -114.161517,
+    "dem_m": 2419.95,
+    "observer_m": 2421.55,
+    "visible_km2": 59.0,
+    "area_km2": {
+     "main": 59.01,
+     "forest10": 58.02,
+     "forest20": 53.67,
+     "forest30": 51.48,
+     "drone": 210.98
+    }
+   },
+   "highpoint": {
+    "x": -1375905.0,
+    "y": 226065.0,
+    "lat": 49.15497,
+    "lon": -114.162186,
+    "dem_m": 2429.16,
+    "observer_m": 2430.76,
+    "visible_km2": 143.8,
+    "area_km2": {
+     "main": 143.77,
+     "forest10": 72.94,
+     "forest20": 56.92,
+     "forest30": 46.94,
+     "drone": 214.73
+    }
+   },
+   "offset_m": 49.3
+  },
+  "87": {
+   "station": {
+    "x": -1372539.66,
+    "y": 225266.61,
+    "lat": 49.157083,
+    "lon": -114.11485,
+    "dem_m": 2416.48,
+    "observer_m": 2418.08,
+    "visible_km2": 114.3,
+    "area_km2": {
+     "main": 114.27,
+     "forest10": 111.09,
+     "forest20": 107.06,
+     "forest30": 103.47,
+     "drone": 175.43
+    }
+   },
+   "highpoint": {
+    "x": -1372575.0,
+    "y": 225255.0,
+    "lat": 49.156889,
+    "lon": -114.115266,
+    "dem_m": 2417.43,
+    "observer_m": 2419.03,
+    "visible_km2": 111.4,
+    "area_km2": {
+     "main": 111.39,
+     "forest10": 108.36,
+     "forest20": 104.43,
+     "forest30": 100.87,
+     "drone": 175.89
+    }
+   },
+   "offset_m": 37.2
+  },
+  "88": {
+   "station": {
+    "x": -1371682.06,
+    "y": 221472.44,
+    "lat": 49.126758,
+    "lon": -114.088225,
+    "dem_m": 2485.95,
+    "observer_m": 2487.55,
+    "visible_km2": 107.4,
+    "area_km2": {
+     "main": 107.43,
+     "forest10": 102.12,
+     "forest20": 97.55,
+     "forest30": 93.75,
+     "drone": 180.4
+    }
+   },
+   "highpoint": {
+    "x": -1371705.0,
+    "y": 221445.0,
+    "lat": 49.126461,
+    "lon": -114.088414,
+    "dem_m": 2487.04,
+    "observer_m": 2488.64,
+    "visible_km2": 118.1,
+    "area_km2": {
+     "main": 118.1,
+     "forest10": 112.41,
+     "forest20": 107.25,
+     "forest30": 103.03,
+     "drone": 181.79
+    }
+   },
+   "offset_m": 35.8
+  },
+  "89": {
+   "station": {
+    "x": -1374922.62,
+    "y": 219847.8,
+    "lat": 49.104172,
+    "lon": -114.124058,
+    "dem_m": 2413.51,
+    "observer_m": 2415.11,
+    "visible_km2": 91.2,
+    "area_km2": {
+     "main": 91.24,
+     "forest10": 83.52,
+     "forest20": 78.35,
+     "forest30": 68.36,
+     "drone": 164.95
+    }
+   },
+   "highpoint": {
+    "x": -1374945.0,
+    "y": 219855.0,
+    "lat": 49.104174,
+    "lon": -114.12438,
+    "dem_m": 2416.73,
+    "observer_m": 2418.33,
+    "visible_km2": 111.3,
+    "area_km2": {
+     "main": 111.33,
+     "forest10": 101.58,
+     "forest20": 83.03,
+     "forest30": 64.58,
+     "drone": 166.9
+    }
+   },
+   "offset_m": 23.5
+  }
+ }
+}

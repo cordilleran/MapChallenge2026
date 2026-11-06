@@ -1,0 +1,377 @@
+---
+pagetitle: "Day 5 Senses: Sight: six views on a valley"
+format:
+  html:
+    theme: none
+    css: styles.css
+    include-in-header: leaflet-head.html
+    toc: false
+    title-block-style: none
+    page-layout: custom
+---
+
+::::::::::::::: {.wrap .day}
+<nav class="crumb">
+
+<a href="index.html">30 Day Map Challenge 2026</a> / Day 5
+
+</nav>
+
+<header>
+
+<p class="kicker">
+
+Day 5 · Senses: Sight · 5 November 2026
+
+</p>
+
+<h1>Six views on a valley</h1>
+
+<p class="sub">
+
+From six camera stations M.P. Bridgland's survey used in 1914 around the upper Blakiston Valley, Waterton Lakes National Park, what can be seen, how sure we can be, and what a photograph frames.
+
+</p>
+
+</header>
+
+```{=html}
+<link rel="stylesheet" href="css/day05.css?v=20261105h">
+<div id="d5-app">
+
+<div id="d5-fullscreen-wrap">
+<!-- Station, scenario, and layer controls -->
+<div id="d5-controls">
+  <div class="toolbar" role="group" aria-label="Station visibility toggles">
+    <span class="k3">Stations</span>
+    <div class="stn-toggles" id="d5-stn-btns" role="group" aria-label="Toggle individual stations">
+      <button type="button" class="stn-toggle" data-stn="84" aria-pressed="true">84 Mt Blakiston</button>
+      <button type="button" class="stn-toggle" data-stn="85" aria-pressed="true">85 Anderson</button>
+      <button type="button" class="stn-toggle" data-stn="86" aria-pressed="true">86 Sage Creek</button>
+      <button type="button" class="stn-toggle" data-stn="87" aria-pressed="true">87 Blakiston Divide</button>
+      <button type="button" class="stn-toggle" data-stn="88" aria-pressed="true">88 Lost Mt</button>
+      <button type="button" class="stn-toggle" data-stn="89" aria-pressed="true">89 Lone Mt</button>
+    </div>
+    <button type="button" id="d5-btn-all" class="link">All on</button>
+    <button type="button" id="d5-btn-none" class="link">All off</button>
+  </div>
+
+  <div class="toolbar" role="group" aria-label="Landscape scenario">
+    <span class="k3">Scenario</span>
+    <div class="seg" id="d5-scenarios" role="group" aria-label="Vegetation and observer scenario">
+      <button type="button" data-scen="main" aria-pressed="true">Bare earth</button>
+      <button type="button" data-scen="forest10" aria-pressed="false">Forest 10 m</button>
+      <button type="button" data-scen="forest20" aria-pressed="false">Forest 20 m</button>
+      <button type="button" data-scen="forest30" aria-pressed="false">Forest 30 m</button>
+      <button type="button" data-scen="drone" aria-pressed="false">Drone 120 m</button>
+    </div>
+    <label><input id="d5-chk-fire" type="checkbox"> Kenow 2017 fire</label>
+    <label><input id="d5-chk-peaks" type="checkbox"> All peaks</label>
+  </div>
+
+  <div class="toolbar" role="group" aria-label="Base map layer">
+    <span class="k3">Base</span>
+    <div class="seg" id="d5-layer-btns" role="group" aria-label="Base layer imagery">
+      <button type="button" data-layer="hillshade" aria-pressed="true">Hillshade</button>
+      <button type="button" data-layer="satellite" aria-pressed="false">Satellite 2025</button>
+      <button type="button" data-layer="landcover" aria-pressed="false">Land cover 2021</button>
+    </div>
+  </div>
+
+  <div class="toolbar" role="group" aria-label="Observer position">
+    <span class="k3">Observer</span>
+    <div class="seg" id="d5-pos-btns" role="group" aria-label="Where the observer stands at each station">
+      <button type="button" data-pos="station" aria-pressed="true">Station point, as recorded</button>
+      <button type="button" data-pos="highpoint" aria-pressed="false">Local high point</button>
+    </div>
+    <span class="rline small" id="d5-pos-note">The MLP station point, eye 1.6 m above its 30 m terrain cell.</span>
+  </div>
+
+  <p class="rline small" id="d5-area-line">Combined visible area: <b id="d5-area-val">594.9</b> km² (approximate, calculated from 32.7 m ground cells within 30 km radius)</p>
+</div>
+
+<!-- Uncertainty Layers Panel -->
+<section id="d5-uncertainty-section" aria-label="Uncertainty analysis">
+  <div class="toolbar" role="group" aria-label="Uncertainty layers">
+    <span class="k3">Map shows</span>
+    <label>Station
+      <select id="d5-unc-station" aria-label="Station for uncertainty analysis">
+        <option value="84">84 Mt Blakiston</option>
+        <option value="85">85 Anderson</option>
+        <option value="86">86 Sage Creek</option>
+        <option value="87">87 Blakiston Divide</option>
+        <option value="88">88 Lost Mt</option>
+        <option value="89">89 Lone Mt</option>
+      </select>
+    </label>
+    <div class="seg" id="d5-unc-mode" role="group" aria-label="Layer type">
+      <button type="button" data-mode="cumul" aria-pressed="true">Cumulative viewshed</button>
+      <button type="button" data-mode="rmse26" aria-pressed="false">DEM error 2.6 m</button>
+      <button type="button" data-mode="rmse80" aria-pressed="false">DEM error 8 m</button>
+      <button type="button" data-mode="pos" aria-pressed="false">Station position</button>
+    </div>
+  </div>
+
+  <p class="rline small" id="d5-unc-note">How many of the switched-on stations see each place (the station buttons above choose which).</p>
+
+  <div id="d5-unc-table-wrap" class="reptable" hidden>
+    <table id="d5-variant-table">
+  <caption>Position and observer height variants for current station</caption>
+  <thead>
+<tr>
+  <th scope="col" style="text-align:left">Variant</th>
+  <th scope="col">Observer height</th>
+  <th scope="col">Visible km²</th>
+  <th scope="col">Overlap with main</th>
+</tr>
+  </thead>
+  <tbody></tbody>
+</table>
+  </div>
+</section>
+
+<!-- Leaflet Map Container -->
+<div class="mapwrap">
+  <div id="map" role="application" aria-label="Interactive map showing survey stations, terrain relief, and cumulative viewsheds in the Blakiston Valley"></div>
+</div>
+
+<div class="maprow">
+  <div id="d5-legend-wrap" class="d5-legend-box" aria-label="Viewshed legend">
+    <div id="d5-legend-title" class="k">Active stations seeing cell</div>
+    <div id="d5-legend-bar" class="d5-legend-bar"></div>
+  </div>
+  <div id="d5-landcover-legend-wrap" class="d5-legend-box" aria-label="Land cover legend" hidden>
+    <div class="k">ESA WorldCover 2021</div>
+    <div id="d5-landcover-legend-bar" class="d5-legend-bar"></div>
+  </div>
+  <div id="d5-map-status" class="status" aria-live="polite">Decoding viewshed raster...</div>
+</div>
+</div>
+
+<!-- Text alternative for screen readers and accessibility -->
+<div class="sr-only" aria-label="Map summary description">
+  <p>Viewshed map of the upper Blakiston Valley showing six historic camera stations established by M.P. Bridgland in 1914. Under bare earth conditions, the six stations combined see 594.9 square kilometres of terrain within 30 kilometres. Mt Blakiston (Station 84) alone commands 436.6 square kilometres, while Anderson (Station 85) sees 52.7 square kilometres. Adding forest cover of 10, 20, or 30 metres reduces cumulative visible area to 570.6, 548.6, and 528.4 square kilometres respectively.</p>
+</div>
+
+<!-- Station Panel replacing old card strip -->
+<section id="d5-station-panel" aria-label="Station view and photography">
+  <div class="toolbar" role="group" aria-label="Station selection">
+    <span class="k3">Station</span>
+    <div class="seg" id="d5-stn-select" role="group" aria-label="Select active station">
+      <button type="button" data-stn="84" aria-pressed="false">84 Mt Blakiston</button>
+      <button type="button" data-stn="85" aria-pressed="false">85 Anderson</button>
+      <button type="button" data-stn="86" aria-pressed="false">86 Sage Creek</button>
+      <button type="button" data-stn="87" aria-pressed="false">87 Blakiston Divide</button>
+      <button type="button" data-stn="88" aria-pressed="false">88 Lost Mt</button>
+      <button type="button" data-stn="89" aria-pressed="true">89 Lone Mt</button>
+    </div>
+  </div>
+
+  <div class="d5-mobile-pager" aria-label="Station selector for phone view">
+    <button id="d5-prev-stn" type="button" class="cta" aria-label="Previous station">&larr; Previous</button>
+    <span id="d5-stn-pager-label" class="k">Station 89 of 6</span>
+    <button id="d5-next-stn" type="button" class="cta" aria-label="Next station">Next &rarr;</button>
+  </div>
+
+  <div id="d5-panel-header" class="d5-panel-head"></div>
+
+  <div class="d5-pano-container">
+    <div class="toolbar d5-pano-toolbar" role="group" aria-label="Panorama controls">
+      <div class="seg" role="group" aria-label="Panorama zoom">
+        <button type="button" id="d5-pano-zoom-btn" aria-label="Toggle 2x panorama zoom">2x</button>
+      </div>
+      <div class="seg" role="group" aria-label="Panorama colour mode">
+        <button type="button" id="d5-pano-mode-btn">Greyscale</button>
+      </div>
+      <label><input type="checkbox" id="d5-chk-top-peaks"> Label the 10 highest peaks</label>
+    </div>
+
+    <div id="d5-pano-scroll" class="d5-pano-scroll" tabindex="0" role="region" aria-label="360 degree simulated panorama">
+      <div id="d5-pano-track" class="d5-pano-track">
+        <img id="d5-pano-img" class="d5-pano-img" src="" alt="" width="3600" height="370">
+        <div id="d5-pano-plates-layer" class="d5-pano-overlay-layer"></div>
+        <div id="d5-pano-peaks-layer" class="d5-pano-overlay-layer"></div>
+        <svg id="d5-pano-ruler" class="d5-pano-ruler" height="24"></svg>
+      </div>
+    </div>
+    <p class="rline small pano-caption">Simulated view from the 30 m terrain model at true vertical scale (0.1 degree per pixel both ways), coloured by ESA WorldCover 2021 land cover. What the model shows, not a photograph.</p>
+  </div>
+
+  <div id="d5-plate-list-wrap"></div>
+
+  <div id="d5-plate-view-wrap"></div>
+</section>
+
+
+
+<!-- Profile Panel -->
+<!-- D95 (GW 11-05): profile held back for a later version; the code stays. -->
+<section id="d5-profile-section" aria-label="Line of sight profile" hidden>
+  <div class="toolbar" role="group" aria-label="Profile endpoints">
+    <span class="k3">Profile</span>
+    <label>From
+      <select id="d5-prof-from" aria-label="Start station">
+        <option value="84">Stn. 84 Mt Blakiston</option>
+        <option value="85">Stn. 85 Anderson</option>
+        <option value="86">Stn. 86 Sage Creek</option>
+        <option value="87">Stn. 87 Blakiston Divide</option>
+        <option value="88">Stn. 88 Lost Mt</option>
+        <option value="89">Stn. 89 Lone Mt</option>
+      </select>
+    </label>
+    <label>To
+      <select id="d5-prof-to" aria-label="Target point">
+        <!-- Populated by day05.js with other stations and core box peaks -->
+      </select>
+    </label>
+    <button type="button" id="d5-prof-swap" class="link">Swap direction</button>
+  </div>
+
+  <div class="play" style="grid-template-columns: 1fr">
+    <div class="plotwrap">
+      <svg id="d5-prof-svg" viewBox="0 0 760 220" role="img" aria-label="Line of sight elevation profile with Earth curvature correction"></svg>
+      <p id="d5-prof-summary" class="rline small"></p>
+      <p class="rline small d5-phone-note" id="d5-phone-note" hidden>Profiles work best on wider screens.</p>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script src="vendor/leaflet-1.9.4/leaflet.js"></script>
+<script src="js/day05core.js?v=20261105h"></script>
+<script src="js/day05.js?v=20261105h"></script>
+```
+
+<details class="formula d5-fold">
+
+<summary>What is a viewshed?</summary>
+
+::::: cols
+::: {}
+A viewshed identifies the areas on a landscape visible from a given vantage point. The computation traces straight lines of sight from an observer across a digital elevation model. For this study, the observer height is set to 1.6 metres above the ground, representing a surveyor standing behind a camera tripod.
+:::
+
+::: {}
+Across distances up to 30 kilometres, the curvature of the Earth and the refraction of light through the atmosphere affect visibility. Earth curvature causes distant land to drop below the horizon, while atmospheric refraction bends sight lines downward, restoring some obscured terrain. Using the standard refraction coefficient of k = 0.13, the net elevation drop follows the formula d² / (2R) × (1 - k), where R is the radius of the Earth (6,371,008.8 metres). All calculations use the 30-metre MRDEM-30 terrain model in the Canada Atlas Lambert projection (EPSG:3979).
+:::
+:::::
+
+**What a view cannot tell you.**
+
+::::: cols
+::: {}
+A bare-earth viewshed overstates what a person or camera truly sees. Forest cover acts as a major visual barrier in mountain valleys. Across the six stations combined, bare ground allows 594.9 square kilometres of line of sight within 30 kilometres. Adding a 10-metre forest canopy reduces the visible area to 570.6 square kilometres; a 20-metre canopy reduces it to 548.6 square kilometres; and a 30-metre canopy leaves 528.4 square kilometres. Individual vantage points vary widely: Mt Blakiston (84) commands 436.6 square kilometres, while Anderson (85) commands 52.7 square kilometres.
+
+Software algorithms also introduce subtle differences. When comparing GRASS r.viewshed against GDAL gdal_viewshed, the two implementations agree on 99.5 to 99.9% of cells across the terrain.
+:::
+
+::: {}
+Small uncertainties in camera position can cause large changes in the resulting viewshed. No survey station sits on the highest 30-metre cell in its immediate vicinity. Moving Sage Creek (86) one cell to its highest neighbour, 9 metres higher, increases its visible area from 59 to 144 square kilometres. For Lost Mt (88), the 2004 GPS waypoint recorded during repeat photography lies 193 metres north of the historic summit cairn; from that secondary point the visible area is only 18 square kilometres, compared to 107 square kilometres from the cairn itself.
+
+Elevation model errors further alter visibility. Natural Resources Canada reports approximately 2.6 metres vertical accuracy where MRDEM-30 derives from Copernicus GLO-30. When simulating random elevation errors with a 2.6-metre root-mean-square error, Mt Blakiston's expected visible area shrinks to 418.8 square kilometres. At 8.0 metres error, the expected visible area drops to 345.5 square kilometres. Random elevation noise introduces small artificial ridges along lines of sight, consistently reducing the visible expanse.
+:::
+:::::
+
+</details>
+
+<details class="formula d5-fold">
+
+<summary>Where was the camera pointing?</summary>
+
+Archival records and repeat field notes do not always agree on where a historic photograph was aimed. For plate 597 at Lone Mt (Station 89), matching the photographic skyline to the 30-metre terrain model indicates that the camera pointed east-southeast at approximately 111 degrees azimuth toward Mt Blakiston and Mt Hawkins, in agreement with the Library and Archives Canada caption ('Southeast view ... Mount Blakiston on left'). The thesis appendix describes the view as facing west, and the repeat visits of 2004, 2022 and 2025 recorded compass bearings of 260 to 263 degrees. Stockdale (2017) found that recorded Mountain Legacy Project azimuths were unreliable because field crews set compass declination inconsistently. Which direction is right is still an open question. For the other six plates the map shows the bearing recorded in 2004, which has not been checked against the terrain: on hazy 1914 plates the distant skyline is too faint for the automatic match to be trusted. I have not yet tried the matching on the modern photos.
+
+</details>
+
+<details class="formula d5-fold">
+
+<summary>What the frames show</summary>
+
+The historical plates show a valley in transition. In 1914 the forest was still in delayed succession after a large fire in the 1880s, so much of the change between the plates and the repeat photographs is recovery from that fire rather than a departure from a natural baseline. The 2017 Kenow fire then burned much of the valley again, changing the view between the 2004-2005 series and visits in 2019.
+
+</details>
+
+<details class="formula d5-fold">
+
+<summary>Methods</summary>
+
+::::: cols
+::: {}
+**Why this valley.**
+
+- I learned to see as a landscape ecologist and geographer in the upper Blakiston Valley, working on my MSc (Watt 2007) with Eric Higgs and Dan Smith.
+- The thesis paired seven of M.P. Bridgland's 1914 survey plates with the Mountain Legacy Project's 2004 and 2005 repeat photographs, and related what they show from the oblique view onto the map by hand: a grid of 4 ha cells draped over a rendered terrain model, fitted to each plate by eye, then carried back to map space, inspired by Bridgland's own perspectometer.
+- Two things limited that work: the unknown focal length of the rendered view, and terrain model error that carried through every step.
+- Twenty years on, open national terrain models, open GIS and AI-assisted coding let me ask the same questions in hours rather than weeks: what each camera station could see, how sure we can be, and where a photograph was pointing.
+- Future extensions: skyline matching on the repeat photographs, and a click in a photograph that lands on the map.
+:::
+
+::: {}
+**Data and tools.** Viewsheds computed from the 30-metre Canadian digital elevation model using GRASS GIS r.viewshed and verified against GDAL gdal_viewshed. Park boundary, roads and trails from open data (see Sources). Interactive map and panoramas built with Leaflet and plain JavaScript. Prepared in a Linux (Ubuntu) development environment with Claude Code and Antigravity coding tools and Positron IDE. The scripts that fetch most of the data, run the GRASS viewsheds and build every layer on this page are in the repository (`day-05/scripts`); its README lists the two download steps done by hand. The DEM-error layers repeat each viewshed 50 times over random error fields with a root-mean-square error of 2.6 m or 8 m and an assumed correlation length of 150 m (a guess, not measured for this terrain).
+
+**Skyline matching.** To check where a plate was aimed, the top edge of the land is traced across the scanned plate and compared with the skyline of the simulated panorama from the same station. A simple lens model (a pinhole camera, level to within a few degrees) turns each trial direction and lens width into a skyline shape; every direction around the compass and lens widths of about 30 to 70 degrees are tried, and the closest match in shape (normalised cross-correlation) is kept. For plate 597 the best match points to 111 degrees with a view about 51 to 52 degrees wide (a score of 0.92 out of 1). The next best, at 268 degrees, scores 0.80; it lies close to the bearings the repeat crews recorded, so the match favours the archive caption without settling the question.
+
+**Limits of the match.** The plates are scans of the thesis printing, not the glass negatives. On hazy plates the distant ridges fade, so the traced edge follows nearer ground. A 30 m terrain model rounds off sharp summits, and ridges of similar shape can match in more than one direction. For the other six plates the matches did not hold up when checked by eye against the overlays, so the map shows only the recorded bearings. The sharper repeat photographs are the next test.
+:::
+:::::
+
+</details>
+
+<details class="formula refs">
+
+<summary>Sources</summary>
+
+<p class="rline small">
+
+Photographs and survey records
+
+</p>
+
+<ul class="bib">
+
+<li>Watt, G. D. (2007), published as Watt-Gremm, G. D. <i>Taking a good long look: disturbance, succession, landscape change and repeat photography in the upper Blakiston Valley, Waterton Lakes National Park</i>. M.Sc. thesis, University of Victoria. <a href="http://hdl.handle.net/1828/2481">http://hdl.handle.net/1828/2481</a> [The seven plate pairs, their captions, and the hand method this page revisits.]{.why}</li>
+
+<li>Bridgland, M. P. (1914). Phototopographic survey plates, Waterton Lakes. Library and Archives Canada, via the Mountain Legacy Project. [The 1914 plates and the camera stations.]{.why}</li>
+
+<li>Mountain Legacy Project. <i>MLP Explorer</i>, station and capture records. University of Victoria. <a href="https://explore.mountainlegacy.ca">https://explore.mountainlegacy.ca</a> [Station positions, capture records and recorded bearings (read 5 November 2026).]{.why}</li>
+
+</ul>
+
+<p class="rline small">
+
+Related work
+
+</p>
+
+<ul class="bib">
+
+<li>Stockdale, C. A. (2017). <i>A century of landscape change in the southern Rocky Mountains and Foothills of Alberta: Using historical photography to quantify ecological change</i>. Ph.D. thesis, University of Alberta. <a href="https://doi.org/10.7939/R3W37M744">https://doi.org/10.7939/R3W37M744</a> [Regional-scale monoplotting of MLP pairs; viewsheds to limit what a plate can show; unreliable field bearings.]{.why}</li>
+
+<li>Stockdale, C. A., Bozzini, C., Macdonald, S. E., and Higgs, E. (2015). Extracting ecological information from oblique angle terrestrial landscape photographs: Performance evaluation of the WSL Monoplotting Tool. <i>Applied Geography</i>, 63, 315–325. <a href="https://doi.org/10.1016/j.apgeog.2015.07.012">https://doi.org/10.1016/j.apgeog.2015.07.012</a> [How well an oblique photograph can be placed on the map.]{.why}</li>
+
+</ul>
+
+<p class="rline small">
+
+Data and software
+
+</p>
+
+<ul class="bib">
+
+<li>Natural Resources Canada. Medium Resolution Digital Elevation Model (MRDEM-30), CanElevation Series. Open Government Licence - Canada. <a href="https://open.canada.ca/data/en/dataset/18752265-bda3-498c-a4ba-9dfe68cb98da">https://open.canada.ca/data/en/dataset/18752265-bda3-498c-a4ba-9dfe68cb98da</a> [The terrain model; its stated vertical accuracy of about 2.6 m where it derives from Copernicus GLO-30.]{.why}</li>
+
+<li>Zanaga, D., Van De Kerchove, R., Daems, D., De Keersmaecker, W., et al. (2022). <i>ESA WorldCover 10 m 2021 v200</i>. Zenodo. <a href="https://doi.org/10.5281/zenodo.7254221">https://doi.org/10.5281/zenodo.7254221</a> [Land cover for the forest scenarios, the land cover layer and the panorama colours.]{.why}</li>
+
+<li>Copernicus Sentinel-2 L2A, 25 August 2025 (tiles 11UPQ and 11UQQ), from the Earth Search catalogue (Element 84, AWS open data). [The satellite layer.]{.why}</li>
+
+<li>Canadian Wildland Fire Information System, National Burned Area Composite (2017 Kenow fire perimeter); Government of Alberta, Parks and Protected Areas (park boundary); Natural Resources Canada, Canadian Geographical Names Database, and USGS Geographic Names Information System (peak names); OpenStreetMap contributors (Red Rock Parkway, trails, and published summit heights for 16 peaks; ODbL). [Map vectors, names and peak heights; other heights are the terrain model cell, as each tooltip says.]{.why}</li>
+
+<li>GRASS Development Team. GRASS GIS 8.4, r.viewshed. <a href="https://grass.osgeo.org">https://grass.osgeo.org</a>; GDAL/OGR contributors. GDAL 3.12, gdal_viewshed. <a href="https://gdal.org">https://gdal.org</a>; Leaflet 1.9.4. <a href="https://leafletjs.com">https://leafletjs.com</a> [Viewsheds, the cross-check, and the map.]{.why}</li>
+
+</ul>
+
+</details>
+
+<footer>#30DayMapChallenge · Day 5 Senses: Sight. Plates: M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project. Repeat photographs © Eric Higgs (Mountain Legacy Project), as printed in Watt 2007. Elevation: MRDEM-30 (Natural Resources Canada). Imagery: Copernicus Sentinel-2 (2025). Land cover: ESA WorldCover 2021. Vectors: Government of Alberta, CWFIS, OpenStreetMap. Code MIT, maps CC BY 4.0; see the repository.</footer>
+:::::::::::::::

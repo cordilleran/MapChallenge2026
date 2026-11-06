@@ -1,0 +1,53 @@
+{
+  "crs": "EPSG:3857",
+  "bounds_crs": "EPSG:4326",
+  "note": "Leaflet L.imageOverlay bounds as [[south, west], [north, east]] in EPSG:4326; rasters warped to EPSG:3857.",
+  "viewshed": {
+    "url": "img/day05/base_viewshed.webp",
+    "width": 2666,
+    "height": 2638,
+    "mercator_res_m": 50.0,
+    "ground_res_approx_m": 32.72,
+    "bounds_3857": [
+      -12766031.26,
+      6231575.16,
+      -12632731.26,
+      6363475.16
+    ],
+    "bounds": [
+      [
+        48.74424,
+        -114.67921
+      ],
+      [
+        49.519508,
+        -113.481756
+      ]
+    ],
+    "size_bytes": 532438
+  },
+  "core": {
+    "url": "img/day05/base_core.webp",
+    "width": 1652,
+    "height": 1587,
+    "mercator_res_m": 25.0,
+    "ground_res_approx_m": 16.36,
+    "bounds_3857": [
+      -12719455.03,
+      6277129.45,
+      -12678155.03,
+      6316804.45
+    ],
+    "bounds": [
+      [
+        49.013365,
+        -114.260809
+      ],
+      [
+        49.246577,
+        -113.889804
+      ]
+    ],
+    "size_bytes": 252336
+  }
+}

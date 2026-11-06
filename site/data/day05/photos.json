@@ -1,0 +1,266 @@
+{
+  "photos": [
+    {
+      "id": "plate555",
+      "plate": 555,
+      "station": 84,
+      "thesis_appendix": "A1",
+      "pdf_page": 93,
+      "printed_page": 86,
+      "caption_text": "Appendix A 1 View west (plate 555) toward South Kootenay Pass from Mt. Blakiston (2748 m at camera station) in 1914 (left) and 2005 (right).",
+      "files": {
+        "historic": "img/day05/photos/plate555_1914.webp",
+        "repeat": "img/day05/photos/plate555_repeat.webp"
+      },
+      "mlp_station_id": 2081,
+      "mlp_station_url": "https://explore.mountainlegacy.ca/stations/show/2081",
+      "mlp_historic_capture_id": 19638,
+      "mlp_repeat_2004_capture_id": 42325,
+      "mlp_manifest_historic": {
+        "capture_id": 19638,
+        "lac_ecopy": "e004414414-v6"
+      },
+      "mlp_manifest_2004_repeat": {
+        "capture_id": 42325,
+        "visit_date": "2004-08-10T07:00:00.000Z",
+        "azim_deg": 270
+      },
+      "credits": {
+        "historic": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007",
+        "1914_plate": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat_standard": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007"
+      },
+      "thesis_link": "https://dspace.library.uvic.ca/items/4ee99067-c147-4221-9c95-2410b113d969",
+      "repeat_note": "repeat photograph held back until the rights holder agrees (SHOW_REPEATS = false); see the MLP station page"
+    },
+    {
+      "id": "plate584",
+      "plate": 584,
+      "station": 88,
+      "thesis_appendix": "A2",
+      "pdf_page": 94,
+      "printed_page": 87,
+      "caption_text": "Appendix A 2 View south (plate 584) toward Mt. Festubert from Lost Mt. (2471 m) in 1914 (left) and 2004 (right).",
+      "files": {
+        "historic": "img/day05/photos/plate584_1914.webp",
+        "repeat": "img/day05/photos/plate584_repeat.webp"
+      },
+      "mlp_station_id": 2021,
+      "mlp_station_url": "https://explore.mountainlegacy.ca/stations/show/2021",
+      "mlp_historic_capture_id": 19235,
+      "mlp_repeat_2004_capture_id": 41986,
+      "mlp_manifest_historic": {
+        "capture_id": 19235,
+        "lac_ecopy": null
+      },
+      "mlp_manifest_2004_repeat": {
+        "capture_id": 41986,
+        "visit_date": "2004-07-25T07:00:00.000Z",
+        "azim_deg": 208
+      },
+      "credits": {
+        "historic": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007",
+        "1914_plate": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat_standard": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007"
+      },
+      "thesis_link": "https://dspace.library.uvic.ca/items/4ee99067-c147-4221-9c95-2410b113d969",
+      "repeat_note": "repeat photograph held back until the rights holder agrees (SHOW_REPEATS = false); see the MLP station page"
+    },
+    {
+      "id": "plate585",
+      "plate": 585,
+      "station": 88,
+      "thesis_appendix": "A3",
+      "pdf_page": 95,
+      "printed_page": 88,
+      "caption_text": "Appendix A 3 View south west (plate 585) toward South Kootenay Pass from Lost Mt. (2471 m) in 1914 (left) and 2004 (right).",
+      "files": {
+        "historic": "img/day05/photos/plate585_1914.webp",
+        "repeat": "img/day05/photos/plate585_repeat.webp"
+      },
+      "mlp_station_id": 2021,
+      "mlp_station_url": "https://explore.mountainlegacy.ca/stations/show/2021",
+      "mlp_historic_capture_id": 19234,
+      "mlp_repeat_2004_capture_id": 41985,
+      "mlp_manifest_historic": {
+        "capture_id": 19234,
+        "lac_ecopy": null
+      },
+      "mlp_manifest_2004_repeat": {
+        "capture_id": 41985,
+        "visit_date": "2004-07-25T07:00:00.000Z",
+        "azim_deg": 246
+      },
+      "credits": {
+        "historic": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007",
+        "1914_plate": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat_standard": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007"
+      },
+      "thesis_link": "https://dspace.library.uvic.ca/items/4ee99067-c147-4221-9c95-2410b113d969",
+      "repeat_note": "repeat photograph held back until the rights holder agrees (SHOW_REPEATS = false); see the MLP station page"
+    },
+    {
+      "id": "plate594",
+      "plate": 594,
+      "station": 89,
+      "thesis_appendix": "A4",
+      "pdf_page": 96,
+      "printed_page": 89,
+      "caption_text": "Appendix A 4 View northwest (plate 594) along the continental divide from Lone Mt. (2413 m) in 1914 (top) and 2005 (bottom).",
+      "files": {
+        "historic": "img/day05/photos/plate594_1914.webp",
+        "repeat": "img/day05/photos/plate594_repeat.webp"
+      },
+      "mlp_station_id": 2067,
+      "mlp_station_url": "https://explore.mountainlegacy.ca/stations/show/2067",
+      "mlp_historic_capture_id": 19550,
+      "mlp_repeat_2004_capture_id": 42252,
+      "mlp_manifest_historic": {
+        "capture_id": 19550,
+        "lac_ecopy": null
+      },
+      "mlp_manifest_2004_repeat": {
+        "capture_id": 42252,
+        "visit_date": "2004-08-06T07:00:00.000Z",
+        "azim_deg": 320
+      },
+      "credits": {
+        "historic": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007",
+        "1914_plate": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat_standard": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007"
+      },
+      "thesis_link": "https://dspace.library.uvic.ca/items/4ee99067-c147-4221-9c95-2410b113d969",
+      "repeat_note": "repeat photograph held back until the rights holder agrees (SHOW_REPEATS = false); see the MLP station page"
+    },
+    {
+      "id": "plate597",
+      "plate": 597,
+      "station": 89,
+      "thesis_appendix": "A5",
+      "pdf_page": 97,
+      "printed_page": 90,
+      "caption_text": "Appendix A 5 View northwest (plate 597) west toward Mt. Hawkins and Mt. Festubert from Lone Mt. (2413 m) in 1914 (top) and 2004 (bottom).",
+      "files": {
+        "historic": "img/day05/photos/plate597_1914.webp",
+        "repeat": "img/day05/photos/plate597_repeat.webp"
+      },
+      "mlp_station_id": 2067,
+      "mlp_station_url": "https://explore.mountainlegacy.ca/stations/show/2067",
+      "mlp_historic_capture_id": 19544,
+      "mlp_repeat_2004_capture_id": 42246,
+      "mlp_manifest_historic": {
+        "capture_id": 19544,
+        "lac_ecopy": "e004414428-v6"
+      },
+      "mlp_manifest_2004_repeat": {
+        "capture_id": 42246,
+        "visit_date": "2004-08-06T07:00:00.000Z",
+        "azim_deg": 112
+      },
+      "credits": {
+        "historic": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007",
+        "1914_plate": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat_standard": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007"
+      },
+      "thesis_link": "https://dspace.library.uvic.ca/items/4ee99067-c147-4221-9c95-2410b113d969",
+      "repeat_note": "repeat photograph held back until the rights holder agrees (SHOW_REPEATS = false); see the MLP station page"
+    },
+    {
+      "id": "plate598",
+      "plate": 598,
+      "station": 89,
+      "thesis_appendix": "A6",
+      "pdf_page": 98,
+      "printed_page": 91,
+      "caption_text": "Appendix A 6 View north (plate 598) toward Lost Mt. from Lone Mt. (2413 m) in 1914 (left) and 2004 (right).",
+      "files": {
+        "historic": "img/day05/photos/plate598_1914.webp",
+        "repeat": "img/day05/photos/plate598_repeat.webp"
+      },
+      "mlp_station_id": 2067,
+      "mlp_station_url": "https://explore.mountainlegacy.ca/stations/show/2067",
+      "mlp_historic_capture_id": 19543,
+      "mlp_repeat_2004_capture_id": 42249,
+      "mlp_manifest_historic": {
+        "capture_id": 19543,
+        "lac_ecopy": "e004414429-v6"
+      },
+      "mlp_manifest_2004_repeat": {
+        "capture_id": 42249,
+        "visit_date": "2004-08-06T07:00:00.000Z",
+        "azim_deg": 30
+      },
+      "credits": {
+        "historic": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007",
+        "1914_plate": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat_standard": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007"
+      },
+      "thesis_link": "https://dspace.library.uvic.ca/items/4ee99067-c147-4221-9c95-2410b113d969",
+      "repeat_note": "repeat photograph held back until the rights holder agrees (SHOW_REPEATS = false); see the MLP station page"
+    },
+    {
+      "id": "plate599",
+      "plate": 599,
+      "station": 89,
+      "thesis_appendix": "A7",
+      "pdf_page": 99,
+      "printed_page": 92,
+      "caption_text": "Appendix A 7 View east (plate 599) toward Anderson Mt. and Red Rock Canyon Parkway from Lone Mt. (2413 m) in 1914 (left) and 2004 (right).",
+      "files": {
+        "historic": "img/day05/photos/plate599_1914.webp",
+        "repeat": "img/day05/photos/plate599_repeat.webp"
+      },
+      "mlp_station_id": 2067,
+      "mlp_station_url": "https://explore.mountainlegacy.ca/stations/show/2067",
+      "mlp_historic_capture_id": 19546,
+      "mlp_repeat_2004_capture_id": 42250,
+      "mlp_manifest_historic": {
+        "capture_id": 19546,
+        "lac_ecopy": "e004414430-v6"
+      },
+      "mlp_manifest_2004_repeat": {
+        "capture_id": 42250,
+        "visit_date": "2004-08-06T07:00:00.000Z",
+        "azim_deg": 68
+      },
+      "credits": {
+        "historic": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007",
+        "1914_plate": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat_standard": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007"
+      },
+      "thesis_link": "https://dspace.library.uvic.ca/items/4ee99067-c147-4221-9c95-2410b113d969",
+      "repeat_note": "repeat photograph held back until the rights holder agrees (SHOW_REPEATS = false); see the MLP station page"
+    },
+    {
+      "id": "dawson1881",
+      "plate": null,
+      "station": null,
+      "thesis_appendix": "A8",
+      "pdf_page": 100,
+      "printed_page": 93,
+      "caption_text": "Appendix A 8 1881 (top) and 2005 (bottom) view from the upper Blakiston Valley (elevation 1750 m) east toward Mt. Blakiston, G.M. Dawson, 1881 and Trudi Smith, 2005. Note the extent and severity of the fire, extending into the alpine larch woodland on Mt. Hawkins (upper right), and possibly extinguishing in an avalanche path in the foreground.",
+      "files": {},
+      "mlp_station_id": null,
+      "mlp_station_url": null,
+      "mlp_historic_capture_id": null,
+      "mlp_repeat_2004_capture_id": null,
+      "mlp_manifest_historic": null,
+      "mlp_manifest_2004_repeat": null,
+      "credits": {
+        "historic": "G.M. Dawson, 1881 (as printed in Watt 2007; standard plate credit: M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project)",
+        "repeat": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007 (2005 repeat photographer: Trudi Smith)",
+        "1914_plate": "M.P. Bridgland, 1914, Library and Archives Canada / Mountain Legacy Project",
+        "repeat_standard": "Repeat photograph \u00a9 Eric Higgs (Mountain Legacy Project), as printed in Watt 2007"
+      },
+      "thesis_link": "https://dspace.library.uvic.ca/items/4ee99067-c147-4221-9c95-2410b113d969",
+      "repeat_note": "repeat photograph held back until the rights holder agrees (SHOW_REPEATS = false); see the MLP station page"
+    }
+  ]
+}

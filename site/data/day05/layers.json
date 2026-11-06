@@ -1,0 +1,124 @@
+{
+ "bounds": [
+  [
+   48.74424,
+   -114.67921
+  ],
+  [
+   49.519508,
+   -113.481756
+  ]
+ ],
+ "satellite": {
+  "url": "img/day05/s2_viewshed.webp",
+  "size_bytes": 688876,
+  "credit": "Contains modified Copernicus Sentinel data 2025 (Sentinel-2B, 25 August 2025)"
+ },
+ "landcover": {
+  "url": "img/day05/landcover_viewshed.webp",
+  "size_bytes": 345830,
+  "credit": "ESA WorldCover 10 m 2021 v200",
+  "legend": [
+   {
+    "class": 10,
+    "name": "Tree cover",
+    "rgb": [
+     55,
+     82,
+     52
+    ],
+    "share_pct": 33.52
+   },
+   {
+    "class": 20,
+    "name": "Shrubland",
+    "rgb": [
+     108,
+     125,
+     82
+    ],
+    "share_pct": 0.0
+   },
+   {
+    "class": 30,
+    "name": "Grassland",
+    "rgb": [
+     142,
+     146,
+     98
+    ],
+    "share_pct": 16.13
+   },
+   {
+    "class": 40,
+    "name": "Cropland",
+    "rgb": [
+     155,
+     148,
+     105
+    ],
+    "share_pct": 2.83
+   },
+   {
+    "class": 50,
+    "name": "Built-up",
+    "rgb": [
+     125,
+     125,
+     125
+    ],
+    "share_pct": 0.04
+   },
+   {
+    "class": 60,
+    "name": "Bare or sparse",
+    "rgb": [
+     168,
+     158,
+     148
+    ],
+    "share_pct": 4.97
+   },
+   {
+    "class": 70,
+    "name": "Snow and ice",
+    "rgb": [
+     238,
+     242,
+     246
+    ],
+    "share_pct": 0.19
+   },
+   {
+    "class": 80,
+    "name": "Water",
+    "rgb": [
+     55,
+     85,
+     122
+    ],
+    "share_pct": 1.06
+   },
+   {
+    "class": 90,
+    "name": "Wetland",
+    "rgb": [
+     88,
+     112,
+     88
+    ],
+    "share_pct": 0.0
+   },
+   {
+    "class": 100,
+    "name": "Moss and lichen",
+    "rgb": [
+     128,
+     132,
+     102
+    ],
+    "share_pct": 5.23
+   }
+  ]
+ }
+}

@@ -1,0 +1,65 @@
+[
+ {
+  "plate": 555,
+  "station": 84,
+  "az_centre_deg": null,
+  "hfov_deg": null,
+  "status": "not fitted: the 1914 skyline is hazy and the automatic fit was not reliable",
+  "recorded_bearing_2004_deg": 270,
+  "recorded_bearing_note": "MLP 2004 repeat, field compass; Stockdale 2017 found MLP declination settings inconsistent"
+ },
+ {
+  "plate": 584,
+  "station": 88,
+  "az_centre_deg": null,
+  "hfov_deg": null,
+  "status": "not fitted: the 1914 skyline is hazy and the automatic fit was not reliable",
+  "recorded_bearing_2004_deg": 192,
+  "recorded_bearing_note": "MLP 2004 repeat, field compass; Stockdale 2017 found MLP declination settings inconsistent"
+ },
+ {
+  "plate": 585,
+  "station": 88,
+  "az_centre_deg": null,
+  "hfov_deg": null,
+  "status": "not fitted: the 1914 skyline is hazy and the automatic fit was not reliable",
+  "recorded_bearing_2004_deg": 227,
+  "recorded_bearing_note": "MLP 2004 repeat, field compass; Stockdale 2017 found MLP declination settings inconsistent"
+ },
+ {
+  "plate": 594,
+  "station": 89,
+  "az_centre_deg": null,
+  "hfov_deg": null,
+  "status": "not fitted: the 1914 skyline is hazy and the automatic fit was not reliable",
+  "recorded_bearing_2004_deg": 295,
+  "recorded_bearing_note": "MLP 2004 repeat, field compass; Stockdale 2017 found MLP declination settings inconsistent"
+ },
+ {
+  "plate": 597,
+  "station": 89,
+  "az_centre_deg": 110.8,
+  "hfov_deg": 52.0,
+  "status": "fitted from the skyline and checked by eye",
+  "recorded_bearing_2004_deg": 261,
+  "recorded_bearing_note": "MLP 2004 repeat, field compass; Stockdale 2017 found MLP declination settings inconsistent"
+ },
+ {
+  "plate": 598,
+  "station": 89,
+  "az_centre_deg": null,
+  "hfov_deg": null,
+  "status": "not fitted: the 1914 skyline is hazy and the automatic fit was not reliable",
+  "recorded_bearing_2004_deg": 341,
+  "recorded_bearing_note": "MLP 2004 repeat, field compass; Stockdale 2017 found MLP declination settings inconsistent"
+ },
+ {
+  "plate": 599,
+  "station": 89,
+  "az_centre_deg": null,
+  "hfov_deg": null,
+  "status": "not fitted: the 1914 skyline is hazy and the automatic fit was not reliable",
+  "recorded_bearing_2004_deg": 80,
+  "recorded_bearing_note": "MLP 2004 repeat, field compass; Stockdale 2017 found MLP declination settings inconsistent"
+ }
+]

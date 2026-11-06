@@ -24,3 +24,7 @@ day-01/out/*_unthinned*
 
 # R fallback graphics device output
 Rplots.pdf
+day-05/tests/los_samples_out.json
+
+# Local settings (day-05/env.example shows the variables)
+.env

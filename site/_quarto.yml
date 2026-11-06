@@ -4,6 +4,7 @@ project:
   resources:
     - files/
     - js/
+    - css/
     - data/
     - vendor/
     - fonts/

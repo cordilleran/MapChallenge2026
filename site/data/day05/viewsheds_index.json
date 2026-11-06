@@ -1,0 +1,316 @@
+{
+  "crs": "EPSG:3857",
+  "bounds_crs": "EPSG:4326",
+  "width": 2666,
+  "height": 2638,
+  "mercator_res_m": 50.0,
+  "ground_res_approx_m": 32.72,
+  "geotransform_3857": [
+    -12766031.2627,
+    50.0,
+    0.0,
+    6363475.1626,
+    0.0,
+    -50.0
+  ],
+  "bounds_3857": [
+    -12766031.26,
+    6231575.16,
+    -12632731.26,
+    6363475.16
+  ],
+  "bounds": [
+    [
+      48.74424,
+      -114.67921
+    ],
+    [
+      49.519508,
+      -113.481756
+    ]
+  ],
+  "station_order": [
+    84,
+    85,
+    86,
+    87,
+    88,
+    89
+  ],
+  "bit_packing": "bit i (0..5) is (1 << i) for station_order[i] in [84, 85, 86, 87, 88, 89]",
+  "scenarios": {
+    "main": {
+      "url": "img/day05/vs_pack_main.png",
+      "size_bytes": 134933,
+      "any_visible_px_3857": 555976
+    },
+    "forest10": {
+      "url": "img/day05/vs_pack_forest10.png",
+      "size_bytes": 155890,
+      "any_visible_px_3857": 533235
+    },
+    "forest20": {
+      "url": "img/day05/vs_pack_forest20.png",
+      "size_bytes": 166660,
+      "any_visible_px_3857": 512692
+    },
+    "forest30": {
+      "url": "img/day05/vs_pack_forest30.png",
+      "size_bytes": 171345,
+      "any_visible_px_3857": 493682
+    },
+    "drone": {
+      "url": "img/day05/vs_pack_drone.png",
+      "size_bytes": 187404,
+      "any_visible_px_3857": 783619
+    }
+  },
+  "probable": {
+    "rmse26": {
+      "rmse_m": 2.6,
+      "corr_len_m": 150.0,
+      "n_runs": 50,
+      "files": {
+        "84": {
+          "url": "img/day05/prob_84_rmse26.png",
+          "size_bytes": 284735
+        },
+        "85": {
+          "url": "img/day05/prob_85_rmse26.png",
+          "size_bytes": 46191
+        },
+        "86": {
+          "url": "img/day05/prob_86_rmse26.png",
+          "size_bytes": 59194
+        },
+        "87": {
+          "url": "img/day05/prob_87_rmse26.png",
+          "size_bytes": 93040
+        },
+        "88": {
+          "url": "img/day05/prob_88_rmse26.png",
+          "size_bytes": 100012
+        },
+        "89": {
+          "url": "img/day05/prob_89_rmse26.png",
+          "size_bytes": 78197
+        }
+      }
+    },
+    "rmse80": {
+      "rmse_m": 8.0,
+      "corr_len_m": 150.0,
+      "n_runs": 50,
+      "files": {
+        "84": {
+          "url": "img/day05/prob_84_rmse80.png",
+          "size_bytes": 367805
+        },
+        "85": {
+          "url": "img/day05/prob_85_rmse80.png",
+          "size_bytes": 63892
+        },
+        "86": {
+          "url": "img/day05/prob_86_rmse80.png",
+          "size_bytes": 97244
+        },
+        "87": {
+          "url": "img/day05/prob_87_rmse80.png",
+          "size_bytes": 131618
+        },
+        "88": {
+          "url": "img/day05/prob_88_rmse80.png",
+          "size_bytes": 137738
+        },
+        "89": {
+          "url": "img/day05/prob_89_rmse80.png",
+          "size_bytes": 116684
+        }
+      }
+    }
+  },
+  "uncertainty": {
+    "84": {
+      "url": "img/day05/vs_84_unc.png",
+      "size_bytes": 97160,
+      "max_count": 5
+    },
+    "85": {
+      "url": "img/day05/vs_85_unc.png",
+      "size_bytes": 25016,
+      "max_count": 6
+    },
+    "86": {
+      "url": "img/day05/vs_86_unc.png",
+      "size_bytes": 43629,
+      "max_count": 2
+    },
+    "87": {
+      "url": "img/day05/vs_87_unc.png",
+      "size_bytes": 52406,
+      "max_count": 7
+    },
+    "88": {
+      "url": "img/day05/vs_88_unc.png",
+      "size_bytes": 50383,
+      "max_count": 7
+    },
+    "89": {
+      "url": "img/day05/vs_89_unc.png",
+      "size_bytes": 42258,
+      "max_count": 5
+    }
+  },
+  "stations": {
+    "84": {
+      "station": 84,
+      "bit": 0,
+      "mask": 1,
+      "station_name": "Stn. 84 Mt Blakiston (Shoulder)",
+      "mlp_station_id": 2081,
+      "x_epsg3979": -1367940.82,
+      "y_epsg3979": 217579.65,
+      "dem_m": 2731.39,
+      "max_3x3_m": 2734.98,
+      "num_variants": 5,
+      "area_km2": {
+        "main": 436.55,
+        "forest10": 417.79,
+        "forest20": 402.77,
+        "forest30": 390.5,
+        "drone": 590.4,
+        "prob_rmse26_expected": 418.76,
+        "prob_rmse26_p50": 431.13,
+        "prob_rmse26_p90": 344.25,
+        "prob_rmse80_expected": 345.46,
+        "prob_rmse80_p50": 359.11,
+        "prob_rmse80_p90": 162.11
+      }
+    },
+    "85": {
+      "station": 85,
+      "bit": 1,
+      "mask": 2,
+      "station_name": "Stn. 85 Anderson",
+      "mlp_station_id": 1992,
+      "x_epsg3979": -1365623.76,
+      "y_epsg3979": 220952.08,
+      "dem_m": 2108.61,
+      "max_3x3_m": 2110.83,
+      "num_variants": 6,
+      "area_km2": {
+        "main": 52.69,
+        "forest10": 51.92,
+        "forest20": 50.7,
+        "forest30": 49.54,
+        "drone": 99.39,
+        "prob_rmse26_expected": 51.72,
+        "prob_rmse26_p50": 52.08,
+        "prob_rmse26_p90": 44.58,
+        "prob_rmse80_expected": 47.94,
+        "prob_rmse80_p50": 48.63,
+        "prob_rmse80_p90": 27.06
+      }
+    },
+    "86": {
+      "station": 86,
+      "bit": 2,
+      "mask": 4,
+      "station_name": "Stn. 86 Sage Creek",
+      "mlp_station_id": 2020,
+      "x_epsg3979": -1375860.42,
+      "y_epsg3979": 226043.96,
+      "dem_m": 2419.95,
+      "max_3x3_m": 2429.16,
+      "num_variants": 2,
+      "area_km2": {
+        "main": 59.01,
+        "forest10": 58.02,
+        "forest20": 53.67,
+        "forest30": 51.48,
+        "drone": 210.98,
+        "prob_rmse26_expected": 60.1,
+        "prob_rmse26_p50": 59.38,
+        "prob_rmse26_p90": 50.74,
+        "prob_rmse80_expected": 65.94,
+        "prob_rmse80_p50": 58.69,
+        "prob_rmse80_p90": 39.97
+      }
+    },
+    "87": {
+      "station": 87,
+      "bit": 3,
+      "mask": 8,
+      "station_name": "Stn. 87 Blakiston Divide",
+      "mlp_station_id": 2054,
+      "x_epsg3979": -1372539.66,
+      "y_epsg3979": 225266.61,
+      "dem_m": 2416.48,
+      "max_3x3_m": 2417.43,
+      "num_variants": 7,
+      "area_km2": {
+        "main": 114.27,
+        "forest10": 111.09,
+        "forest20": 107.06,
+        "forest30": 103.47,
+        "drone": 175.43,
+        "prob_rmse26_expected": 113.33,
+        "prob_rmse26_p50": 114.6,
+        "prob_rmse26_p90": 100.03,
+        "prob_rmse80_expected": 107.08,
+        "prob_rmse80_p50": 110.43,
+        "prob_rmse80_p90": 70.28
+      }
+    },
+    "88": {
+      "station": 88,
+      "bit": 4,
+      "mask": 16,
+      "station_name": "Stn. 88 Lost Mt",
+      "mlp_station_id": 2021,
+      "x_epsg3979": -1371682.06,
+      "y_epsg3979": 221472.44,
+      "dem_m": 2485.95,
+      "max_3x3_m": 2487.04,
+      "num_variants": 7,
+      "area_km2": {
+        "main": 107.43,
+        "forest10": 102.12,
+        "forest20": 97.55,
+        "forest30": 93.75,
+        "drone": 180.4,
+        "prob_rmse26_expected": 106.01,
+        "prob_rmse26_p50": 107.39,
+        "prob_rmse26_p90": 90.08,
+        "prob_rmse80_expected": 96.73,
+        "prob_rmse80_p50": 101.44,
+        "prob_rmse80_p90": 46.83
+      }
+    },
+    "89": {
+      "station": 89,
+      "bit": 5,
+      "mask": 32,
+      "station_name": "Stn. 89 Lone Mt",
+      "mlp_station_id": 2067,
+      "x_epsg3979": -1374922.62,
+      "y_epsg3979": 219847.8,
+      "dem_m": 2413.51,
+      "max_3x3_m": 2416.73,
+      "num_variants": 5,
+      "area_km2": {
+        "main": 91.24,
+        "forest10": 83.52,
+        "forest20": 78.35,
+        "forest30": 68.36,
+        "drone": 164.95,
+        "prob_rmse26_expected": 91.27,
+        "prob_rmse26_p50": 90.83,
+        "prob_rmse26_p90": 81.39,
+        "prob_rmse80_expected": 89.14,
+        "prob_rmse80_p50": 87.41,
+        "prob_rmse80_p90": 59.29
+      }
+    }
+  }
+}
