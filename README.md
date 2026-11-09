@@ -15,7 +15,7 @@ Code and maps for the [30 Day Map Challenge](https://30daymapchallenge.com/) 202
 
 Each day has its own folder (`day-NN/`) with a README on its data, method, limits and how to reproduce it. The shared look (colours, fonts, display projection, north arrow and scale bar) is in `shared/R/`. Large data stays outside the repo. The site is built from `site/`; after editing `site/days.yml`, run `Rscript site/calendar.R`.
 
-## How made
+## Methods
 
 I develop each day's concept and direct Claude Code (Anthropic) to build it, and I review the work and revise the writing and code, if necessary, before publishing. Each day's README names the models and tools used.
 
