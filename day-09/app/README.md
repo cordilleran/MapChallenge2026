@@ -12,6 +12,7 @@ Plain JavaScript and canvas, no libraries, no build step.
 | `data/day09_private.json` | Cite keys and titles; local only, gitignored; the app lists papers for a selection only when it is present |
 | `data/sim*.json`, `scripts/simulate.py` | A simulated corpus in the same contract (invented papers, real GeoNames places), for tests and for trying the app without the real corpus; the JSON files are committed, and regenerating them needs the local pipeline database |
 | `data/world50.json`, `data/admin1/` | Natural Earth outlines (public domain) |
+| `data/borders.json`, `data/admin1/*_lines.json` | Land-border lines and lakes from `scripts/18_border_lines.py` (Natural Earth, public domain) |
 | `tests/core.test.mjs` | `npm test`: simulated totals reproduced exactly; weight invariants; setting splits; nested clusters; merged lines keep their weight at every zoom; topic selection |
 | `serve.sh` | Serves on localhost and the Tailscale address only, port 8790 |
 

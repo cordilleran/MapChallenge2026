@@ -42,9 +42,10 @@ function writeHash() {
 
 // ---------- data ----------
 readHash();
-const [world, corpus] = await Promise.all([
+const [world, corpus, borders] = await Promise.all([
   fetch("data/world50.json").then((r) => r.json()),
   fetch(`data/${S.c}.json`).then((r) => r.json()),
+  fetch("data/borders.json").then((r) => r.json()).catch(() => ({ country: [], lakes: [] })),
 ]);
 const M = load(corpus, world);
 // the owner's local build: cite keys and titles from a local-only file (D128); absent on the public site
@@ -67,10 +68,23 @@ const COUNTRIES = world.rows.map(([iso, name, region, sub, lx, ly, rings]) => {
   });
   return { iso, name, path, bbox: [a, b, c, d] };
 });
+// land borders and lakes (D139): lines only where two units share a border on land; the coast is the land fill's own hairline
+function linePath(lines, path = new Path2D(), close = false) {
+  for (const l of lines) { l.forEach(([lo, la], i) => { const [x, y] = ee(lo, la); i ? path.lineTo(x, y) : path.moveTo(x, y); }); if (close) path.closePath(); }
+  return path;
+}
+const LAND = new Path2D(); for (const c of COUNTRIES) LAND.addPath(c.path);
+const BORDER_LINES = linePath(borders.country), LAKES = linePath(borders.lakes, new Path2D(), true);
 const PLACES_BY_ISO = {}, PLACES_BY_CODE = {};
 M.places.forEach((p, i) => { (PLACES_BY_ISO[p.iso] ||= []).push(i); (PLACES_BY_CODE[p.code] ||= []).push(i); });
 // provinces and states, fetched per country once the map is zoomed in (spec R2)
-const ADM1 = new Map(), ADM1_SET = new Set(M.admin1);
+const ADM1 = new Map(), ADM1_SET = new Set(M.admin1), ADM1_LINES = new Map();
+function admin1Lines(iso) {
+  if (!ADM1_SET.has(iso) || ADM1_LINES.has(iso)) return ADM1_LINES.get(iso);
+  ADM1_LINES.set(iso, null);
+  fetch(`data/admin1/${iso}_lines.json`).then((r) => r.json()).then((lines) => { ADM1_LINES.set(iso, linePath(lines)); draw(); }).catch(() => {});
+  return null;
+}
 function admin1For(iso) {
   if (!ADM1_SET.has(iso) || ADM1.has(iso)) return ADM1.get(iso);
   ADM1.set(iso, null);
@@ -164,7 +178,7 @@ const zoomLevel = () => Math.max(3, Math.min(14, Math.round(Math.log2(k / k0)) +
 
 function render() {
   if (!V) compute();
-  const C = { land: css("--land"), hi: css("--land-hi"), border: css("--border"), prov: css("--prov"), ocean: css("--ocean"),
+  const C = { land: css("--land"), hi: css("--land-hi"), border: css("--border"), coast: css("--coast"), prov: css("--prov"), ocean: css("--ocean"),
     area: css("--area"), feature: css("--feature"), settlement: css("--settle"), origin: css("--origin"), ring: css("--ring"),
     urban: css("--urban"), mixed: css("--mixed"), rural: css("--rural"), unclear: css("--unclear-mark"), not_applicable: css("--na") };
   ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -175,18 +189,27 @@ function render() {
   const [x0, y1] = toWorld(0, 0), [x1, y0] = toWorld(W, H);
   setWorldTransform();
   for (const c of COUNTRIES) { if (!inView(c, x0, y0, x1, y1)) continue; ctx.fillStyle = studied.has(c.iso) ? C.hi : C.land; ctx.fill(c.path); }
-  // internal borders first, dashed; country borders over them, solid
+  // lakes cut out of the land; one hairline marks coasts and shores
+  ctx.fillStyle = C.ocean; ctx.fill(LAKES);
+  ctx.lineWidth = 0.5 / k; ctx.strokeStyle = C.coast;
+  for (const c of COUNTRIES) if (inView(c, x0, y0, x1, y1)) ctx.stroke(c.path);
+  ctx.stroke(LAKES);
+  // borders only where two units meet on land, clipped to the land so no end runs into the sea:
+  // provinces dashed first, countries solid over them (D139)
+  ctx.save(); ctx.clip(LAND);
   if (k / k0 >= PROV_ZOOM) {
     ctx.lineWidth = 0.9 / k; ctx.setLineDash([5 / k, 3 / k]); ctx.strokeStyle = C.prov;
     for (const c of COUNTRIES) {
       if (!ADM1_SET.has(c.iso) || !inView(c, x0, y0, x1, y1)) continue;
-      const feats = admin1For(c.iso);
-      if (feats) for (const f of feats) ctx.stroke(f.path);
+      admin1For(c.iso); // province shapes stay loaded for hover and selection
+      const lines = admin1Lines(c.iso);
+      if (lines) ctx.stroke(lines);
     }
     ctx.setLineDash([]);
   }
   ctx.lineWidth = (k / k0 >= PROV_ZOOM ? 1.3 : 0.8) / k; ctx.strokeStyle = C.border;
-  for (const c of COUNTRIES) if (inView(c, x0, y0, x1, y1)) ctx.stroke(c.path);
+  ctx.stroke(BORDER_LINES);
+  ctx.restore();
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   hits = [];
 

@@ -43,7 +43,7 @@ What it can and cannot tell a team: it shows where the team's reading comes from
 - OpenAlex works, authorships, institutions, topics and keywords, read from the public API (polite pool) on 8 November 2026. CC0.
 - GeoNames gazetteer (allCountries, countryInfo, admin1CodesASCII), downloaded 8 November 2026. CC BY 4.0.
 - GHS-SMOD R2023A and GHS-POP R2023A, epoch 2020, 1 km, Mollweide (European Commission, Joint Research Centre). CC BY 4.0.
-- Natural Earth 1:50m admin-0 countries and land, 1:10m admin-1 states and provinces. Public domain.
+- Natural Earth 1:50m admin-0 countries, land and lakes, 1:10m admin-1 states and provinces. Public domain.
 - The library records themselves (titles, abstracts, keywords, full texts) stay local. Sent to the model (Claude Haiku): candidate place names with short context windows, titles, abstracts and keywords (layer 1, D107), and the opening and one study-area or methods section of each paper, about 8,500 characters (layer 2, D127). The published `site/day09/data/day09.json` holds institutions, places, aggregated weights, OpenAlex topic labels and the short setting phrases, not paper titles, cite keys or record ids.
 
 ## Pipeline
@@ -69,7 +69,7 @@ Copy `env.example` to `.env` (gitignored) and load it before running the scripts
 | `14_app_export.py` | Writes the app's data contract `app/data/day09.json` (coarsened by default), province outlines, and with `--private` a local-only file of cite keys (D128). | No | ~20 s |
 | `15_area_settlement.py` | Land and population shares by settlement class for every country and province (GHS-SMOD and GHS-POP; system Python with GDAL). | No | ~1 min |
 
-The app is in `app/` (see its README): static files, no libraries, served with `app/serve.sh`. `scripts/16_world_regions.py` adds the World Bank region column to the world outlines; `scripts/17_site_copy.sh` copies the public app into `site/day09/` (never the private file).
+The app is in `app/` (see its README): static files, no libraries, served with `app/serve.sh`. `scripts/16_world_regions.py` adds the World Bank region column to the world outlines; `scripts/18_border_lines.py` writes the border lines (only edges two countries or two provinces share on land, so coasts carry no border line) and the lakes; `scripts/17_site_copy.sh` copies the public app into `site/day09/` (never the private file).
 
 Tests: `tests/test_positive.py` (three hand-set cases: a BC field site, a global synthesis from the JRC, an algorithm paper), run after 04, 06 and the role-call merge; `app/tests/core.test.mjs` (`npm test` in `app/`). The 60-record gold set and its scores stay local (D129).
 

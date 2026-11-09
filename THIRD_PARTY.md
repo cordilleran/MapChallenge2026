@@ -22,7 +22,7 @@
 - **OpenAlex** (Priem, Piwowar and Orr 2022): works, author institutions, topics and keywords, read from the public API on 8 November 2026. CC0. <https://openalex.org>
 - **GeoNames** gazetteer (allCountries, countryInfo, admin1 codes), downloaded 8 November 2026. CC BY 4.0. <https://www.geonames.org>
 - **GHS-SMOD R2023A** (Schiavina, Melchiorri and Pesaresi 2023, <https://doi.org/10.2905/A0DF7A6F-49DE-46EA-9BDE-563437A6E2BA>) and **GHS-POP R2023A** (Schiavina, Freire and MacManus 2023, <https://doi.org/10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE>), European Commission, Joint Research Centre, epoch 2020, 1 km. CC BY 4.0. Used for settlement classes and population shares; the grids are not redistributed.
-- **Natural Earth** 1:50m admin-0 countries (with the UN M49 and World Bank region fields) and 1:10m admin-1 states and provinces, simplified, in `site/day09/data/`. Public domain.
+- **Natural Earth** 1:50m admin-0 countries (with the UN M49 and World Bank region fields) and 1:10m admin-1 states and provinces, and 1:50m lakes, simplified, in `site/day09/data/`; border lines are the edges these shapes share. Public domain.
 - **Claude Haiku** (Anthropic) read titles, abstracts, keywords and the opening and study-area sections of the papers to classify place roles, scope and setting; the library's texts are not redistributed.
 
 ## Software in this repository
