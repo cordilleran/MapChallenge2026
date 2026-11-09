@@ -1,0 +1,26 @@
+{
+ "papers": 1815,
+ "scopes": {
+  "global": 186,
+  "multi-site": 125,
+  "regional": 612,
+  "local-implicit": 33,
+  "non-spatial": 600,
+  "site": 259
+ },
+ "settings": {
+  "not_applicable": 825,
+  "unclear": 354,
+  "rural": 432,
+  "mixed": 79,
+  "urban": 125
+ },
+ "located": 1288,
+ "placed": 948,
+ "study_weight_by_kind": {
+  "area": 831.366476,
+  "feature": 57.722263,
+  "settlement": 58.911261
+ },
+ "merged_single_paper_places": 497
+}

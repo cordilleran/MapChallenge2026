@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Written in cities, looking out</title>
+<meta name="description" content="Day 9, Urban-rural: where one reader's library of papers is written, and what it studies.">
+<link rel="stylesheet" href="app.css">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<header class="top">
+  <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html">30 Day Map Challenge 2026</a> <span aria-hidden="true">/</span> Day 9</nav>
+  <p class="kicker">Day 9 · Urban-rural · 9 November 2026 <span id="sim-badge" class="badge" hidden>Simulated data</span></p>
+  <h1>Written in cities, looking out</h1>
+  <p class="sub">Place of study: one reader's look at a geography of interests. Each line joins the institution a paper was written from to the place it studies, for <span id="n-papers">1,815</span> academic papers in one personal library. The colour is the setting each paper describes in its own words: urban, rural or mixed.</p>
+</header>
+
+<nav class="toolbar" aria-label="Filters">
+  <div class="ctl ctl-scope">
+    <span class="lbl" id="scope-lbl">Scope of the paper <button type="button" id="scope-all" class="link" hidden>show all</button></span>
+    <div id="scopes" class="scopes" role="group" aria-labelledby="scope-lbl"></div>
+  </div>
+  <div class="ctl">
+    <span class="lbl" id="col-lbl">Colour by</span>
+    <div class="seg" id="col" role="group" aria-labelledby="col-lbl"><button type="button" data-k="setting" aria-pressed="true">Setting</button><button type="button" data-k="kind" aria-pressed="false">Kind of place</button></div>
+  </div>
+  <div class="ctl">
+    <span class="lbl" id="dir-lbl">A clicked country shows papers</span>
+    <div class="seg" id="dir" role="group" aria-labelledby="dir-lbl"><button type="button" data-k="studies" aria-pressed="true">that study it</button><button type="button" data-k="written" aria-pressed="false">written in it</button></div>
+  </div>
+  <div class="ctl">
+    <span class="lbl" id="body-lbl">Places of study from</span>
+    <div class="seg" id="body" role="group" aria-labelledby="body-lbl"><button type="button" data-k="1" aria-pressed="true">Abstract and body</button><button type="button" data-k="0" aria-pressed="false">Abstract only</button></div>
+  </div>
+  <div class="ctl">
+    <span class="lbl" id="org-lbl">Written from</span>
+    <div class="seg" id="org" role="group" aria-labelledby="org-lbl"><button type="button" data-k="all" aria-pressed="true">All authors</button><button type="button" data-k="corr" aria-pressed="false">Corresponding</button></div>
+  </div>
+</nav>
+
+<main class="grid">
+  <section class="mapcol" aria-label="Map">
+    <div class="mapwrap">
+      <canvas id="map" tabindex="0" role="img" aria-describedby="map-help" aria-label="World map in the Equal Earth projection. Lines join institutions to the places their papers study. The tables below the map hold the same counts."></canvas>
+      <div id="tip" class="tip" role="status" hidden></div>
+      <div class="zoom" role="group" aria-label="Zoom"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">&minus;</button><button type="button" id="zworld">World</button><button type="button" id="zbc">British Columbia</button><button type="button" id="zsel" hidden>Fit selection</button></div>
+    </div>
+    <p id="map-help" class="help">Drag to pan; scroll or pinch to zoom; arrow keys and + or &minus; work when the map has focus. Click a place, a cluster or a country to see its links. Escape clears.</p>
+  </section>
+
+  <aside class="side" aria-label="Summary">
+    <div class="sel" id="sel" aria-live="polite"></div>
+    <dl class="readouts" id="readouts"></dl>
+    <section>
+      <h2>Setting of the study</h2>
+      <div class="setbar" id="setbar" role="img"></div>
+      <div class="setkey" id="setkey"></div>
+    </section>
+    <section aria-labelledby="key-h">
+      <h2 id="key-h">Key</h2>
+      <div class="legend" id="legend"></div>
+    </section>
+  </aside>
+  <div class="tables">
+    <section>
+      <div class="sechead"><h2>Written from, by setting</h2><div class="seg small" id="regs" role="group" aria-label="Region scheme"><button type="button" data-k="wb" aria-pressed="true">World Bank</button><button type="button" data-k="m49" aria-pressed="false">UN M49</button></div></div>
+      <p class="note">Regions of the authors' institutions: the World Bank's seven regions, or the finer UN M49 subregions (where Northern America is Canada, the United States, Greenland, Bermuda, and Saint Pierre and Miquelon; Mexico is in Central America). Every paper in the filter is counted once, shared among its authors' regions (so a region's row can be smaller than its selection count, which counts every paper with an author there); papers with no located origin have their own row. Select a region to filter the map and frame it.</p>
+      <div class="mx-wrap"><table class="mx" id="matrix"></table></div>
+    </section>
+    <section>
+      <div class="sechead"><h2>Topics</h2><div class="seg small" id="level" role="group" aria-label="Topic level"><button type="button" data-k="field" aria-pressed="false">Field</button><button type="button" data-k="subfield" aria-pressed="true">Subfield</button><button type="button" data-k="topic" aria-pressed="false">Topic</button></div></div>
+      <p class="note" id="topics-note"></p>
+      <div class="mx-wrap"><table class="tt" id="topics"></table></div>
+      <button type="button" class="link" id="topics-more" hidden></button>
+    </section>
+  </div>
+</main>
+
+<section class="folds" aria-label="About the map">
+<details class="fold">
+<summary>About this map</summary>
+<div class="prose">
+<h3>Reading it</h3>
+<ul>
+<li><b>A line</b> joins the institution a paper was written from to a place it studies. Its width is the number of papers on it. With all authors, each paper is shared among its authors' institutions; with the corresponding author it comes from one. Lines whose ends fall in the same clusters merge, so the map shows fewer, thicker lines at world scale and splits them as you zoom in.</li>
+<li><b>Shape</b> says what kind of place is studied: a circle for an area (a country, a province, a basin), a triangle for a natural feature (a river, a lake, a peak), a diamond for a settlement. Dark circles are institutions, merged into clusters that split as you zoom.</li>
+<li><b>Colour</b> is the setting the papers state about their study: urban, rural or mixed, from a quoted phrase in the paper. A mark is grey when most of its papers give no clear setting. Switch to "Kind of place" to colour by shape class instead.</li>
+<li><b>Size</b> is papers, on one scale for every circle on the map. Each paper counts once, shared among its institutions and among its places of study.</li>
+<li><b>Hover</b> a place for the setting its papers state, the topics they carry, and, for a country or province, how its people split between urban centres, towns and rural areas.</li>
+</ul>
+<h3>How the places were found</h3>
+<ol>
+<li><b>Origins.</b> For each paper with a DOI, OpenAlex lists every author's institutions, with coordinates. When an author carries both a parent body and a unit, the one named in the author's own affiliation is kept.</li>
+<li><b>Places in the abstract.</b> Capitalised word runs in each title, abstract and keyword list are matched to a GeoNames gazetteer. Homonyms are ranked by feature type, the authors' countries and the other places in the same abstract. A small language model (Claude Haiku) gives each candidate a role (studied, data extent, comparison, context, affiliation, not a place) and the paper one scope class. It can only choose among the candidates.</li>
+<li><b>Places and setting in the body.</b> The same model reads the opening and the study-area or methods section of each paper with enough text (1,792 papers). It may name a place the gazetteer missed, but only with a quotation of 5 to 25 words that is found in the text and contains the name; the place is then matched to the gazetteer. It also names the setting (urban, rural, mixed, not applicable or unclear), again with a quotation. A claim whose quotation is not found is kept but never mapped.</li>
+<li><b>Urban centres, towns and rural areas.</b> Settlements and institutions take the class of their 1 km cell in the GHS Settlement Model grid for 2020. Countries and provinces get the share of their people in each class from the GHS population grid. These are context only: the setting comes from the paper.</li>
+</ol>
+<h3>What this does not show</h3>
+<ul>
+<li>One reader's library, chosen by interest: it shows their reading, not a field.</li>
+<li>Papers without a DOI (about 440) have no origin yet, and OpenAlex affiliations are patchy before about 2000.</li>
+<li>The body reading covers about 8,500 characters a paper, so a study site named only in a later section can be missed.</li>
+<li>A third of spatial papers state no clear setting, mostly those about whole countries and basins.</li>
+<li>Years are binned to five, and places named by only one paper are merged into their province or country.</li>
+<li>The corresponding author is a publishing convention, so the all-authors view sits beside it.</li>
+</ul>
+</div>
+</details>
+<details class="fold">
+<summary>Sources and software</summary>
+<div class="prose">
+<h3>Data</h3>
+<ul class="bib">
+<li>Priem, J., Piwowar, H., and Orr, R. (2022). OpenAlex: a fully-open index of scholarly works, authors, venues, institutions, and concepts. arXiv:2205.01833. <a href="https://openalex.org">openalex.org</a> (works, institutions, topics and keywords retrieved 8 November 2026; CC0)</li>
+<li>GeoNames gazetteer, allCountries, countryInfo and admin1 codes, retrieved 8 November 2026. <a href="https://www.geonames.org">geonames.org</a> (CC BY 4.0)</li>
+<li>Schiavina, M., Melchiorri, M., and Pesaresi, M. (2023). <i>GHS-SMOD R2023A: GHS settlement layers, application of the Degree of Urbanisation methodology (stage I) to GHS-POP R2023A and GHS-BUILT-S R2023A, multitemporal (1975–2030)</i>. European Commission, Joint Research Centre. <a href="https://doi.org/10.2905/A0DF7A6F-49DE-46EA-9BDE-563437A6E2BA">https://doi.org/10.2905/A0DF7A6F-49DE-46EA-9BDE-563437A6E2BA</a> (epoch 2020, 1 km; CC BY 4.0)</li>
+<li>Schiavina, M., Freire, S., and MacManus, K. (2023). <i>GHS-POP R2023A: GHS population grid multitemporal (1975–2030)</i>. European Commission, Joint Research Centre. <a href="https://doi.org/10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE">https://doi.org/10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE</a> (epoch 2020, 1 km; CC BY 4.0)</li>
+<li>Natural Earth, 1:50m admin-0 countries and 1:10m admin-1 states and provinces (public domain). <a href="https://www.naturalearthdata.com">naturalearthdata.com</a></li>
+</ul>
+<h3>Method</h3>
+<ul class="bib">
+<li>Šavrič, B., Patterson, T., and Jenny, B. (2019). The Equal Earth map projection. <i>International Journal of Geographical Information Science</i>, 33(3), 454–465. <a href="https://doi.org/10.1080/13658816.2018.1504949">https://doi.org/10.1080/13658816.2018.1504949</a></li>
+</ul>
+<h3>Software</h3>
+<ul class="bib">
+<li>DuckDB for the working store; GDAL and NumPy for the settlement grid and the zonal counts; Python for the pipeline; Claude Haiku (Anthropic) for the role and body readings, with Claude Code (Opus 5.5) building the pipeline with the reader.</li>
+<li>In the browser: plain JavaScript and canvas, no libraries. Projection, great circles, nested clustering and line merging are written for this page and tested with Node's test runner.</li>
+</ul>
+</div>
+</details>
+</section>
+<footer class="foot"><span id="note"></span> #30DayMapChallenge · Day 9 Urban-rural. Origins and topics: OpenAlex (CC0). Places: GeoNames (CC BY 4.0). Settlement and population grids: GHS-SMOD and GHS-POP R2023A, European Commission JRC (CC BY 4.0). Outlines: Natural Earth.</footer>
+</body>
+</html>

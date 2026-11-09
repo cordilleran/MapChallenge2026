@@ -7,7 +7,7 @@
 - {day: 6, theme: "Vintage", icon: "06-vintage", status: planned, thumb: "", href: ""}
 - {day: 7, theme: "10 minute map", icon: "07-ten-minute", status: planned, thumb: "", href: ""}
 - {day: 8, theme: "Utopia", icon: "08-utopia", status: planned, thumb: "", href: ""}
-- {day: 9, theme: "Urban-rural", icon: "09-urban-rural", status: planned, thumb: "", href: ""}
+- {day: 9, theme: "Urban-rural", icon: "09-urban-rural", status: done, thumb: "img/day09_thumb.webp", href: "day09/"}
 - {day: 10, theme: "Prompting only", icon: "10-prompting", status: planned, thumb: "", href: ""}
 - {day: 11, theme: "Senses: Sound", icon: "11-sound", status: planned, thumb: "", href: ""}
 - {day: 12, theme: "Power", icon: "12-power", status: planned, thumb: "", href: ""}

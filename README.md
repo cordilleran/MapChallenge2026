@@ -11,6 +11,7 @@ Code and maps for the [30 Day Map Challenge](https://30daymapchallenge.com/) 202
 | 3 | Polygons | [Lines on a known world](day-03/) |
 | 4 | Clusters | [One storm night, four scales](day-04/) |
 | 5 | Senses: Sight | [Six views on a valley](day-05/) |
+| 9 | Urban-rural | [Written in cities, looking out](day-09/) |
 
 Each day has its own folder (`day-NN/`) with a README on its data, method, limits and how to reproduce it. The shared look (colours, fonts, display projection, north arrow and scale bar) is in `shared/R/`. Large data stays outside the repo. The site is built from `site/`; after editing `site/days.yml`, run `Rscript site/calendar.R`.
 

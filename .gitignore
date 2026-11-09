@@ -28,3 +28,16 @@ day-05/tests/los_samples_out.json
 
 # Local settings (day-05/env.example shows the variables)
 .env
+
+# Day 9: gold labels, gold ids and every score file stay local; so does the private app data with cite keys (D128, D129)
+day-09/tests/gold_labels.json
+day-09/tests/gold_ids.json
+day-09/app/data/*_private.json
+site/day09/data/*_private.json
+# local pipeline outputs, in case MC26_DAY09_DIR points inside the repository
+day-09/**/pid_salt.txt
+day-09/**/*.duckdb
+day-09/**/*.duckdb.wal
+day-09/**/*scores*.json
+day-09/**/gold_packet.md
+site/data/day09.js

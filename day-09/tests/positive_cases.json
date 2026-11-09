@@ -1,0 +1,11 @@
+{
+  "_note": "Day 9 positive tests (spec section 4, Verification). Expected values set by hand from each record's title and source text before the pipeline ran on them; the pipeline must reproduce them before any full run.",
+  "cases": [
+    {"record_id": "eato2010d-wildfire-morphologic-change", "kind": "BC field study",
+     "expect_scope": "site", "expect_study_site_contains": ["Fishtrap Creek"], "expect_origin_country": "CA"},
+    {"record_id": "alfi2017a-global-projections-river", "kind": "global synthesis",
+     "expect_scope": "global", "expect_study_site_contains": [], "expect_origin_country": "IT"},
+    {"record_id": "bira2007a-dbscan-algorithm-clustering", "kind": "methods paper (algorithm)",
+     "expect_scope": "non-spatial", "expect_study_site_contains": [], "expect_origin_country": "TR"}
+  ]
+}

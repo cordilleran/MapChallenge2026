@@ -18,6 +18,13 @@
 - **Names:** Canadian Geographical Names Database, Natural Resources Canada (Open Government Licence - Canada); USGS Geographic Names Information System (public domain). Published summit heights from OpenStreetMap (ODbL) for 16 peaks.
 - **Vectors:** park boundary, Government of Alberta (Open Government Licence - Alberta); 2017 Kenow fire perimeter, Canadian Wildland Fire Information System, National Burned Area Composite (Open Government Licence - Canada); Red Rock Parkway and trails, © OpenStreetMap contributors (ODbL).
 
+## Day 9 (Urban-rural): data
+- **OpenAlex** (Priem, Piwowar and Orr 2022): works, author institutions, topics and keywords, read from the public API on 8 November 2026. CC0. <https://openalex.org>
+- **GeoNames** gazetteer (allCountries, countryInfo, admin1 codes), downloaded 8 November 2026. CC BY 4.0. <https://www.geonames.org>
+- **GHS-SMOD R2023A** (Schiavina, Melchiorri and Pesaresi 2023, <https://doi.org/10.2905/A0DF7A6F-49DE-46EA-9BDE-563437A6E2BA>) and **GHS-POP R2023A** (Schiavina, Freire and MacManus 2023, <https://doi.org/10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE>), European Commission, Joint Research Centre, epoch 2020, 1 km. CC BY 4.0. Used for settlement classes and population shares; the grids are not redistributed.
+- **Natural Earth** 1:50m admin-0 countries (with the UN M49 and World Bank region fields) and 1:10m admin-1 states and provinces, simplified, in `site/day09/data/`. Public domain.
+- **Claude Haiku** (Anthropic) read titles, abstracts, keywords and the opening and study-area sections of the papers to classify place roles, scope and setting; the library's texts are not redistributed.
+
 ## Software in this repository
 - **Leaflet 1.9.4**, BSD-2-Clause, © 2010-2023 Vladimir Agafonkin, © 2010-2011 CloudMade: `site/vendor/leaflet-1.9.4/` (licence text included).
 - **IBM Plex Mono**, © 2017 IBM Corp., and **Newsreader**, © 2020 The Newsreader Project Authors: SIL Open Font License 1.1, files and licence texts in `site/fonts/`.
