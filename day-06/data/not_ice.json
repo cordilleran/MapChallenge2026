@@ -1,0 +1,7 @@
+{
+  "note": "Places where the 1913 ice reading (03_ice1913.py) picks up blue ink that is not ice. Each point removes the connected ice patch that contains it, in every one of the nine runs. Checked on crops of the master TIFF scan (4 m warp) with the reading overlaid, 2026-11-10, by Claude Code at GW's question about a patch south-east of Paget Peak. A test (tests/test_day06.py) checks that each point is outside the 1913 ice. E, N: EPSG:26911.",
+  "points": [
+    {"E": 542305, "N": 5718587, "reason": "a loop of blue creeks on brown slopes at the north edge of the frame; no blue contour lines"},
+    {"E": 544126, "N": 5705240, "reason": "a junction of blue creeks at 1,880 to 1,930 m above Wapta Lake; no blue contour lines"}
+  ]
+}

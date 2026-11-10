@@ -1,0 +1,91 @@
+---
+pagetitle: "Day 6 Vintage: Sheet No. 16, repeated"
+format:
+  html:
+    theme: none
+    css: styles.css
+    toc: false
+    title-block-style: none
+    page-layout: custom
+---
+
+::: {.wrap .day}
+
+<nav class="crumb"><a href="index.html">30 Day Map Challenge 2026</a> <span>/</span> Day 6</nav>
+
+<header>
+<p class="kicker">Day 6 · Vintage · 6 November 2026</p>
+<h1>Sheet No. 16, repeated</h1>
+<p class="sub">The Interprovincial Boundary Commission's 1925 sheet of Kicking Horse Pass, the Waputik Icefield and the Yoho Valley, drawn again from 2021 terrain and ice in the sheet's own manner. Glaciers there have no fill: contours turn from brown to blue where they cross ice. The blue dash and dot is where the ice reached when the sheet was surveyed.</p>
+</header>
+
+```{=html}
+<link rel="stylesheet" href="css/day06.css?v=20261110g">
+<div class="d6-tools">
+  <div class="seg small" role="group" aria-label="Units of the repeat"><button type="button" data-units="ft" aria-pressed="true">Feet, as in 1925</button><button type="button" data-units="m" aria-pressed="false">Metres</button></div>
+  <div class="seg small" role="group" aria-label="Colours of the 1925 sheet"><button type="button" data-scan="raw" aria-pressed="true">As scanned</button><button type="button" data-scan="matched" aria-pressed="false">In the repeat's inks</button></div>
+</div>
+<div id="d6-compare" aria-label="The 1925 sheet on the left of the divider, the 2021 repeat on the right">
+  <img id="d6-base" src="img/day06/2021.webp" alt="The 2021 repeat: brown contours on rock, blue contours on the ice that remains, a blue dash-and-dot line at the 1913 ice limit" width="2000" height="2462">
+  <img id="d6-top" src="img/day06/scan.webp" alt="The 1925 sheet, georeferenced to the same frame" width="2000" height="2462">
+  <div id="d6-bar"></div>
+  <span class="tag l">1925 sheet</span><span class="tag r">2021</span>
+</div>
+<label class="rline small">Drag across the map, or use this control: <input id="d6-range" class="d6-range" type="range" min="0" max="100" step="0.5" value="50" aria-label="Divider between the 1925 sheet and the 2021 repeat, percent from the left"></label>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/5.0.1/openseadragon.min.js"></script>
+<script defer src="js/day06.js?v=20261110g"></script>
+```
+
+<figure class="wide"><div class="d6-sheet-tools"><div class="seg small"><button type="button" id="d6-zoom" aria-pressed="false" aria-controls="d6-sheet-box">Zoom in</button></div></div><div id="d6-sheet-box"><img id="d6-sheet" src="img/day06/sheet.webp" alt="The full repeat sheet with title, map, scale, references and sources" width="2000" height="2770"></div><figcaption>The full repeat, 1:62,500 at print size. Click it, or the button, to zoom in; drag or scroll to move; click again or press Escape to see it whole.</figcaption></figure>
+
+<figure class="wide"><div id="d6-scan-viewer" role="img" aria-label="The 1925 sheet as scanned at 600 ppi, zoomable, with a small overview of the whole sheet"></div><figcaption>The 1925 sheet itself, the 600 ppi master scan with its margins. Zoom with the + and − buttons, a double click or a pinch; drag to move. The small sheet in the corner shows where you are. The original files are at the <a href="https://archive.org/details/AB-BC-sheet16">Internet Archive</a>.</figcaption></figure>
+
+<details class="d6-fold">
+<summary><h2>What changed</h2></summary>
+
+<div class="cols">
+<div>
+
+**Ice inside the sheet's frame:** about **79 km²** when surveyed in 1913 (the sheet was revised in 1925), 54 km² in 1985 and 46 km² in 2021. That is a loss of about 41 %, or 31 to 47 % across the method's range. Most of it came before the first satellite outline in 1985.
+
+**Where to look.** In 1913 the Balfour Glacier ended about 2.5 km above Hector Lake; by 2021 its nearest ice was 3.3 km away. The flat between, where Balfour Creek braids into the lake, carries a blue stipple the legend does not list. It reads as gravel flats and delta, as on the Yoho River below the Yoho Glacier. Takakkaw Lake fills ground the Daly Glacier covered in 1913. The Hector and Molar glaciers sit well inside their 1913 lines. The sheet also misses ice: on the north face of Popes Peak and beside The Preacher, the 1985 ice lies where it draws rock.
+
+</div>
+<div>
+
+**Reading the repeat.** Brown contours are rock and soil, blue contours are ice in 2021: every 100 feet, heavier every 1,000 (metric: every 25 m, heavier every 250 m). Blue dots mark the 2021 ice margin; the grey-blue tint is ground the ice has left since 1913. Heights stand under summits and on lakes, as on the sheet. Lakes are water-lined, roads red, trails red dashes, the railway black with ties, the provincial boundary heavy black dashes. Names follow the sheet: Mt., Pk., Mtn., L. and Cr.; creek names along their creeks; glacier names spaced across the slope, in the ice that is left. The full sheet adds the sheet's own corner coordinates and a modern 5-minute graticule (NAD83). The frame sits about 170 m from modern lines of the same value: the old datum plus the sheet's drawing. The 1925 sheet ruled the Dominion Land Survey township grid instead.
+
+</div>
+</div>
+
+</details>
+
+<details class="d6-fold">
+<summary><h2>Data, method and limits</h2></summary>
+
+<div class="cols">
+<div>
+
+**Data.** The 1925 sheet: Office of the Surveyor-General of Canada, *Boundary between Alberta and British Columbia, Sheet 16*, revised edition, 1:62,500 (Ottawa: Surveyor-General's Office, 1925; catalogued as 1924), map, William C. Wonders Map Collection, University of Alberta Library, accessed via the Internet Archive, <https://archive.org/details/AB-BC-sheet16> (public domain). Surveyed in 1903, 1906 and 1913; drawn and printed by the Topographical Survey of Canada. Used here: the 600 ppi master scan. Terrain: NRCan MRDEM-30 (Open Government Licence - Canada). Ice 1985 and 2021: Bevington and Menounos (2022), *Remote Sensing of Environment* 270, 112862, outlines doi:10.5281/zenodo.5900363 (CC BY 4.0). Water, roads, trails, railway and boundary: © OpenStreetMap contributors (ODbL). Names: Canadian Geographical Names Database (Open Government Licence - Canada).
+
+**Placing the sheet.** The corner coordinates printed on the frame, taken as NAD27, fix an even (bilinear) stretch of the scan. The whole is then moved 46 m west and 114 m south: the average offset of eleven printed summit stations from the modern terrain's high points. A station then lies within **157 m** of its summit (root mean square, each station left out in turn), about 2.5 mm on the paper. A fit through the stations did no better; the rest is the sheet's own drawing error.
+
+**Mapping the 1913 ice.** Each pixel of the scan is split into blue and brown ink by how much red and blue light it absorbs against the paper nearby. Ice is dense blue contour ink that makes up most of the ink around it, above 1,850 m and away from lakes and rivers (also printed blue). A modern lake beside the 1985 ice counts as ground the ice covered (Takakkaw Lake). Nine combinations of the two main settings give 68 to 88 km²; the map shows the middle one. Every 1913 patch with no ice left in 1985 was checked on the scan: five are drawn ice that has gone, and two were blue creeks on brown slopes, removed by a listed exception in the code. As a check, 89 % of the 1985 ice lies inside the 1913 line. Most of the rest is the sheet's position error, small ice in dense rock drawing, and ice the sheet draws as rock.
+
+</div>
+<div>
+
+**Heights.** Summits come from OpenStreetMap, and a height is printed only where it agrees with the terrain model (which can sit up to 150 m below a sharp top). Mount Balfour reads 10,735 ft against the sheet's 10,741; Trolltinder Mountain 9,570 on both. Names are the official ones (CGNDB). Official summits missing from OpenStreetMap sit on the model's top near the name, without a height. Lake heights are the model's.
+
+**Colours.** The 1925 sheet is shown as scanned by default. *In the repeat's inks* cleans the paper of age and stains and moves each ink (blue, brown, black, red) to the repeat's colour for it, at the same density. The result is more saturated than the original, so it is a comparison, not the default.
+
+**Limits.** The 1913 line is an automatic reading of a printed map and shares the sheet's position error. The 30 m terrain cuts the tops off sharp summits by tens of metres, and the 2021 outlines are about 5 % uncertain in area. The sheet's heights are above mean sea level as levelled before 1928; the model's are on CGVD2013, about 0.6 m higher here. That is small next to the 100-foot contour interval, and the sheet's heights were checked only at Balfour and Trolltinder.
+
+**Methods.** I chose the theme and the sheet. A first attempt by Gemini agents in Antigravity looked finished, but many features were placed at positions typed into the code rather than measured from the scan or taken from data, so it was set aside. I then directed Claude Code (Anthropic; Claude Opus 5.5) to rebuild it in Python with GDAL and QGIS, and reviewed the result. Code: `day-06/` in this repository.
+
+</div>
+</div>
+
+</details>
+
+:::

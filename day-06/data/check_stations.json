@@ -1,0 +1,16 @@
+{
+  "note": "Check points for the georeferencing of Sheet No. 16. px, py: centre of the printed station symbol on the scan (found by eye at 2x zoom, then refined to the centroid of the black ink within 7 px). E, N: highest MRDEM-30 cell (10 m resampling, EPSG:26911) within 400 m of the CGNDB point of the same name. Narao Peak has two symbols on the sheet and is kept as a known hard case.",
+  "stations": [
+    {"name": "Waputik Peak", "px": 1637.9, "py": 1489.8, "E": 547289.3, "N": 5706064.7},
+    {"name": "Pulpit Peak", "px": 1307.9, "py": 808.2, "E": 543769.3, "N": 5713124.7},
+    {"name": "Paget Peak", "px": 1334.5, "py": 1978.6, "E": 544089.3, "N": 5701124.7},
+    {"name": "Narao Peak", "px": 1646.4, "py": 2430.3, "E": 547609.3, "N": 5695914.7},
+    {"name": "Mount Balfour", "px": 666.9, "py": 841.3, "E": 536999.3, "N": 5712824.7},
+    {"name": "Mount Field", "px": 692.0, "py": 2256.1, "E": 537329.3, "N": 5697894.7},
+    {"name": "Mount Daly", "px": 1130.5, "py": 1329.7, "E": 541879.3, "N": 5707634.7},
+    {"name": "Wapta Mountain", "px": 596.1, "py": 2037.6, "E": 536319.3, "N": 5700154.7},
+    {"name": "Mount Burgess", "px": 413.8, "py": 2367.9, "E": 534379.3, "N": 5696664.7},
+    {"name": "Mount Gordon", "px": 354.1, "py": 410.9, "E": 533719.3, "N": 5717384.7},
+    {"name": "Mount Hector", "px": 2018.4, "py": 739.9, "E": 551369.3, "N": 5714124.7}
+  ]
+}

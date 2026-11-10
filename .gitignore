@@ -41,3 +41,6 @@ day-09/**/*.duckdb.wal
 day-09/**/*scores*.json
 day-09/**/gold_packet.md
 site/data/day09.js
+
+# Day 6: local settings, quick looks and the local QGIS project stay out of git
+day-*/out/quicklooks/
