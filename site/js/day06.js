@@ -1,5 +1,5 @@
 // Day 6: before/after slider, pickers for the units of the repeat and the colours of the scan,
-// a zoomed view of the full sheet, and the tiled 600 ppi scan. Loaded with defer, so the whole page is parsed first.
+// and tiled zoom viewers for the full repeat and the 600 ppi scan. Loaded with defer, so the whole page is parsed first.
 (function () {
   const IMG = "img/day06/";
   const wrap = document.getElementById("d6-compare");
@@ -7,9 +7,6 @@
   const base = document.getElementById("d6-base");
   const range = document.getElementById("d6-range");
   const bar = document.getElementById("d6-bar");
-  const sheet = document.getElementById("d6-sheet");
-  const sheetBox = document.getElementById("d6-sheet-box");
-  const zoomBtn = document.getElementById("d6-zoom");
   if (!wrap || !top || !range) return;
 
   // Slider.
@@ -35,14 +32,13 @@
   // Pickers: each group of buttons sets one image source.
   const SRC = {
     units: {
-      ft: { base: "2021.webp", sheet: "sheet.webp", zoom: "sheet_zoom.webp" },
-      m: { base: "2021_m.webp", sheet: "sheet_m.webp", zoom: "sheet_m_zoom.webp" },
+      ft: { base: "2021.webp", sheet: "sheet.webp", tiles: "sheet" },
+      m: { base: "2021_m.webp", sheet: "sheet_m.webp", tiles: "sheet_m" },
     },
     scan: { matched: "scan_matched.webp", raw: "scan.webp" },
   };
   let units = "ft";
-  let zoomed = false;
-  function sheetSrc() { return IMG + SRC.units[units][zoomed ? "zoom" : "sheet"]; }
+  let sheetViewer = null;
   function pick(attr, apply) {
     const buttons = document.querySelectorAll(`.d6-tools button[${attr}]`);
     buttons.forEach((b) => b.addEventListener("click", () => {
@@ -50,23 +46,32 @@
       apply(b.getAttribute(attr));
     }));
   }
+  const dzi = (name) => IMG + "tiles/" + name + ".dzi";
   pick("data-units", (u) => {
     units = u;
     base.src = IMG + SRC.units[u].base;
-    if (sheet) sheet.src = sheetSrc();
+    const plain = document.getElementById("d6-sheet");
+    if (plain) plain.src = IMG + SRC.units[u].sheet;
+    if (sheetViewer) {
+      // Same sheet size in both units, so the view stays on the same place.
+      const view = sheetViewer.viewport.getBounds();
+      sheetViewer.addOnceHandler("open", () => sheetViewer.viewport.fitBounds(view, true));
+      sheetViewer.open(dzi(SRC.units[u].tiles));
+    }
   });
   pick("data-scan", (k) => { top.src = IMG + SRC.scan[k]; });
 
-  // The 600 ppi scan, tiled (img/day06/scan, from 08b_scan_tiles.py), opened when it nears the screen.
-  const scanBox = document.getElementById("d6-scan-viewer");
-  if (scanBox && window.OpenSeadragon && "IntersectionObserver" in window) {
+  // The full repeat and the 600 ppi scan, tiled (img/day06/tiles, from 08b_tiles.py), each opened when it
+  // nears the screen. Until then (or without scripts) the repeat is a plain image.
+  function deepZoom(box, tiles, onOpen) {
+    if (!box || !window.OpenSeadragon || !("IntersectionObserver" in window)) return;
     const seen = new IntersectionObserver((entries) => {
       if (!entries.some((e) => e.isIntersecting)) return;
       seen.disconnect();
-      window.OpenSeadragon({
-        element: scanBox,
+      const viewer = window.OpenSeadragon({
+        element: box,
         prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/5.0.1/images/",
-        tileSources: IMG + "scan/sheet16.dzi",
+        tileSources: dzi(tiles()),
         showNavigator: true,
         navigatorPosition: "TOP_RIGHT",
         navigatorSizeRatio: 0.18,
@@ -78,50 +83,12 @@
         maxZoomPixelRatio: 2,
         gestureSettingsMouse: { scrollToZoom: false }, // the wheel keeps scrolling the page
       });
+      // The plain image stays until the first tiles arrive (OpenSeadragon 5 no longer fires tile-drawn).
+      viewer.addOnceHandler("tile-loaded", () => box.querySelector(":scope > img")?.remove());
+      if (onOpen) onOpen(viewer);
     }, { rootMargin: "300px" });
-    seen.observe(scanBox);
+    seen.observe(box);
   }
-
-  // Zoomed view of the full sheet: a 400 dpi image in a scrolling box, panned by dragging.
-  if (!sheet || !sheetBox || !zoomBtn) return;
-  const ZOOM = 3; // image width as a multiple of the box
-  function zoom(on, fx, fy) {
-    zoomed = on;
-    sheetBox.classList.toggle("zoomed", on);
-    zoomBtn.setAttribute("aria-pressed", String(on));
-    zoomBtn.textContent = on ? "Fit the sheet" : "Zoom in";
-    sheet.src = sheetSrc();
-    // Keep the point that was clicked (fractions fx, fy of the image) in the middle of the box.
-    if (on) {
-      const w = sheetBox.clientWidth * ZOOM;
-      const h = w * sheet.height / sheet.width;
-      sheetBox.scrollLeft = fx * w - sheetBox.clientWidth / 2;
-      sheetBox.scrollTop = fy * h - sheetBox.clientHeight / 2;
-    }
-  }
-  zoomBtn.addEventListener("click", () => zoom(!zoomed, 0.5, 0.3));
-  document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && zoomed) zoom(false); });
-  let drag = null;
-  let moved = false;
-  sheetBox.addEventListener("pointerdown", (ev) => {
-    moved = false;
-    if (!zoomed || ev.pointerType !== "mouse") return; // touch pans by scrolling
-    drag = { x: ev.clientX, y: ev.clientY, l: sheetBox.scrollLeft, t: sheetBox.scrollTop };
-    sheetBox.setPointerCapture(ev.pointerId);
-  });
-  sheetBox.addEventListener("pointermove", (ev) => {
-    if (!drag) return;
-    if (Math.abs(ev.clientX - drag.x) + Math.abs(ev.clientY - drag.y) > 4) moved = true;
-    sheetBox.scrollLeft = drag.l - (ev.clientX - drag.x);
-    sheetBox.scrollTop = drag.t - (ev.clientY - drag.y);
-  });
-  const end = () => { drag = null; };
-  sheetBox.addEventListener("pointerup", end);
-  sheetBox.addEventListener("pointercancel", end);
-  // A click (not a drag) zooms in on that point, or back out.
-  sheet.addEventListener("click", (ev) => {
-    if (moved) return;
-    const r = sheet.getBoundingClientRect();
-    zoom(!zoomed, (ev.clientX - r.left) / r.width, (ev.clientY - r.top) / r.height);
-  });
+  deepZoom(document.getElementById("d6-sheet-viewer"), () => SRC.units[units].tiles, (v) => { sheetViewer = v; });
+  deepZoom(document.getElementById("d6-scan-viewer"), () => "scan");
 })();

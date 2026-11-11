@@ -3,7 +3,7 @@
 This script is the one source of truth for the style. It builds the layers and symbols in code,
 saves each layer style as a QML file in day-06/styles/ (feet) and styles/metric/ (the QGIS style
 kit), and exports, in feet as on the sheet and in metres (suffix _m):
-- out/day06_sheet[_m].png   the full sheet: title, map, collar, references (and _zoom at 400 dpi)
+- out/day06_sheet[_m].png   the full sheet: title, map, collar, references (and _zoom at 600 dpi, for the tiled viewer)
 - out/day06_modern[_m].png  the map frame only (for the comparison slider)
 - out/day06_scan.png        the georeferenced 1925 scan, same frame and size (07b colour-matches it)
 
@@ -62,7 +62,7 @@ STYLES = OUT.parent / "styles"
 TM = "+proj=tmerc +lat_0=51.5 +lon_0=-116.3908 +k=1 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs"
 SCALE = 62500
 DPI = 200
-ZOOM_DPI = 400  # the full sheet again, for the page's zoomed view
+ZOOM_DPI = 600  # the full sheet again at the scan's 600 ppi, cut into tiles for the page's zoom viewer (08b)
 LABEL_MARGIN_MM = 2.5  # no label closer than this to the map edge (156 m at 1:62,500)
 
 SERIF, SANS = "EB Garamond", "Nimbus Sans"

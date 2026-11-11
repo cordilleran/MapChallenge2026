@@ -9,13 +9,6 @@
 #d6-compare .tag.r { right: 8px; }
 .d6-range { width: 100%; margin: .5rem 0 0; }
 .d6-tools { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 10px; }
-/* The full sheet, with a zoomed view (day06.js) */
-.d6-sheet-tools { display: flex; justify-content: flex-end; margin: 0 0 6px; }
-#d6-sheet-box { overflow: auto; overscroll-behavior: contain; }
-#d6-sheet-box img { display: block; width: 100%; height: auto; cursor: zoom-in; }
-#d6-sheet-box.zoomed { max-height: 85vh; outline: 1px solid #c8bfa8; }
-#d6-sheet-box.zoomed img { width: 300%; max-width: none; cursor: zoom-out; }
-@media (pointer: fine) { #d6-sheet-box.zoomed { cursor: grab; } }
 /* Fold-down text sections: the heading is the control. */
 .d6-fold { margin: 1.5rem 0 0; border-top: 1px solid #c8bfa8; }
 .d6-fold > summary { cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: .5rem; }
@@ -25,6 +18,8 @@
 .d6-fold > summary h2 { display: inline; margin: .6rem 0; }
 .d6-fold > summary:focus-visible { outline: 2px solid #163f66; outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .d6-fold > summary::before { transition: none; } }
-/* The 600 ppi scan in a tiled viewer (OpenSeadragon), with an overview in the corner. */
-#d6-scan-viewer { width: 100%; height: min(80vh, 900px); background: #efe8d6; outline: 1px solid #c8bfa8; }
-#d6-scan-viewer .navigator { background: #efe8d6 !important; }
+/* The full repeat and the 600 ppi scan in tiled viewers (OpenSeadragon), with an overview in the corner.
+   Before the viewer opens (or without scripts) the repeat shows as a plain image. */
+.d6-deep { position: relative; width: 100%; height: min(80vh, 900px); background: #efe8d6; outline: 1px solid #c8bfa8; }
+.d6-deep > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: transparent; }
+.d6-deep .navigator { background: #efe8d6 !important; }

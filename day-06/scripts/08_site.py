@@ -1,6 +1,6 @@
 """Copy the Day 6 images to the site as WebP, and write the numbers the page quotes.
 
-Writes site/img/day06/{scan,scan_matched,2021,2021_m,sheet,sheet_m,sheet_zoom,sheet_m_zoom}.webp, site/img/day06_thumb.webp and
+Writes site/img/day06/{scan,scan_matched,2021,2021_m,sheet,sheet_m}.webp, site/img/day06_thumb.webp and
 site/data/day06.json (areas, ranges and georeferencing error, from derived/*.json).
 """
 import json
@@ -10,7 +10,7 @@ from sheet import DERIVED, OUT
 
 SITE = OUT.parents[1] / "site"
 SLIDER_PX = 2000  # the scan now comes from the 600 ppi master and holds detail at this width
-Image.MAX_IMAGE_PIXELS = None  # the zoom sheets are 49 Mpx renders of our own
+# The 600 dpi sheets for the zoom viewer are tiled by 08b_tiles.py, not here.
 
 
 def webp(src, dst, width, quality=82):
@@ -32,9 +32,6 @@ def main():
         "2021_m": webp(OUT / "day06_modern_m.png", d / "2021_m.webp", SLIDER_PX),
         "sheet": webp(OUT / "day06_sheet.png", d / "sheet.webp", 2000),
         "sheet_m": webp(OUT / "day06_sheet_m.png", d / "sheet_m.webp", 2000),
-        # Loaded only when the reader zooms the full sheet.
-        "sheet_zoom": webp(OUT / "day06_sheet_zoom.png", d / "sheet_zoom.webp", None, quality=78),
-        "sheet_m_zoom": webp(OUT / "day06_sheet_m_zoom.png", d / "sheet_m_zoom.webp", None, quality=78),
     }
     # Thumbnail: the Waputik Icefield and Hector Lake, from the modern map.
     im = Image.open(OUT / "day06_modern.png").convert("RGB")

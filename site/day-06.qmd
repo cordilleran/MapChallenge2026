@@ -20,7 +20,7 @@ format:
 </header>
 
 ```{=html}
-<link rel="stylesheet" href="css/day06.css?v=20261110g">
+<link rel="stylesheet" href="css/day06.css?v=20261110h">
 <div class="d6-tools">
   <div class="seg small" role="group" aria-label="Units of the repeat"><button type="button" data-units="ft" aria-pressed="true">Feet, as in 1925</button><button type="button" data-units="m" aria-pressed="false">Metres</button></div>
   <div class="seg small" role="group" aria-label="Colours of the 1925 sheet"><button type="button" data-scan="raw" aria-pressed="true">As scanned</button><button type="button" data-scan="matched" aria-pressed="false">In the repeat's inks</button></div>
@@ -33,12 +33,12 @@ format:
 </div>
 <label class="rline small">Drag across the map, or use this control: <input id="d6-range" class="d6-range" type="range" min="0" max="100" step="0.5" value="50" aria-label="Divider between the 1925 sheet and the 2021 repeat, percent from the left"></label>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/5.0.1/openseadragon.min.js"></script>
-<script defer src="js/day06.js?v=20261110g"></script>
+<script defer src="js/day06.js?v=20261110h"></script>
 ```
 
-<figure class="wide"><div class="d6-sheet-tools"><div class="seg small"><button type="button" id="d6-zoom" aria-pressed="false" aria-controls="d6-sheet-box">Zoom in</button></div></div><div id="d6-sheet-box"><img id="d6-sheet" src="img/day06/sheet.webp" alt="The full repeat sheet with title, map, scale, references and sources" width="2000" height="2770"></div><figcaption>The full repeat, 1:62,500 at print size. Click it, or the button, to zoom in; drag or scroll to move; click again or press Escape to see it whole.</figcaption></figure>
+<figure class="wide"><div id="d6-sheet-viewer" class="d6-deep" role="img" aria-label="The full repeat sheet with title, map, scale, references and sources, zoomable, with a small overview of the whole sheet"><img id="d6-sheet" src="img/day06/sheet.webp" alt="The full repeat sheet with title, map, scale, references and sources" width="2000" height="2770"></div><figcaption>The full repeat, 1:62,500, drawn at 600 dpi like the scan below. Zoom with the + and − buttons, a double click or a pinch; drag to move. The units buttons at the top of the page switch it between feet and metres.</figcaption></figure>
 
-<figure class="wide"><div id="d6-scan-viewer" role="img" aria-label="The 1925 sheet as scanned at 600 ppi, zoomable, with a small overview of the whole sheet"></div><figcaption>The 1925 sheet itself, the 600 ppi master scan with its margins. Zoom with the + and − buttons, a double click or a pinch; drag to move. The small sheet in the corner shows where you are. The original files are at the <a href="https://archive.org/details/AB-BC-sheet16">Internet Archive</a>.</figcaption></figure>
+<figure class="wide"><div id="d6-scan-viewer" class="d6-deep" role="img" aria-label="The 1925 sheet as scanned at 600 ppi, zoomable, with a small overview of the whole sheet"></div><figcaption>The 1925 sheet itself, the 600 ppi master scan with its margins. Same controls; the small sheet in the corner shows where you are. The original files are at the <a href="https://archive.org/details/AB-BC-sheet16">Internet Archive</a>.</figcaption></figure>
 
 <details class="d6-fold">
 <summary><h2>What changed</h2></summary>
