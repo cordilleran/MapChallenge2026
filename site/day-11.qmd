@@ -73,7 +73,7 @@ window.addEventListener('message', (e) => {
 
 ::: {.d11-changes}
 
-**Relief with imagery** (Day 6, the tiled zoom). A hillshade blended with Sentinel-2 true colour from 22 May to 29 June 2021, most of it from the clear, hot days of 25 to 29 June just before the storm: the land the lightning crossed. It is cut into map tiles, so you can now zoom to eight times the starting view (it was two), and it stays sharp to about 100 m.
+**Relief with imagery** (Day 6, the tiled zoom). A hillshade blended with Sentinel-2 true colour from 22 May to 29 June 2021, most of it from the clear, hot days of 25 to 29 June just before the storm: the land the lightning crossed. Each pixel is the median of the three clearest scenes, so a passing cloud or its shadow drops out, and the colour is held dark so the flashes stay the brightest thing. It is cut into map tiles, so you can now zoom to eight times the starting view (it was two), and it stays sharp to about 100 m.
 
 **Rivers that wait for zoom** (Day 1, stream order; Day 6, layers that keep quiet). The old map drew every stream of order 4 and up at once, which was busy. Now only the main rivers show at the start, and each step of zoom adds the next order down. Lakes are filled and drawn over the streams.
 
@@ -82,6 +82,10 @@ window.addEventListener('message', (e) => {
 **Scale bar and north arrow** (the project rule since Day 2). The map had neither.
 
 **Buttons for the layers** (Day 6, pickers). Relief, rivers and lakes, highways and towns each switch on and off from a row of buttons above the map.
+
+**Flashes that glow and fade** (Day 4, the same storm; research on animated maps). Each flash blooms and fades over about a second of real time at any playback speed, and bursts brighten where glows overlap. Its ember then cools smoothly from blue-white through amber and red to violet over the strikes window, where the old markers jumped between four colours every 0.4 s. Animated maps say more when they show less at once, and readers miss changes between frames when everything moves together (Harrower 2003; Fish 2010). With reduced motion set, the glows stay short and do not grow. Add `?flashes=classic` to the piece's address for the old markers.
+
+**A start you can see** (found by trying the piece in a fresh Firefox private window). The 31 instrument sounds are about 10 MB; the Start button now counts them in.
 
 **A steadier pin** (Day 4, the same storm). The map sometimes shook while it followed the pin. The follow now aims only where the map is allowed to go and holds still for small moves. The shake was rare and did not show in testing before or after, so this is a likely fix, not a proven one.
 
@@ -96,9 +100,9 @@ window.addEventListener('message', (e) => {
 
 **Data.** Flashes: GOES-17 Geostationary Lightning Mapper (NOAA/NESDIS, open data). Terrain: AWS Terrain Tiles (Mapzen and others; [sources](https://github.com/tilezen/joerd/blob/master/docs/attribution.md)). Imagery: contains modified Copernicus Sentinel data 2021, scenes found through the Element 84 Earth Search catalogue. Rivers and lakes: BC Freshwater Atlas (Open Government Licence - British Columbia). Towns and highways: © OpenStreetMap contributors (ODbL). The weather, sound and sample credits are in the piece's own *About this page*.
 
-**Method.** For each Sentinel-2 grid tile, the clearest scene in the window (48 tiles), read at 80 m and mosaicked; the hillshade (sun from the north-west, relief exaggerated twice) sets the light, the imagery the colour, darkened for the piece's night palette. Rivers are Strahler orders from the Freshwater Atlas. The towns are OpenStreetMap's six largest by their population tags in and around the storm's extent; places without a population tag cannot rank.
+**Method.** For each Sentinel-2 grid tile, the three clearest scenes in the window, read at 80 m, mosaicked by rank and combined by per-pixel median; the hillshade (sun from the north-west, relief exaggerated twice) sets the light, the imagery the colour, darkened for the piece's night palette. Rivers are Strahler orders from the Freshwater Atlas. The towns are OpenStreetMap's six largest by their population tags in and around the storm's extent; places without a population tag cannot rank.
 
-**Limits.** The imagery is a mosaic of different days, so colour can step at scene edges. Some communities (108 Mile Ranch, Lac La Hache) have no population tag in OpenStreetMap and so no label. The page says nothing about what started any fire.
+**Limits.** The imagery is a mosaic of different days, so colour can step at scene edges; where no scene covers the ground, the nearest colour fills in under the hillshade. Some communities (108 Mile Ranch, Lac La Hache) have no population tag in OpenStreetMap and so no label. The page says nothing about what started any fire.
 
 **Methods.** I chose the theme, the piece and the changes. Claude Code (Anthropic; Claude Opus 5.5) built them and tested the page in a headless browser at desktop and phone sizes. The page code is on [sonify-viz](https://github.com/cordilleran/sonify-viz/tree/main/lightning); the map builders stay with the project working files.
 
