@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hillslope Lab</title>
+<meta name="description" content="Day 10: a dryland mountain front under storms, creep and shrubs, simulated in Python with Landlab, with the benchmark sprint that tested the code.">
+<link rel="icon" href="{{ROOT}}favicon.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:"Newsreader";src:url("{{ROOT}}fonts/newsreader-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Newsreader";src:url("{{ROOT}}fonts/newsreader-latin-400-italic.woff2") format("woff2");font-style:italic;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("{{ROOT}}fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"IBM Plex Mono";src:url("{{ROOT}}fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2");font-weight:500;font-display:swap}
+:root{
+  --ground:#f3f0ea; --ink:#1e1a15; --muted:#6b6257; --line:#d9d1c4; --tile:#fbf9f5; --focus:#2b6f94;
+  --accent:#9a4a1c; --erode:#b5532a; --deposit:#1d6fa5; --mid:#e6e1d8; --veg:#3f7a3a; --flow:#2b6f94;
+  --contour:rgba(40,28,16,.38); --code:#ece7de;
+  --serif:"Newsreader",Georgia,serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --pass:#2f6b3a; --fail:#a3361f; --pending:#6b6257;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#16130f; --ink:#efe9df; --muted:#a59a8b; --line:#3a332a; --tile:#1f1b16; --focus:#7fb7d6;
+  --accent:#e2955f; --erode:#c8693d; --deposit:#3f93cf; --mid:#3a352e; --veg:#7cba6c; --flow:#7fb7d6;
+  --contour:rgba(20,14,8,.5); --code:#26211b;
+  --pass:#7cba6c; --fail:#ef7b5f; --pending:#a59a8b;
+}}
+:root[data-theme="dark"]{
+  --ground:#16130f; --ink:#efe9df; --muted:#a59a8b; --line:#3a332a; --tile:#1f1b16; --focus:#7fb7d6;
+  --accent:#e2955f; --erode:#c8693d; --deposit:#3f93cf; --mid:#3a352e; --veg:#7cba6c; --flow:#7fb7d6;
+  --contour:rgba(20,14,8,.5); --code:#26211b;
+  --pass:#7cba6c; --fail:#ef7b5f; --pending:#a59a8b;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:17px/1.55 var(--serif)}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wrap{max-width:1320px;margin:0 auto;padding:0 16px}
+header.top{padding:28px 0 18px;border-bottom:1px solid var(--line)}
+.crumb,.kicker,.lbl,.mono,table,.tile b,.chip,.runline{font-family:var(--mono)}
+.crumb{font-size:13px;color:var(--muted)} .crumb a{color:var(--muted)}
+.kicker{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:14px 0 4px}
+h1{font-size:clamp(30px,4.4vw,46px);line-height:1.08;margin:0 0 10px;font-weight:400;text-wrap:balance}
+h2{font-size:26px;font-weight:400;margin:0 0 8px;text-wrap:balance}
+h3{font-size:19px;font-weight:400;margin:14px 0 4px}
+.sub{max-width:70ch;margin:0;color:var(--muted)}
+.lab{display:grid;grid-template-columns:260px minmax(0,1fr) 340px;gap:20px;padding:22px 0}
+@media (max-width:1100px){.lab{grid-template-columns:minmax(0,1fr) 320px}.controls{grid-column:1/-1;display:grid !important;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
+@media (max-width:760px){.lab{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--tile);border:1px solid var(--line);border-radius:6px;padding:14px}
+.controls{display:flex;flex-direction:column;gap:16px;align-self:start}
+.lbl{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.grp{font:11px var(--mono);color:var(--muted);margin:8px 0 4px}
+.grp:first-child{margin-top:0}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.btn{font:13px var(--mono);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;padding:6px 9px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.seg button:hover,.btn:hover{border-color:var(--accent)}
+.check{display:flex;gap:8px;align-items:center;font:13px var(--mono);margin-top:8px;cursor:pointer}
+.check input{accent-color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.note{font-size:14px;color:var(--muted);margin:6px 0 0}
+.guide{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.guide button{width:100%;text-align:left;font:13px var(--mono);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:4px;padding:6px 9px;cursor:pointer;display:flex;justify-content:space-between;gap:8px}
+.guide button:hover{border-color:var(--accent)}
+.guide button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.guide small{color:var(--muted);font-size:12px;white-space:nowrap}
+#guide-note{font-size:14px;margin:8px 0 0;min-height:1.5em}
+#map{width:100%;aspect-ratio:1;display:block;border-radius:4px;border:1px solid var(--line);cursor:crosshair;background:var(--mid)}
+.runline{font-size:12px;color:var(--muted);margin:8px 0 0;display:flex;flex-wrap:wrap;gap:4px 14px}
+.runline b{font-weight:500;color:var(--ink)}
+.legend{display:flex;align-items:center;gap:10px;font:12px var(--mono);color:var(--muted);margin-top:8px;flex-wrap:wrap}
+.legend .bar{flex:1;min-width:120px;height:10px;border-radius:2px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
+.tile{background:var(--tile);border:1px solid var(--line);border-radius:6px;padding:10px}
+.tile span{display:block;font:11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tile b{font-size:18px;font-weight:500;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.inspect{font:13px/1.6 var(--mono);font-variant-numeric:tabular-nums;white-space:pre-wrap;margin:0}
+.side{display:flex;flex-direction:column;gap:14px}
+svg text{font:11px var(--mono);fill:var(--muted)}
+.chart{width:100%;height:auto;display:block}
+.key{display:flex;flex-wrap:wrap;gap:4px 12px;font:12px var(--mono);color:var(--muted);margin-top:4px}
+.key i{display:inline-block;width:16px;height:0;border-top:2px solid;vertical-align:middle;margin-right:5px}
+.readout{font:12px var(--mono);color:var(--ink);margin:4px 0 0;min-height:1.4em;font-variant-numeric:tabular-nums}
+section.band{padding:28px 0;border-top:1px solid var(--line)}
+.prose{max-width:70ch}
+.prose p{margin:0 0 12px}
+.read3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+@media (max-width:980px){.read3{grid-template-columns:minmax(0,1fr)}}
+.read3 > div{background:var(--tile);border:1px solid var(--line);border-radius:6px;padding:16px}
+.read3 h3{margin-top:0}
+.read3 ul,.read3 ol{padding-left:20px;margin:8px 0 0}
+.read3 li{margin-bottom:8px}
+.eq{font:14px var(--mono);background:var(--code);border-radius:4px;padding:8px 10px;margin:8px 0;overflow-x:auto;white-space:nowrap}
+.linkish{font:inherit;color:var(--accent);background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+pre.code{font:13px/1.5 var(--mono);background:var(--code);border-radius:6px;padding:12px 14px;overflow-x:auto;max-width:104ch;margin:12px 0}
+pre.code .c{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin-top:14px}
+.card{background:var(--tile);border:1px solid var(--line);border-radius:6px;padding:14px;display:flex;flex-direction:column}
+.card h3{margin-top:0}
+.card .comp{font:13px var(--mono);color:var(--accent)}
+.card.own .comp{color:var(--muted)}
+.card p{margin:8px 0 0}
+.card .eq{white-space:normal;font-size:13px}
+.card .means{font-size:15px;color:var(--muted)}
+.card dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font:13px var(--mono);margin:10px 0 0;padding-top:8px;border-top:1px dashed var(--line)}
+.card dt{color:var(--muted)} .card dd{margin:0;font-variant-numeric:tabular-nums}
+.folds{display:flex;flex-direction:column;gap:10px;padding:28px 0;border-top:1px solid var(--line)}
+.fold{background:var(--tile);border:1px solid var(--line);border-radius:6px;padding:10px 16px}
+.fold > summary{cursor:pointer;font-size:20px;padding:4px 0}
+.fold > summary small{font:13px var(--mono);color:var(--muted);margin-left:8px}
+.fold[open] > summary{margin-bottom:8px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.fold ul{padding-left:20px} .fold li{margin-bottom:6px}
+ul.bib{list-style:none;padding-left:0} ul.bib li{padding-left:22px;text-indent:-22px;margin-bottom:8px;font-size:15px}
+.timeline{list-style:none;padding:0;margin:14px 0;display:grid;gap:14px;max-width:80ch}
+.timeline li{display:grid;grid-template-columns:76px 1fr;gap:12px}
+.timeline time{font:13px var(--mono);color:var(--muted);padding-top:3px}
+.lesson{border-left:3px solid var(--accent);padding:4px 0 4px 12px;margin:12px 0;max-width:70ch}
+.checks{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15px;max-width:80ch;margin:8px 0}
+.checks dt{font:13px var(--mono);color:var(--accent);padding-top:2px}
+.checks dd{margin:0}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;font-size:13px;min-width:640px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.words{font:15px/1.4 var(--serif);max-width:46ch}
+th{color:var(--muted);font-weight:400}
+.chip{display:inline-block;font-size:12px;padding:1px 7px;border-radius:10px;border:1px solid currentColor;margin:0 4px 2px 0;cursor:help}
+.chip.pass{color:var(--pass)} .chip.fail{color:var(--fail)} .chip.pending{color:var(--pending)}
+footer{padding:22px 0 40px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+code{font-family:var(--mono);font-size:.88em}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <nav class="crumb" aria-label="Breadcrumb"><a href="{{ROOT}}index.html">30 Day Map Challenge 2026</a> <span aria-hidden="true">/</span> Day 10</nav>
+  <p class="kicker">Day 10 · Learning lab · Python and Landlab</p>
+  <h1>A dryland hillslope, four thousand years of storms</h1>
+  <p class="sub">A 600 m square of dryland: a mountain front about 80 m high and the apron below it, shaped by soil creep and by the water of short, intense storms. Patchy shrubs shield the soil from wash, soak up water running off the bare ground above them and catch its sediment. Each process is a <a href="https://landlab.csdms.io/">Landlab</a> component or a short rule written for this page, described on its card below. Pick a scenario, scrub through time, and hover or click the map to read a cell and slice the slope both ways.</p>
+</header>
+
+<main>
+<div class="lab">
+  <div class="controls panel" aria-label="Controls">
+    <div>
+      <span class="lbl" id="sc-lbl">Scenario</span>
+      <div id="scen" role="group" aria-labelledby="sc-lbl"></div>
+      <p class="note" id="scen-note"></p>
+    </div>
+    <div>
+      <span class="lbl" id="ly-lbl">Map layer</span>
+      <div class="seg" id="layer" role="group" aria-labelledby="ly-lbl">
+        <button type="button" data-k="relief" data-bench="layer-relief" aria-pressed="true">Relief</button>
+        <button type="button" data-k="change" data-bench="layer-change" aria-pressed="false">Change</button>
+        <button type="button" data-k="cover" data-bench="layer-cover" aria-pressed="false">Shrubs</button>
+        <button type="button" data-k="flow" data-bench="layer-flow" aria-pressed="false">Flow paths</button>
+      </div>
+      <label class="check"><input type="checkbox" id="contours" checked data-bench="contours"> Contours every 5 m</label>
+      <label class="check"><input type="checkbox" id="samescale" data-bench="samescale"> Change: one colour scale for all scenarios</label>
+    </div>
+    <div>
+      <label class="lbl" for="time">Time: <span id="time-out"></span> years</label>
+      <input type="range" id="time" min="0" max="9" step="1" value="9" data-bench="time">
+      <div class="seg" style="margin-top:6px"><button type="button" class="btn" id="play" data-bench="play">Play</button><button type="button" class="btn" id="dl" data-bench="download">Download data (JSON)</button></div>
+    </div>
+    <div>
+      <span class="lbl" id="gd-lbl">Landform field guide</span>
+      <ul class="guide" id="guide" aria-labelledby="gd-lbl"></ul>
+      <p id="guide-note" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <div>
+    <canvas id="map" width="720" height="720" tabindex="0" role="img" aria-label="Map of the hillslope; the mountain front is at the top and the open edge, where sediment leaves, at the bottom." aria-describedby="map-help" data-bench="map"></canvas>
+    <p class="sr" id="map-help">Arrow keys move the probe; the cell readout and both profiles follow it.</p>
+    <p class="sr" aria-live="polite" id="announce"></p>
+    <div class="legend" id="legend"></div>
+    <p class="runline" id="runline"></p>
+    <div class="tiles" id="tiles"></div>
+  </div>
+
+  <div class="side">
+    <div class="panel"><span class="lbl">Cell</span><p class="inspect" id="inspect">Hover or click the map.</p></div>
+    <div class="panel"><span class="lbl">Down the slope (north to south)</span><svg class="chart" id="profile" viewBox="0 0 320 160" role="img" aria-label="Elevation profile down the selected column, at the start and now"></svg></div>
+    <div class="panel"><span class="lbl">Across the slope (west to east), own vertical scale</span><svg class="chart" id="transect" viewBox="0 0 320 140" role="img" aria-label="Elevation across the selected row, at the start and now"></svg></div>
+    <div class="panel"><span class="lbl">Storms and sediment leaving the slope</span><svg class="chart" id="budget" viewBox="0 0 320 170" role="img" aria-label="Annual rain and cumulative sediment export, this scenario against the baseline"></svg>
+      <div class="key"><span><i style="border-color:var(--accent)"></i>this scenario</span><span id="key-base"><i style="border-color:var(--muted);border-top-style:dashed"></i>baseline</span><span><i style="border-color:var(--flow);opacity:.6"></i>rain, ten-year mean (bar top <b id="rain-max"></b> mm a year)</span></div>
+      <p class="readout" id="budget-read"></p></div>
+    <div class="panel"><span class="lbl">Sediment exported, whole run, by scenario</span><svg class="chart" id="export" viewBox="0 0 320 196" role="img" aria-label="Sediment exported by scenario"></svg></div>
+  </div>
+</div>
+
+<section class="band" aria-labelledby="read-h">
+  <h2 id="read-h">Reading the lab</h2>
+  <div class="read3">
+    <div>
+      <h3>What the model assumes</h3>
+      <p>The height of each 5 m cell changes for three reasons, written as one budget:</p>
+      <p class="eq">∂z/∂t = D∇²z − E + Dep</p>
+      <p><b>Creep</b> (D∇²z) moves soil downhill in proportion to slope. Its net effect at a cell depends on how the slope bends. ∇²z is the curvature: how far a cell sits below the average of its neighbours (positive, a hollow) or above it (negative, a crest). So a convex crest sheds more than it receives and lowers, and a concave hollow fills.</p>
+      <p><b>Wash</b> lifts soil at a rate <span class="mono">E = K Q<sup>m</sup> S</span>, set by the discharge Q flowing through a cell and its slope S. It drops soil at a rate <span class="mono">Dep = vₛ × (sediment carried ÷ water carried)</span>, faster where the water carries a lot for its volume.</p>
+      <p>The exponent m decides how much bigger flows count. Doubling the discharge multiplies the cutting rate by 2<sup>m</sup>: ×1.4 at m 0.5, ×1.7 at 0.75 (the baseline), ×2 at m 1. When big flows dominate, they deepen their own paths and capture their neighbours' water, and gullies form.</p>
+      <p><b>Water</b> only runs off when a storm drops more than the ground can soak up, and shrub patches soak up some of what runs onto them. Nothing grows or dies; the shrub pattern is fixed.</p>
+    </div>
+    <div>
+      <h3>Landforms to look for</h3>
+      <ul>
+        <li><b>A creep-rounded crest</b>, the top 15 m. Little water has gathered there, so creep does most of the work and rounds the edge. A few cells lower, wash takes over. <button class="linkish" data-goto="crest">Show me</button></li>
+        <li><b>Branching gullies</b> on the mountain front, deepest where several rills have joined. On the Change layer they are the darkest warm lines. <button class="linkish" data-goto="gully">Show me</button></li>
+        <li><b>Deposits at the gully mouths</b>, where the slope eases from 30 % to 2 % and the water can no longer carry its load. <button class="linkish" data-goto="fan">Show me</button></li>
+        <li><b>Washes across the apron</b>, the few paths that carry the gullies' water to the open edge. The Flow paths layer shows them. <button class="linkish" data-goto="wash">Show me</button></li>
+        <li><b>Shrub islands</b>: on the front, a dense patch loses about a metre less than bare ground with the same water draining to it, and gullies tend to run around patches. That is small next to a 10 m gully, but you can see it on the Change layer. <button class="linkish" data-goto="island">Show me</button></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Things to try</h3>
+      <ol>
+        <li>Choose <b>Change</b>, set time to 0 and press <b>Play</b>. Watch where cutting starts and how the gullies lengthen and branch.</li>
+        <li>Compare <b>Wash m 0.5</b> with <b>Wash m 1</b>. Same storms, same erodibility at a typical discharge; only the weight given to big flows changes. <span id="try-m"></span></li>
+        <li>Try <b>Rain ×2</b> and read the budget chart against the baseline. <span id="try-rain"></span></li>
+        <li>Compare <b>Cover ×0</b> and <b>Cover ×2</b> on the Shrubs layer, then on Change. <span id="try-veg"></span></li>
+        <li>Lock a cell in a gully (click), then scrub time and watch both profiles. The dashed line is the starting surface.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="band" aria-labelledby="how-h">
+  <h2 id="how-h">How a landscape model runs in Python</h2>
+  <div class="prose">
+    <p>Most landscape evolution models do one thing over and over. They hold the ground surface as a grid of heights, work out how much material each process moves in a short time step, update the grid, and repeat. NumPy does the arithmetic on whole grids at once, so a step over 14,400 cells takes milliseconds.</p>
+    <p>Landlab, a Python library from the Community Surface Dynamics Modeling System (Hobley et al., 2017; Barnhart et al., 2020), supplies the grid itself: its nodes, the links between them, and named fields stored on both, such as <code>topographic__elevation</code>. It also supplies components, each a published process law with a <code>run_one_step</code> method that reads and writes those fields. A model is then a short loop that calls the components in turn on one shared grid. The core of this page's loop, slightly simplified:</p>
+  </div>
+<pre class="code"><span class="c"># the grid: 120 x 120 nodes, 5 m apart; the bottom edge is open, the other three closed</span>
+<span class="c"># 800 steps of 5 years</span>
+for step in range(800):
+    <span class="c"># every storm in those 5 years, one at a time</span>
+    for storm in storms_in(step):
+        runoff[:] = max(storm.depth - soak_up, 0) / storm.duration
+        <span class="c"># FlowAccumulator: route the water, add up discharge downslope</span>
+        flow.run_one_step()
+        <span class="c"># shrub patches drink water arriving from upslope</span>
+        discharge[:] = runon(runoff, soak_up)
+        <span class="c"># ErosionDeposition: lift and drop sediment for the length of the storm</span>
+        wash.run_one_step(storm.duration)
+    <span class="c"># LinearDiffuser: soil creep over the 5 years</span>
+    creep.run_one_step(5.0)</pre>
+  <div class="prose">
+    <p>The full script, <a href="https://github.com/cordilleran/MapChallenge2026/blob/main/day-10/sim.py"><code>day-10/sim.py</code></a>, is about 270 lines; <code>python sim.py --seed 42 --out runs/d42</code> runs 2,000 years in about 30 seconds. It also writes the starting surface, the storms and a volume ledger. The ledger counts the sediment that wash carries out through the open edge as it goes, and checks that the surface lost exactly that much plus what creep moved across the edge. The creep share is taken from the change in volume over each creep step, so the ledger is a check on the wash bookkeeping, not an independent check of creep; the benchmark's scarp and closed-bowl checks test creep from outside.</p>
+  </div>
+  <h3 id="proc-h" style="margin-top:22px">The processes, one card each</h3>
+  <p class="prose">Four are Landlab components; two are rules written for this page, the runoff rule and the shrub pattern. Each card states the process in words, gives its equation and what the equation means, and lists the parameter values these runs used.</p>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section class="folds" aria-label="Method, sources and testing">
+<details class="fold" id="about">
+<summary>About this model: method and limits</summary>
+<div class="prose">
+  <h3>How a run is set up</h3>
+  <p>The starting surface is a 30 % mountain front over a 2 % apron, smoothed where they meet, with seeded roughness at two scales and five shallow hollows, 3 m deep at the top and fading downslope. Real mountain fronts inherit relief like this from earlier storms and from the rock. Without it, water starts on a nearly planar slope and spreads into many parallel rills. In tests the hollows alone changed little: they decide where gullies start, and the wash exponent decides whether they grow. The starting surface is pit-filled once, so water can run off it from the first storm.</p>
+  <p>Storms are drawn for the whole run before it starts: about twelve a year, two hours long on average, with an average depth of 14 mm. The rain scenarios multiply every storm's depth, so the storms fall on the same days in every scenario. Wash runs storm by storm; creep runs every five years. Halving every step changes the exported volume by 0.3 %, well inside the 10 % that benchmark check C9 allows.</p>
+  <h3>Why these gullies, and why the wash exponent is a scenario</h3>
+  <p>An earlier version of this page used m 0.5, the value common in models of river incision, and ran 2,000 years. It cut many short, parallel rills. Argon's entry in the benchmark (below) drew deeper, branching canyons for three reasons: its starting surface had three hollows cut into it, its wash law raised discharge to the power 1.3, and it ran 4,000 years.</p>
+  <p>This version raises m to 0.75, adds the five hollows and runs 4,000 years. Erodibility is set so that the cutting rate is the same, whatever m is, at a typical storm discharge (55,000 m³ a year, the runoff of about a hundred cells). Above that discharge a higher m also cuts more in total, so part of the extra depth at m 1 is more erosion, not only more concentration. In this model, how strongly big flows dominate decides whether the slope grows rills or gullies. The idea goes back to Smith and Bretherton (1972), and Tucker and Bras (1998) relate it to how densely channels cover a slope. The exponent for overland flow is not well constrained, so the baseline value is partly chosen so the gullies are easy to see. That is why both ends of the range are on the page.</p>
+  <h3>What this model leaves out</h3>
+  <ul>
+    <li>Water follows one steepest path per cell (D8), so channels run along the grid's eight directions.</li>
+    <li>The shrubs do not grow, spread or die: the pattern is fixed for the whole run. In real drylands, patches and runoff shape each other (Ludwig et al., 2005).</li>
+    <li>Runoff is the storm depth minus a soak-up depth. There is no soil moisture between storms and no intensity peak within one.</li>
+    <li>The settling term is a net effective value, not a grain property (Shobe et al., 2017). Its rise under shrubs is an assumption.</li>
+    <li>Shrubs matter less on the front than at the foot. Wash carried off the upper slope falls only about 5 % from bare ground to double cover (benchmark check C8, on a 2,000-year run), because the gullies, which run past the patches, carry most of it. Export at the open edge falls about 30 % from bare ground to baseline cover, then hardly at all with more.</li>
+    <li>Storm depths come from a gamma distribution with no upper limit. Over 4,000 years the deepest storm is 550 mm, far beyond any real two-hour dryland storm.</li>
+    <li>The top row of cells is a fixed edge and never changes, so a small step stands above the rounded crest.</li>
+    <li>The checks test behaviour, not whether these are the right equations for a particular dryland. The rates are illustrative, not calibrated to a site.</li>
+  </ul>
+</div>
+</details>
+
+<details class="fold" id="sources">
+<summary>Sources and software</summary>
+<div class="prose">
+  <h3>Method</h3>
+  <ul class="bib">
+    <li>Barnes, R., Lehman, C., and Mulla, D. (2014). Priority-flood: an optimal depression-filling and watershed-labeling algorithm for digital elevation models. <i>Computers &amp; Geosciences</i>, 62, 117–127. <a href="https://doi.org/10.1016/j.cageo.2013.04.024">https://doi.org/10.1016/j.cageo.2013.04.024</a></li>
+    <li>Culling, W. E. H. (1960). Analytical theory of erosion. <i>The Journal of Geology</i>, 68(3), 336–344. <a href="https://doi.org/10.1086/626663">https://doi.org/10.1086/626663</a></li>
+    <li>Davy, P., and Lague, D. (2009). Fluvial erosion/transport equation of landscape evolution models revisited. <i>Journal of Geophysical Research: Earth Surface</i>, 114, F03007. <a href="https://doi.org/10.1029/2008JF001146">https://doi.org/10.1029/2008JF001146</a></li>
+    <li>Eagleson, P. S. (1978). Climate, soil, and vegetation: 2. The distribution of annual precipitation derived from observed storm sequences. <i>Water Resources Research</i>, 14(5), 713–721. <a href="https://doi.org/10.1029/WR014i005p00713">https://doi.org/10.1029/WR014i005p00713</a></li>
+    <li>Ludwig, J. A., Wilcox, B. P., Breshears, D. D., Tongway, D. J., and Imeson, A. C. (2005). Vegetation patches and runoff–erosion as interacting ecohydrological processes in semiarid landscapes. <i>Ecology</i>, 86(2), 288–297. <a href="https://doi.org/10.1890/03-0569">https://doi.org/10.1890/03-0569</a></li>
+    <li>O'Callaghan, J. F., and Mark, D. M. (1984). The extraction of drainage networks from digital elevation data. <i>Computer Vision, Graphics, and Image Processing</i>, 28(3), 323–344. <a href="https://doi.org/10.1016/S0734-189X(84)80011-0">https://doi.org/10.1016/S0734-189X(84)80011-0</a></li>
+    <li>Shobe, C. M., Tucker, G. E., and Barnhart, K. R. (2017). The SPACE 1.0 model: a Landlab component for 2-D calculation of sediment transport, bedrock erosion, and landscape evolution. <i>Geoscientific Model Development</i>, 10(12), 4577–4604. <a href="https://doi.org/10.5194/gmd-10-4577-2017">https://doi.org/10.5194/gmd-10-4577-2017</a></li>
+    <li>Smith, T. R., and Bretherton, F. P. (1972). Stability and the conservation of mass in drainage basin evolution. <i>Water Resources Research</i>, 8(6), 1506–1529. <a href="https://doi.org/10.1029/WR008i006p01506">https://doi.org/10.1029/WR008i006p01506</a></li>
+    <li>Tucker, G. E., and Bras, R. L. (1998). Hillslope processes, drainage density, and landscape morphology. <i>Water Resources Research</i>, 34(10), 2751–2764. <a href="https://doi.org/10.1029/98WR01474">https://doi.org/10.1029/98WR01474</a></li>
+  </ul>
+  <h3>Software</h3>
+  <ul class="bib">
+    <li>Barnhart, K. R., Hutton, E. W. H., Tucker, G. E., Gasparini, N. M., et al. (2020). Short communication: Landlab v2.0: a software package for Earth surface dynamics. <i>Earth Surface Dynamics</i>, 8(2), 379–397. <a href="https://doi.org/10.5194/esurf-8-379-2020">https://doi.org/10.5194/esurf-8-379-2020</a> (Landlab 2.11.0 used here)</li>
+    <li>Hobley, D. E. J., Adams, J. M., Nudurupati, S. S., Hutton, E. W. H., et al. (2017). Creative computing with Landlab: an open-source toolkit for building, coupling, and exploring two-dimensional numerical models of Earth-surface dynamics. <i>Earth Surface Dynamics</i>, 5(1), 21–46. <a href="https://doi.org/10.5194/esurf-5-21-2017">https://doi.org/10.5194/esurf-5-21-2017</a></li>
+    <li>Harris, C. R., Millman, K. J., van der Walt, S. J., Gommers, R., et al. (2020). Array programming with NumPy. <i>Nature</i>, 585, 357–362. <a href="https://doi.org/10.1038/s41586-020-2649-2">https://doi.org/10.1038/s41586-020-2649-2</a></li>
+    <li>Virtanen, P., Gommers, R., Oliphant, T. E., Haberland, M., et al. (2020). SciPy 1.0: fundamental algorithms for scientific computing in Python. <i>Nature Methods</i>, 17, 261–272. <a href="https://doi.org/10.1038/s41592-019-0686-2">https://doi.org/10.1038/s41592-019-0686-2</a></li>
+    <li>Python 3.13 for the simulator and the page builder. In the browser: plain JavaScript, canvas and SVG, no libraries; the data is inlined, so the page works offline.</li>
+    <li>Built by GW with Claude Code (Opus 5.5). The benchmark entries were written by the AI coding agents named in the table below.</li>
+  </ul>
+</div>
+</details>
+
+<details class="fold" id="bench-fold">
+<summary>How this page was tested: the benchmark sprint<small>10 to 12 November</small></summary>
+<div class="prose">
+  <h3>Why a benchmark</h3>
+  <p>The code behind this page was written with an AI coding agent, and agents now write a good share of research code. Code that runs is not the same as code that gets the geography right. A simulator can delete sediment, let water climb out of a closed basin, or report a perfect mass balance it never computed, and still draw a handsome map. So before this page was built, the same assignment went to several agents as a one-shot test. The aim was to learn which kinds of mistake they make, not to crown a winner.</p>
+  <h3>The assignment</h3>
+  <p>Write a Python script, <code>sim.py</code>, that simulates a dryland hillslope of at least 100 by 100 cells under four coupled processes: soil creep, erosion by overland flow with deposition downslope, random storms, and patchy vegetation that changes how easily the surface erodes. The script must take fixed command-line options (a seed, a starting surface, scales for rain and vegetation, a time-step scale) and save its grids. Then build an interactive map for a student. The equations, parameters and libraries were left to the agent.</p>
+  <h3>How an entry is scored</h3>
+  <p>A test harness runs each script in a sealed container (no network, one processor, 2 GB of memory). It runs the entry on its own default surface and on surfaces the harness supplies, then recomputes everything from the saved grids. It never takes the script's word for a number. Each check asks one physical question:</p>
+  <dl class="checks" id="checklist"></dl>
+  <h3>What happened</h3>
+</div>
+  <ol class="timeline">
+    <li><time>10 Nov</time><div><b>A draft benchmark.</b> A chat with Gemini produced a first prompt. It fixed the equations and asked each script to report its own mass balance. That tested whether an agent can follow a recipe, and a script can print a mass balance of 0.0 whatever it does. The rewrite left the physics to the agent and moved all measurement into the harness.</div></li>
+    <li><time>11 Nov</time><div><b>Round 1: three agents, every check passed, and the landscapes still differed in kind.</b> Gemini 4 Argon and Sonnet 5.5 in two harnesses all passed. One carved canyons and fans, one barely changed. Checks that pass such different models are too weak. A design review by a second model (Claude Fable 5.2) led to version 2. The harness now routes flow itself and re-runs each entry on its test surfaces. To prove that each check can fail, a reference script and seven deliberately broken copies were added: one deletes sediment, one has no creep, one ignores vegetation. Every broken copy must fail at least one check.</div></li>
+    <li><time>11 Nov</time><div><b>The page that taught best.</b> Argon's interactive map, with its cross-sections, field guide and budget chart, was the most satisfying to use. This page starts from it, with the physics rebuilt on Landlab components.</div></li>
+    <li><time>12 Nov</time><div><b>Round 2: the check was wrong, not the models.</b> Opus 5.5 in two harnesses, Gemini 3.8 Flash and the first Landlab build were scored. Check C4 failed three of the four. C4 took the cells with the least upslope area, which on the test hillslope is the crest. It required their change to follow curvature, the signature of creep: convex ground loses, concave ground gains. Splitting each run into creep alone and wash alone showed every entry's creep had that signature almost perfectly (rank correlation 0.96 to 0.97). Wash does the opposite, and should. At the very top the ground is most convex, but little water has gathered and the slope is still gentle, so wash cuts least there and more with each step downslope. So C4 passed models whose crest wash was weak and failed those where it was vigorous. It measured a balance between two processes, not an error. C4 became a reported description. The test set gained "correct but different" copies that must pass. Two do (wash ten times stronger, creep five times weaker). A third, with a threshold for wash, still fails C8, the shrub check; a change to C8 that would clear it is written up and waits for review.</div></li>
+    <li><time>12 Nov</time><div><b>Round 3: shrubs that catch water.</b> In the Landlab build, shrub patches now soak up runoff from the bare ground above them and trap its sediment. Scored beside Gemini 4 Hydrogen, released that day.</div></li>
+    <li><time>12 Nov</time><div><b>This page.</b> The wash exponent rose from 0.5 to 0.75 and the starting surface gained hollows, so gullies form and branch (see "About this model"). The build was scored again with the same checks.</div></li>
+  </ol>
+<div class="prose">
+  <p class="lesson"><b>A check can catch every fault and still fail good models.</b> The broken copies tested whether each check could fail. Nothing tested whether a correct but different model would pass, until C4 failed three of them.</p>
+  <p class="lesson"><b>Domain tooling brings the physics, not the speed.</b> Two Landlab components were too slow for the benchmark's limit: about 11,500 runoff storms in a 2,000-year run, within a minute. The priority-flood router took 80 ms a storm and was replaced by routing on a surface filled once at the start. The lossy flow accumulator took 67 ms, because it calls a Python function at every node; its rule was rewritten in vectorised form (0.4 ms) and tested equal to the component.</p>
+  <h3>Where the entries stand</h3>
+  <p class="note">Current checks, one run per entry, scored in the same container. One run per model is a data point, not a ranking. Hover a check for what it asks. Each entry's code, its scores and its own description of its model are in <a href="https://github.com/cordilleran/MapChallenge2026/tree/main/day-10/benchmark">day-10/benchmark</a> in this site's repository, with the prompt and the harness.</p>
+</div>
+  <div class="tablewrap"><table id="bench"><thead><tr><th>Entry</th><th>Checks failed</th><th>What failed, in words</th><th>Lines</th><th>Years in its default run (its own choice)</th></tr></thead><tbody></tbody></table></div>
+  <p class="note">The three Landlab rows are this page's own build at three stages, revised with the checks in view: they are not one-shot entries. Round 1 entries were written to the earlier prompt, so only the default-run checks (A1 to A6) apply to them.</p>
+</details>
+</section>
+</main>
+
+<footer>Simulator <code>day-10/sim.py</code> (Landlab 2.11.0, Python 3.13), seed 42, built <span id="built"></span>. Code MIT. #30DayMapChallenge · Day 10. Built by GW with Claude Code.</footer>
+</div>
+
+<script>
+const DATA = /*LAB_DATA*/null; // pragma: allowlist secret -- base64 grids of elevation and change, not credentials
+(() => {
+const $ = s => document.querySelector(s);
+const NY = DATA.grid[0], NX = DATA.grid[1], DX = DATA.dx, N = NY * NX;
+const fmt = (v, d = 0) => v == null ? "–" : (Math.abs(v) < 0.5 * 10 ** -d ? 0 : Number(v)).toLocaleString("en-CA", {maximumFractionDigits: d, minimumFractionDigits: d});
+const dec16 = b => { const s = atob(b), u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return new Int16Array(u.buffer); };
+const dec8 = b => { const s = atob(b), u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; };
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const hex = h => { h = h.replace("#", ""); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); };
+const mix = (a, b, t) => a.map((v, i) => v + (b[i] - v) * t);
+
+const S = DATA.scenarios.map(sc => ({...sc, nF: sc.years.length, dz: dec16(sc.dz_mm), z0: dec16(sc.z_init_cm), cover: dec8(sc.cover_pct), logA: dec16(sc.logA)}));
+const KEY = Object.fromEntries(S.map((s, i) => [s.key, i]));
+const BASE = KEY.base ?? 0;
+const state = {s: BASE, layer: "relief", f: S[BASE].nF - 1, sel: null, hover: null, playing: null, contours: true, guide: null, same: false};
+const meanCover = si => { const c = S[si].cover; let s = 0; for (const v of c) s += v; return s / c.length; };
+// Change-layer colour limit: the 98th percentile of |change| in a scenario's last snapshot, so colours stay fixed through Play
+const p98 = si => { const sc = S[si], o = (sc.nF - 1) * N, a = new Float32Array(N); for (let i = 0; i < N; i++) a[i] = Math.abs(sc.dz[o + i]) / 1000; a.sort(); return Math.max(a[Math.floor(N * 0.98)], 0.01); };
+const DLIM = S.map((_, i) => p98(i)), DLIM_ALL = Math.max(...DLIM);
+const BREAK_ROW = Math.round(0.45 * (NY - 1));
+
+// ---- scenarios, grouped
+const GROUPS = [["Climate", ["base", "dry", "wet"]], ["Shrubs", ["bare", "dense"]], ["Wash law", ["m05", "m10"]]];
+const NOTES = {
+  base: sc => `Mean rain about ${fmt(sc.telemetry.mean_annual_rain_mm)} mm a year, about 35 % of the ground under shrubs, wash exponent m 0.75.`,
+  dry: () => "Every storm drops half its baseline depth. Same storms on the same days.",
+  wet: () => "Every storm drops twice its baseline depth. Same storms on the same days.",
+  bare: () => "No shrubs: every cell soaks up 6 mm a storm and erodes at the bare-ground rate.",
+  dense: () => "Twice the baseline cover in each patch, capped at full cover. The gaps between patches stay bare.",
+  m05: () => "Wash grows with the square root of discharge. Big flows barely beat small ones, so many parallel rills share the work.",
+  m10: () => "Wash grows in step with discharge. The biggest flows win, so fewer gullies cut deeper and branch.",
+};
+const scen = $("#scen");
+GROUPS.forEach(([title, keys]) => {
+  const ks = keys.filter(k => k in KEY); if (!ks.length) return;
+  const h = document.createElement("div"); h.className = "grp"; h.textContent = title; scen.appendChild(h);
+  const seg = document.createElement("div"); seg.className = "seg"; scen.appendChild(seg);
+  ks.forEach(k => { const i = KEY[k], b = document.createElement("button"); b.type = "button"; b.textContent = S[i].label; b.dataset.bench = "scenario-" + k; b.dataset.i = i; b.setAttribute("aria-pressed", i === state.s); b.onclick = () => setScenario(i); seg.appendChild(b); });
+});
+function setScenario(i) { state.s = i; state.f = Math.min(state.f, S[i].nF - 1); scen.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", +x.dataset.i === i)); if (state.guide) state.sel = locate(state.guide); markGuide(); invalidate(); draw(); }
+document.querySelectorAll("#layer button").forEach(b => b.onclick = () => { state.layer = b.dataset.k; document.querySelectorAll("#layer button").forEach(x => x.setAttribute("aria-pressed", x === b)); invalidate(); draw(); });
+$("#contours").onchange = e => { state.contours = e.target.checked; invalidate(); draw(); };
+$("#samescale").onchange = e => { state.same = e.target.checked; invalidate(); draw(); };
+const tIn = $("#time"); tIn.max = S[state.s].nF - 1; tIn.value = state.f;
+tIn.oninput = () => { state.f = +tIn.value; invalidate(); draw(); };
+$("#play").onclick = () => {
+  if (state.playing) { clearInterval(state.playing); state.playing = null; $("#play").textContent = "Play"; return; }
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  state.f = 0; $("#play").textContent = "Stop";
+  state.playing = setInterval(() => { state.f++; if (state.f >= S[state.s].nF - 1) { state.f = S[state.s].nF - 1; clearInterval(state.playing); state.playing = null; $("#play").textContent = "Play"; } tIn.value = state.f; invalidate(); draw(); }, reduce ? 900 : 500);
+};
+$("#dl").onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(DATA)], {type: "application/json"})); a.download = "day10-hillslope-lab.json"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000); };
+
+// ---- fields
+function fieldAt(si, f) {
+  const sc = S[si], off = f * N, z = new Float32Array(N), d = new Float32Array(N);
+  for (let i = 0; i < N; i++) { d[i] = sc.dz[off + i] / 1000; z[i] = sc.z0[i] / 100 + d[i]; }
+  return {sc, z, d};
+}
+
+// ---- map: a cached base image (colour, shade, contours) plus a light overlay for the probe
+const cv = $("#map"), ctx = cv.getContext("2d"), W = cv.width, PX = W / NX;
+const off = document.createElement("canvas"); off.width = NX; off.height = NY; const octx = off.getContext("2d");
+const base = document.createElement("canvas"); base.width = W; base.height = W; const bctx = base.getContext("2d");
+let cur = null, baseOK = false, scaleInfo = {};
+function invalidate() { baseOK = false; }
+function shade(z) {
+  const h = new Float32Array(N), az = 315 * Math.PI / 180, alt = 35 * Math.PI / 180, ve = 10;
+  const zz = (r, c) => z[Math.min(NY - 1, Math.max(0, r)) * NX + Math.min(NX - 1, Math.max(0, c))];
+  for (let r = 0; r < NY; r++) for (let c = 0; c < NX; c++) {
+    const dzdx = (zz(r, c + 1) - zz(r, c - 1)) / (2 * DX) * ve, dzdy = (zz(r + 1, c) - zz(r - 1, c)) / (2 * DX) * ve;
+    // rows run north to south, so the northward gradient is -dzdy
+    const slope = Math.atan(Math.hypot(dzdx, dzdy)), aspect = Math.atan2(-dzdy, -dzdx);
+    h[r * NX + c] = Math.max(0, Math.sin(alt) * Math.cos(slope) + Math.cos(alt) * Math.sin(slope) * Math.cos(az - Math.PI / 2 - aspect));
+  }
+  return h;
+}
+function contourPath(z, step) {
+  // marching squares on cell centres; returns one Path2D in canvas pixels, and one for every fifth line
+  const thin = new Path2D(), bold = new Path2D();
+  let lo = Infinity, hi = -Infinity; for (const v of z) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+  const P = (r, c) => [(c + 0.5) * PX, (r + 0.5) * PX];
+  for (let L = Math.ceil(lo / step) * step; L <= hi; L += step) {
+    const path = Math.round(L / step) % 5 === 0 ? bold : thin;
+    for (let r = 0; r < NY - 1; r++) for (let c = 0; c < NX - 1; c++) {
+      const a = z[r * NX + c], b = z[r * NX + c + 1], e = z[(r + 1) * NX + c + 1], d = z[(r + 1) * NX + c];
+      const pts = [];
+      const edge = (v1, v2, p1, p2) => { if ((v1 < L) !== (v2 < L)) { const t = (L - v1) / (v2 - v1); pts.push([p1[0] + (p2[0] - p1[0]) * t, p1[1] + (p2[1] - p1[1]) * t]); } };
+      edge(a, b, P(r, c), P(r, c + 1)); edge(b, e, P(r, c + 1), P(r + 1, c + 1)); edge(e, d, P(r + 1, c + 1), P(r + 1, c)); edge(d, a, P(r + 1, c), P(r, c));
+      for (let k = 0; k + 1 < pts.length; k += 2) { path.moveTo(pts[k][0], pts[k][1]); path.lineTo(pts[k + 1][0], pts[k + 1][1]); }
+    }
+  }
+  return {thin, bold};
+}
+function renderBase() {
+  cur = fieldAt(state.s, state.f);
+  const {sc, z, d} = cur, img = octx.createImageData(NX, NY), px = img.data, h = shade(z);
+  const lo = [226, 210, 168], hi = [132, 86, 50], ero = hex(css("--erode")), dep = hex(css("--deposit")), midc = hex(css("--mid")), veg = hex(css("--veg")), flow = hex(css("--flow"));
+  let zmin = Infinity, zmax = -Infinity; for (const v of z) { zmin = Math.min(zmin, v); zmax = Math.max(zmax, v); }
+  const dlim = state.same ? DLIM_ALL : DLIM[state.s];
+  for (let i = 0; i < N; i++) {
+    let col, sh = 0.6 + 0.62 * h[i];
+    if (state.layer === "relief") col = mix(lo, hi, (z[i] - zmin) / (zmax - zmin || 1));
+    else if (state.layer === "change") { const t = Math.max(-1, Math.min(1, d[i] / dlim)); col = t < 0 ? mix(midc, ero, -t) : mix(midc, dep, t); sh = 0.82 + 0.2 * h[i]; }
+    else if (state.layer === "cover") { col = mix(midc, veg, sc.cover[i] / 100); sh = 0.81 + 0.25 * h[i]; }
+    else { const t = Math.max(0, Math.min(1, (sc.logA[i] / 1000 - 1.4) / 3.0)); col = mix(midc, flow, t ** 1.5); sh = 0.82 + 0.2 * h[i]; }
+    px[i * 4] = col[0] * sh; px[i * 4 + 1] = col[1] * sh; px[i * 4 + 2] = col[2] * sh; px[i * 4 + 3] = 255;
+  }
+  octx.putImageData(img, 0, 0);
+  bctx.imageSmoothingEnabled = true; bctx.drawImage(off, 0, 0, W, W);
+  if (state.contours) {
+    const {thin, bold} = contourPath(z, 5);
+    bctx.strokeStyle = css("--contour"); bctx.lineWidth = 0.8; bctx.stroke(thin); bctx.lineWidth = 1.6; bctx.stroke(bold);
+  }
+  scaleInfo = {zmin, zmax, dlim}; baseOK = true;
+}
+function draw(light) {
+  if (!baseOK) renderBase();
+  const {sc, z, d} = cur;
+  ctx.drawImage(base, 0, 0);
+  const p = state.sel || state.hover;
+  if (p) {
+    ctx.strokeStyle = css("--ink"); ctx.lineWidth = 1; ctx.setLineDash([4, 4]); ctx.beginPath();
+    ctx.moveTo((p.c + .5) * PX, 0); ctx.lineTo((p.c + .5) * PX, W); ctx.moveTo(0, (p.r + .5) * PX); ctx.lineTo(W, (p.r + .5) * PX); ctx.stroke();
+    ctx.setLineDash([]); ctx.lineWidth = 2; ctx.strokeRect(p.c * PX - 1, p.r * PX - 1, PX + 2, PX + 2);
+  }
+  inspect(z, d); profile(z); transect(z);
+  if (light) return;                       // hovering: only the probe, the cell and the two profiles change
+  legend(); tiles(sc, d); budget(); exportChart();
+  $("#time-out").textContent = fmt(sc.years[state.f]);
+  $("#scen-note").textContent = (NOTES[sc.key] || (() => ""))(sc);
+  writeHash();
+}
+function legend() {
+  const {zmin, zmax, dlim} = scaleInfo, g = (a, b) => `background:linear-gradient(90deg,${a},${b})`;
+  const m = {
+    relief: [fmt(zmin, 1) + " m", g("rgb(220,204,166)", "rgb(138,90,52)"), fmt(zmax, 1) + " m"],
+    change: ["−" + fmt(dlim, 2) + " m lost", "background:linear-gradient(90deg,var(--erode),var(--mid),var(--deposit))", "+" + fmt(dlim, 2) + " m gained"],
+    cover: ["bare", g("var(--mid)", "var(--veg)"), "full cover"],
+    flow: ["25 m² upslope", g("var(--mid)", "var(--flow)"), "2.5 ha or more upslope"],
+  }[state.layer];
+  $("#legend").innerHTML = `<span>${m[0]}</span><span class="bar" style="${m[1]}"></span><span>${m[2]}</span>` + (state.layer === "change" ? `<span>(${state.same ? "one scale for all scenarios" : "this scenario's scale, fixed through time"}; beyond it, full colour)</span>` : "") + (state.contours ? "<span>contours 5 m, every 25 m bold</span>" : "");
+}
+function tiles(sc, d) {
+  let mn = 0, mx = 0; for (const v of d) { mn = Math.min(mn, v); mx = Math.max(mx, v); }
+  const b = sc.budget, k = budgetIndex(sc, sc.years[state.f]);
+  const T = [["Deepest cut", fmt(mn, 2) + " m"], ["Thickest deposit", "+" + fmt(mx, 2) + " m"],
+    ["Exported so far", fmt(b ? at(b.exported_m3, k) : sc.telemetry.sediment_exported_m3) + " m³"], ["Cut so far, laid down again on the slope", b && at(b.cut_m3, k) > 0 ? fmt(100 * b.fill_m3[k] / b.cut_m3[k]) + " %" : "–"],
+    ["Storms with runoff", fmt(sc.telemetry.wash_events_computed) + " of " + fmt(sc.telemetry.storm_count)], ["Volume ledger error", sc.telemetry.mass_balance_error_pct.toExponential(1) + " %"]];
+  $("#tiles").innerHTML = T.map(([t, v]) => `<div class="tile"><span>${t}</span><b>${v}</b></div>`).join("");
+}
+function runline() {
+  const t = S[BASE].telemetry;
+  $("#runline").innerHTML = [["Grid", `${NY} × ${NX} cells of ${fmt(DX)} m`], ["Run", `${fmt(t.years_simulated)} years`], ["Steps", `creep every ${fmt(t.dt_years)} years; ${fmt(t.storm_count)} storms one at a time`], ["Seed", t.seed], ["Snapshots", `${S[BASE].nF}`]].map(([k, v]) => `<span>${k} <b>${v}</b></span>`).join("");
+}
+function cellAt(ev) { const r = cv.getBoundingClientRect(); return {c: Math.min(NX - 1, Math.max(0, Math.floor((ev.clientX - r.left) / r.width * NX))), r: Math.min(NY - 1, Math.max(0, Math.floor((ev.clientY - r.top) / r.height * NY)))}; }
+cv.onmousemove = ev => { const p = cellAt(ev); if (state.hover && p.r === state.hover.r && p.c === state.hover.c) return; state.hover = p; if (!state.sel) draw(true); };
+cv.onmouseleave = () => { state.hover = null; if (!state.sel) draw(true); };
+const say = () => { const p = state.sel; $("#announce").textContent = p ? $("#inspect").textContent.split("\n").slice(0, 4).join(". ") : "Probe unlocked"; };
+cv.onclick = ev => { const p = cellAt(ev); state.sel = state.sel && state.sel.r === p.r && state.sel.c === p.c ? null : p; state.guide = null; markGuide(); draw(); say(); };
+cv.onkeydown = ev => {
+  const k = {ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1]}[ev.key]; if (!k) return;
+  ev.preventDefault(); const p = state.sel || {r: NY / 2 | 0, c: NX / 2 | 0}; state.sel = {r: Math.min(NY - 1, Math.max(0, p.r + k[0])), c: Math.min(NX - 1, Math.max(0, p.c + k[1]))}; draw(); say();
+};
+function zone(r) { return r < 6 ? "crest" : r < BREAK_ROW - 3 ? "mountain front" : r <= BREAK_ROW + 4 ? "slope break" : "apron"; }
+function inspect(z, d) {
+  const p = state.sel || state.hover, el = $("#inspect");
+  if (!p) { el.textContent = "Hover or click the map. Click again to unlock."; return; }
+  const i = p.r * NX + p.c, sc = S[state.s];
+  el.textContent = `East ${fmt(p.c * DX)} m, ${fmt((NY - 1 - p.r) * DX)} m up from the open edge${state.sel ? " (locked)" : ""}\nZone: ${zone(p.r)}\nElevation ${fmt(z[i], 2)} m (start ${fmt(sc.z0[i] / 100, 2)} m)\nChange ${d[i] >= 0 ? "+" : "−"}${fmt(Math.abs(d[i]), 3)} m\nShrub cover ${sc.cover[i]} %\nUpslope area ${fmt(10 ** (sc.logA[i] / 1000))} m²`;
+}
+function lineChart(svg, a, b, H, xl, xr, title, mark) {
+  const n = a.length, zmax = Math.max(...a, ...b), zmin = Math.min(...a, ...b), X = r => 34 + r / (n - 1) * 278, Y = v => H - 20 - (v - zmin) / (zmax - zmin || 1) * (H - 40);
+  const path = arr => arr.map((v, r) => (r ? "L" : "M") + X(r).toFixed(1) + " " + Y(v).toFixed(1)).join("");
+  const mk = mark == null ? "" : `<line x1="${X(mark)}" x2="${X(mark)}" y1="14" y2="${H - 20}" stroke="var(--line)"/>`;
+  svg.innerHTML = `${mk}<line x1="34" x2="312" y1="${H - 20}" y2="${H - 20}" stroke="var(--line)"/><text x="34" y="${H - 6}">${xl}</text><text x="312" y="${H - 6}" text-anchor="end">${xr}</text><text x="30" y="${Y(zmax) + 4}" text-anchor="end">${fmt(zmax, 1)}</text><text x="30" y="${H - 16}" text-anchor="end">${fmt(zmin, 1)}</text>
+  <path d="${path(a)}" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3"/><path d="${path(b)}" fill="none" stroke="var(--accent)" stroke-width="2"/><text x="34" y="10">${title}</text>`;
+}
+function profile(z) {
+  const p = state.sel || state.hover || {c: NX / 2 | 0, r: null}, sc = S[state.s], a = [], b = [];
+  for (let r = 0; r < NY; r++) { a.push(sc.z0[r * NX + p.c] / 100); b.push(z[r * NX + p.c]); }
+  lineChart($("#profile"), a, b, 160, "top (north)", "open edge (south)", `m · ${fmt(p.c * DX)} m east · dashed: start; solid: year ${fmt(sc.years[state.f])}`, p.r);
+}
+function transect(z) {
+  const p = state.sel || state.hover || {r: BREAK_ROW - 12, c: null}, sc = S[state.s], a = [], b = [];
+  for (let c = 0; c < NX; c++) { a.push(sc.z0[p.r * NX + c] / 100); b.push(z[p.r * NX + c]); }
+  lineChart($("#transect"), a, b, 140, "west", "east", `m · ${fmt((NY - 1 - p.r) * DX)} m up · ${zone(p.r)}`, p.c);
+}
+// index of the last budget row at or before year yr; -1 before the first step ends (nothing has moved yet)
+function budgetIndex(sc, yr) { const y = sc.budget ? sc.budget.year : [0]; if (yr < y[0]) return -1; let k = 0; while (k < y.length - 1 && y[k + 1] <= yr) k++; return k; }
+const at = (arr, k) => k < 0 ? 0 : arr[k];
+function budget() {
+  const svg = $("#budget"), sc = S[state.s], bs = S[BASE], b = sc.budget, bb = bs.budget; if (!b) { svg.innerHTML = ""; return; }
+  const Y0 = 120, x0 = 40, x1 = 314, yrs = sc.telemetry.years_simulated, X = y => x0 + y / yrs * (x1 - x0);
+  const mx = Math.max(...b.exported_m3, ...bb.exported_m3), Y = v => Y0 - v / mx * 104;
+  const line = (B) => B.year.map((y, i) => (i ? "L" : "M") + X(y).toFixed(1) + " " + Y(B.exported_m3[i]).toFixed(1)).join("");
+  const rain = sc.rain_mm_by_year, n = rain.length, dec = [];
+  for (let i = 0; i < n; i += 10) { const s = rain.slice(i, i + 10); dec.push(s.reduce((a, v) => a + v, 0) / s.length); }
+  const rmx = Math.max(...dec), bw = (x1 - x0) / dec.length;
+  const bars = dec.map((v, j) => `<rect x="${(x0 + j * bw).toFixed(2)}" y="${(150 - v / rmx * 24).toFixed(1)}" width="${Math.max(bw - 0.2, 0.3).toFixed(2)}" height="${(v / rmx * 24).toFixed(1)}"/>`).join("");
+  $("#key-base").hidden = state.s === BASE; $("#rain-max").textContent = fmt(rmx);
+  const now = X(sc.years[state.f]);
+  svg.innerHTML = `<line x1="${x0}" x2="${x1}" y1="${Y0}" y2="${Y0}" stroke="var(--line)"/><g fill="var(--flow)" opacity=".6">${bars}</g>
+  ${state.s === BASE ? "" : `<path d="${line(bb)}" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3"/>`}<path d="${line(b)}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+  <line x1="${now}" x2="${now}" y1="12" y2="150" stroke="var(--ink)" stroke-width=".8" opacity=".6"/>
+  <text x="${x0 - 4}" y="${Y(mx) + 4}" text-anchor="end">${fmt(mx / 1000)}k</text><text x="${x0 - 4}" y="${Y0 + 4}" text-anchor="end">0</text><text x="${x0}" y="10">m³ exported, cumulative</text>
+  <text x="${x0}" y="164">year 0</text><text x="${x1}" y="164" text-anchor="end">year ${fmt(yrs)}</text>
+  <rect x="${x0}" y="0" width="${x1 - x0}" height="160" fill="transparent" id="budget-hit"/>`;
+  const read = yr => { const k = budgetIndex(sc, yr), kb = budgetIndex(bs, yr); $("#budget-read").textContent = `Year ${fmt(k < 0 ? 0 : b.year[k])}: ${fmt(at(b.exported_m3, k))} m³ out` + (state.s === BASE ? "" : ` (baseline ${fmt(at(bb.exported_m3, kb))})`) + `; rain that year ${fmt(rain[Math.min(n - 1, Math.floor(yr))])} mm`; };
+  const hit = $("#budget-hit");
+  hit.onmousemove = ev => { const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) / r.width * 320; read(Math.max(0, Math.min(yrs, (x - x0) / (x1 - x0) * yrs))); };
+  hit.onmouseleave = () => read(sc.years[state.f]);
+  read(sc.years[state.f]);
+}
+function exportChart() {
+  const svg = $("#export"), vals = S.map(s => s.telemetry.sediment_exported_m3), mx = Math.max(...vals);
+  svg.innerHTML = S.map((s, i) => { const y = 6 + i * 27, w = vals[i] / mx * 160; return `<g style="cursor:pointer" data-i="${i}" tabindex="0" role="button" aria-label="Show ${s.label}"><title>${s.label}: ${fmt(vals[i])} m³</title><text x="0" y="${y + 13}">${s.label}</text><rect x="90" y="${y}" width="${Math.max(2, w)}" height="16" rx="2" fill="${i === state.s ? "var(--accent)" : "var(--muted)"}" opacity="${i === state.s ? 1 : .45}"/><text x="${94 + w}" y="${y + 13}">${fmt(vals[i] / 1000)}k</text></g>`; }).join("");
+  svg.querySelectorAll("g").forEach(g => { g.onclick = () => setScenario(+g.dataset.i); g.onkeydown = ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); setScenario(+g.dataset.i); } }; });
+}
+
+// ---- field guide: each landform is found in the current scenario's last snapshot
+const GUIDE = [
+  ["crest", "Creep-rounded crest", "The top 15 m, where little water has gathered: creep does most of the work here and rounds the edge. A few cells lower, wash takes over."],
+  ["gully", "Deepest gully", "The deepest cut on the map. Several rills join above it, so its discharge, and its cutting, is the largest on the front."],
+  ["fan", "Gully-mouth deposit", "The thickest deposit. The slope eases here, the water slows and drops what it carries."],
+  ["wash", "Main wash on the apron", "The cell near the open edge with the most ground draining to it: the gullies' water crosses the apron here."],
+  ["island", "Shrub island", "A dense shrub patch on the front that lost less than the ground around it; the Change layer shows the contrast."],
+];
+const located = {};
+function locate(key) {
+  const ck = state.s + ":" + key; if (ck in located) return located[ck];
+  const sc = S[state.s], f = sc.nF - 1, {d} = fieldAt(state.s, f);
+  let best = -Infinity, at = 0;
+  const each = (r0, r1, score) => { for (let r = r0; r < r1; r++) for (let c = 3; c < NX - 3; c++) { const i = r * NX + c, v = score(i, r, c); if (v > best) { best = v; at = i; } } };
+  if (key === "crest") each(1, 3, i => -d[i]);
+  else if (key === "gully") each(1, NY - 1, i => -d[i]);
+  else if (key === "fan") each(1, NY - 1, i => d[i]);
+  else if (key === "wash") each(Math.round(NY * 0.85), NY - 2, i => sc.logA[i]);
+  else each(8, BREAK_ROW - 4, (i, r, c) => {
+    if (sc.cover[i] < 60) return -Infinity;
+    let s = 0, n = 0; for (let dr = -3; dr <= 3; dr++) for (let dc = -3; dc <= 3; dc++) { s += d[(r + dr) * NX + c + dc]; n++; }
+    return d[i] - s / n;
+  });
+  return (located[ck] = best === -Infinity ? null : {r: Math.floor(at / NX), c: at % NX});
+}
+const gl = $("#guide");
+GUIDE.forEach(([k, t]) => { const li = document.createElement("li"), b = document.createElement("button"); b.type = "button"; b.dataset.k = k; b.dataset.bench = "guide-" + k; b.setAttribute("aria-pressed", "false"); b.innerHTML = `<span>${t}</span><small></small>`; b.onclick = () => goGuide(k); li.appendChild(b); gl.appendChild(li); });
+function goGuide(k) {
+  const p = locate(k); if (!p) return;
+  state.guide = k; state.sel = p; state.f = S[state.s].nF - 1; tIn.value = state.f;
+  if (k === "wash" && state.layer === "relief") document.querySelector('#layer button[data-k="flow"]').click();
+  if (k === "island") document.querySelector('#layer button[data-k="change"]').click();
+  invalidate(); markGuide(); draw(); say();
+}
+function markGuide() {
+  gl.querySelectorAll("button").forEach(b => { b.setAttribute("aria-pressed", b.dataset.k === state.guide); const p = locate(b.dataset.k); b.disabled = !p; b.querySelector("small").textContent = p ? `${fmt((NY - 1 - p.r) * DX)} m up` : "none here"; });
+  const g = GUIDE.find(x => x[0] === state.guide); $("#guide-note").textContent = g ? g[2] + " Found in this scenario's final snapshot." : "Click a landform to find and lock it on the map.";
+}
+document.querySelectorAll("[data-goto]").forEach(b => b.onclick = () => { goGuide(b.dataset.goto); $("#map").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center"}); });
+
+// ---- sentences that quote the runs
+(() => {
+  const ex = k => k in KEY ? S[KEY[k]].telemetry.sediment_exported_m3 : null, ratio = (a, b) => a && b ? fmt(a / b, 1) : "–";
+  const deep = k => { if (!(k in KEY)) return null; const sc = S[KEY[k]], o = (sc.nF - 1) * N; let m = 0; for (let i = 0; i < N; i++) m = Math.min(m, sc.dz[o + i]); return -m / 1000; };
+  if (ex("m05") && ex("m10")) $("#try-m").textContent = `In these runs the deepest cut goes from ${fmt(deep("m05"), 1)} m to ${fmt(deep("m10"), 1)} m, and export rises ${ratio(ex("m10"), ex("m05"))} times.`;
+  if (ex("wet")) $("#try-rain").textContent = `Twice the rain moves ${ratio(ex("wet"), ex("base"))} times as much sediment off the slope: runoff starts only after the soak-up depth, so deeper storms gain more than in proportion.`;
+  if (ex("bare") && ex("dense")) $("#try-veg").textContent = `Export: ${fmt(ex("bare") / 1000)}k m³ bare, ${fmt(ex("base") / 1000)}k baseline, ${fmt(ex("dense") / 1000)}k at double cover.`;
+})();
+
+// ---- process cards
+const P = DATA.params, link = (p, t) => `<a href="https://landlab.csdms.io/generated/api/landlab.components.${p}.html">${t}</a>`;
+const cards = [
+  ["Storms", "PrecipitationDistribution", "uniform_precip", "Storms arrive at random, last a random time and drop a random depth. Most storms are small: half drop less than 6 mm and make no runoff at all, while the deepest tenth deliver half the rain.", "gaps and durations exponential; depth gamma (Eagleson, 1978)", "A long record with the same average can hide rare, deep storms; those do most of the work here.", [["storms a year", P.STORMS_PER_YEAR], ["mean depth", P.STORM_MEAN_DEPTH_MM + " mm"], ["mean length", P.STORM_MEAN_DURATION_H + " h"]]],
+  ["Runoff and runon", "Written for this page, using LossyFlowAccumulator's rule", null, "A cell sheds the storm depth beyond what it can soak up. Water arriving from upslope soaks into whatever capacity the storm left unused there, so shrub patches drink the bare ground's runoff.", "runoff = max(P − I, 0);  passed on = max(Q_in + runoff − spare, 0)", "A small storm on bare ground can run off and then vanish into the next shrub patch, carrying nothing to the foot of the slope.", [["soak-up, bare", fmt(P.INFIL_BARE_M * 1000) + " mm"], ["soak-up, full cover", fmt(P.INFIL_SHRUB_M * 1000) + " mm"]]],
+  ["Routing", "FlowAccumulator, D8", "flow_accum", "Water goes to the steepest of the eight neighbouring cells, and discharge adds up downslope (O'Callaghan and Mark, 1984). A pit that forms during a run holds its water and sediment.", "Q = sum of runoff from every cell that drains through this one", "Discharge is what makes a gully: it grows with the ground draining to a cell, not with the rain on it.", [["directions", "8"], ["cell", fmt(DX) + " m"]]],
+  ["Wash (overland flow)", "ErosionDeposition", "erosion_deposition", "Flowing water lifts soil at a rate set by discharge and slope, and drops it at a rate set by how much it carries for its volume (Davy and Lague, 2009). Under shrubs, lifting is slower and dropping is faster.", "E = K Q^m S;  Dep = v_s × q_s / q  (q_s: sediment carried, q: water carried)", `Doubling discharge multiplies the cutting rate by 2^m, ×${fmt(2 ** P.M_SP, 2)} here. A heavily loaded flow that slows drops its load quickly. The settling velocity is many times the runoff rate in a storm, so sediment travels a short way before it drops: that builds the deposits at the gully mouths.`, [["m, n", P.M_SP + ", 1"], ["K Q^m at Q_ref", fmt(P.K_REF, 2) + " m/yr per unit slope"], ["Q_ref", fmt(P.Q_REF) + " m³/yr"], ["K under full cover", "×" + P.K_SHRUB_FACTOR], ["v_s, bare", fmt(P.V_S) + " m/yr"], ["v_s under full cover", "×" + (1 + P.V_S_SHRUB_GAIN) + " (assumed)"]]],
+  ["Creep", "LinearDiffuser", "diffusion", "Soil creeps downhill at a rate proportional to slope (Culling, 1960). Roots and burrows loosen it under shrubs, so creep is faster there.", "q = −D ∇z,  so  ∂z/∂t = D ∇²z", "Change follows curvature, not slope: convex crests lower, concave hollows fill, and sharp edges round off first.", [["D, bare", P.D_BARE + " m²/yr"], ["under full cover", "+" + fmt(P.D_SHRUB_GAIN * 100) + " % (assumed)"], ["step", fmt(P.DT_STEP) + " years"]]],
+  ["Shrub pattern", "Written for this page", null, "A smoothed random field, cut so that about a third of the ground is under shrubs. It does not change during the run.", "cover = f(smoothed noise), patches about 25 m across", "The pattern is set by the seed. Change the seed and the patches move; the storms and the surface change too.", [["ground with shrubs", fmt(P.VEG_COVER_MEAN * 100) + " %"], ["mean cover", fmt(meanCover(BASE)) + " %"]]],
+];
+$("#cards").innerHTML = cards.map(([t, comp, mod, words, eq, means, dl]) => `<article class="card${mod ? "" : " own"}"><h3>${t}</h3><div class="comp">${mod ? link(mod, comp) : comp}</div><p>${words}</p><p class="eq">${eq}</p><p class="means">${means}</p><dl>${dl.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("")}</dl></article>`).join("");
+
+// ---- benchmark: checks in words, then the table
+const CHECKS = {
+  C1: "Scarp: does a step in the ground relax at the creep rate the script states?",
+  C2: "Ramp: is sediment dropped just below a break in slope, not far beyond it?",
+  C3: "Closed bowl: does nothing leave a basin with no outlet?",
+  C5: "Mirror: does a mirror-image surface give a mirror-image result?",
+  C6: "Creep alone: with no rain, on bare ground, does change follow curvature?",
+  C7: "More rain: does doubling the rain move more soil?",
+  C8: "More shrubs: does more cover carry less wash off the upper slope?",
+  C9: "Half step: does halving the time step change the export by less than 10 %?",
+  B1: "Storms: are storm depths random, and different for another seed?",
+  B2: "Vegetation: at the same flow and slope, does more cover mean less erosion?",
+  "A:A4": "Default run: where flow is strong, does erosion rise with upslope area times slope?",
+};
+$("#checklist").innerHTML = Object.entries(CHECKS).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("") + `<dt>A1–A6</dt><dd>Default run: plausible rates, sediment moving downslope, no grid artefacts.</dd><dt>C4</dt><dd>Reported, not scored: on the crest, how much wash acted against creep (see 12 Nov).</dd>`;
+const WORDS = {
+  "agy-argon4": "Round 1, earlier prompt: only the default-run checks apply, and it passed them. The test-surface, storm and vegetation checks were not run. Its three canyons start as hollows cut into its starting surface.",
+  "cc-sonnet55": "Round 1, earlier prompt: passed the default-run checks; the others were not run. It chose a 5,000-year run.",
+  "agy-sonnet55": "Round 1, earlier prompt: passed the default-run checks; the others were not run. It chose a 154-year run.",
+  "cc-opus55": "Passes every current check. In round 2 it failed only C4, since withdrawn as a check.",
+  "agy-opus55": "C1: the scarp relaxed as if creep were 0.14 m²/yr, against the 0.005 the script states, and lost 19 % of the volume it moved.",
+  "agy-flash38": "C3: the volume in the closed bowl blew up to about 10¹⁵ m³. A4: erosion did not rise with area times slope where flow is strong.",
+  "agy-hydrogen4": "C3: half of the volume moved in the closed bowl (760 of 1,510 m³) left the grid, which a closed basin cannot allow.",
+  "landlab-ref": "C8: double cover carried slightly more wash off the upper slope than baseline cover; the patches saturate while the gaps stay bare.",
+  "landlab-s2b": "Shrub patches soak up runon and slow the flow. Passes C8 with a 32 % fall in upper-slope wash from bare ground to double cover.",
+  "landlab-gully": "This page: wash exponent 0.75 and inherited hollows. Passes every check; the shrub effect on upper-slope wash falls to 5 %.",
+};
+$("#bench tbody").innerHTML = DATA.bench.map(e => {
+  const chips = e.status === "pending" ? `<span class="chip pending">not yet scored</span>` : e.status === "a_only" ? (e.failed.length ? e.failed.map(c => `<span class="chip fail" title="${CHECKS[c] || c}">${c}</span>`).join("") : `<span class="chip pending" title="Round 1: only the default-run checks A1 to A6 apply">A checks only, none failed</span>`) : e.failed.length ? e.failed.map(c => `<span class="chip fail" title="${CHECKS[c] || c}">${c}</span>`).join("") : `<span class="chip pass" title="Every check passed">none</span>`;
+  const code = e.cell ? ` <a href="https://github.com/cordilleran/MapChallenge2026/tree/main/day-10/benchmark/entries/${e.cell}">code</a>` : "";
+  return `<tr><td>${e.label}${code}</td><td>${chips}</td><td class="words">${WORDS[e.cell] || ""}</td><td>${fmt(e.lines)}</td><td>${fmt(e.years)}</td></tr>`;
+}).join("");
+$("#built").textContent = DATA.built;
+
+// ---- theme, hash state, start
+const redraw = () => { invalidate(); draw(); };
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redraw);
+new MutationObserver(redraw).observe(document.documentElement, {attributes: true, attributeFilter: ["data-theme"]});
+let hashReady = false;
+function writeHash() {
+  if (!hashReady) return;
+  const h = new URLSearchParams({scenario: S[state.s].key, layer: state.layer, year: S[state.s].years[state.f]});
+  if (state.sel) h.set("cell", state.sel.r + "," + state.sel.c);
+  history.replaceState(null, "", "#" + h);
+}
+// #scenario=wet&layer=change&year=4000&cell=70,60 opens a given view (also used by the headless page checks)
+const hp = new URLSearchParams(location.hash.slice(1));
+if (Object.hasOwn(KEY, hp.get("scenario") ?? "")) setScenario(KEY[hp.get("scenario")]);
+const lb = [...document.querySelectorAll("#layer button")].find(b => b.dataset.k === hp.get("layer")); if (lb) lb.click();
+if (hp.has("year") && Number.isFinite(+hp.get("year"))) { const y = +hp.get("year"), ys = S[state.s].years; state.f = ys.reduce((b, v, i) => Math.abs(v - y) < Math.abs(ys[b] - y) ? i : b, 0); tIn.value = state.f; }
+if (hp.has("cell")) { const [r, c] = hp.get("cell").split(",").map(Number); if (Number.isInteger(r) && Number.isInteger(c) && r >= 0 && r < NY && c >= 0 && c < NX) state.sel = {r, c}; }
+runline(); markGuide(); invalidate(); hashReady = true; draw();
+})();
+</script>
+</body>
+</html>

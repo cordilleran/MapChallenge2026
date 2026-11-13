@@ -44,3 +44,10 @@ site/data/day09.js
 
 # Day 6: local settings, quick looks and the local QGIS project stay out of git
 day-*/out/quicklooks/
+
+# Day 10: the Landlab venv and local runs
+day-10/.venv/
+day-10/runs/
+
+# Day 10: the page data is inlined in app/index.html; the separate copy is rebuilt by build_page.py
+day-10/app/lab-data.json

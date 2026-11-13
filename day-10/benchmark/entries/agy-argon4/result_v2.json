@@ -1,0 +1,133 @@
+{
+ "cell": "agy-argon4",
+ "harness": "agy",
+ "model": "gemini-4-argon-medium",
+ "started": "2026-11-12T02:15:47.653237+00:00",
+ "wall_s": 1122.8,
+ "exit": 0,
+ "prompt_chars": 3252,
+ "tool_calls": 32,
+ "reply_chars": 5608,
+ "usage": {
+  "input_tokens": 180664,
+  "output_tokens": 60202,
+  "thinking_tokens": 0,
+  "cache_read_tokens": 741714,
+  "total_tokens": 240866
+ },
+ "cost_usd_api_equiv": null,
+ "sim_py_lines": 2125,
+ "contract": "v1",
+ "runs": {
+  "d42a": {
+   "tag": "d42a",
+   "exit": 0,
+   "seconds": 31.5,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "d42b": {
+   "tag": "d42b",
+   "exit": 0,
+   "seconds": 31.0,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "d43": {
+   "tag": "d43",
+   "exit": 0,
+   "seconds": 31.4,
+   "timed_out": false,
+   "last_error": ""
+  }
+ },
+ "files_present": {
+  "z_initial.npy": true,
+  "z_final.npy": true,
+  "telemetry.json": true,
+  "map.png": true,
+  "map.html": true
+ },
+ "telemetry": {
+  "seed": 42,
+  "grid_shape": [
+   120,
+   120
+  ],
+  "cell_size_m": 5.0,
+  "years_simulated": 4000.0,
+  "timesteps": 160,
+  "open_boundaries": [
+   "south"
+  ],
+  "sediment_exported_m3": 9156.664979,
+  "uplift_or_baselevel_m3": 0.0,
+  "max_erosion_m": 16.739786,
+  "max_deposition_m": 4.477829,
+  "mass_balance_error_pct": 5.98988161879873e-15
+ },
+ "telemetry_missing_keys": null,
+ "deterministic": true,
+ "seed_changes_result": true,
+ "finite": true,
+ "bookkeeping_self_consistent_pct": 1.591075499170473e-10,
+ "A_default": {
+  "A1_rates": {
+   "years": 4000.0,
+   "mean_lowering_mm_per_yr": 0.006358795124305555,
+   "mean_surface_change_mm_per_yr": -0.006358795124533761,
+   "peak_erosion_mm_per_yr": 4.184946528437974,
+   "peak_erosion_share_of_relief": 0.16854095909093966,
+   "initial_relief_m": 99.32176845344524,
+   "flag_deep": false
+  },
+  "A2_downslope": {
+   "mean_z0_of_erosion_m": 45.71322745725702,
+   "mean_z0_of_deposition_m": 3.580759285087337,
+   "drop_m": 42.13246817216968,
+   "fail": false
+  },
+  "A3_implied_flux": {
+   "uphill_share": 0.13993490200410388,
+   "min_flux_share_of_gross": -0.08259967681840534
+  },
+  "A4_slope_area": {
+   "rho_erosion_vs_AS_high_area": 0.5479755599467896,
+   "rho_change_vs_curvature_low_area": 0.27063932287208237,
+   "low_area_shaped_by": "creep",
+   "fail": false
+  },
+  "A5_capacity_fall": {
+   "auc_by_exponents": {
+    "0.5,1": 0.5825279698755772,
+    "1,1": 0.5258167113614333,
+    "1.5,1": 0.48633128116921254
+   },
+   "best_auc": 0.5825279698755772,
+   "fail": false
+  },
+  "A6_artefacts": {
+   "two_cell_power_share": 0.0169016176212447,
+   "row_mean_share": 0.5105311151966222,
+   "column_mean_share": 0.03212018395106582,
+   "pit_cells_initial": 437,
+   "pit_cells_final": 73,
+   "pit_volume_final_m3": 52.79100552073418
+  }
+ },
+ "html": {
+  "html_kb": 3853.9,
+  "external_refs": [],
+  "has_input_controls": true
+ },
+ "screenshot": true,
+ "B1_storms": {
+  "fail": null,
+  "note": "v1 contract"
+ },
+ "B2_vegetation": {
+  "fail": null,
+  "note": "v1 contract"
+ },
+ "failed_checks": []
+}

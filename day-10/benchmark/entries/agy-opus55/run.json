@@ -1,0 +1,10 @@
+{
+ "cell": "agy-opus55",
+ "harness": "agy",
+ "model": "claude-opus-5-5-medium",
+ "prompt": "python_prompt_v2.md",
+ "started": "2026-11-12T05:12:38.278652+00:00",
+ "wall_s": 802.6,
+ "exit": 0,
+ "prompt_chars": 5730
+}

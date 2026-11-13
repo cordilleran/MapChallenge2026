@@ -1,0 +1,498 @@
+{
+ "cell": "landlab-gully",
+ "tool": "hand build (Claude Code with GW)",
+ "model": "claude-opus-5-5",
+ "prompt": "python_prompt_v2.md",
+ "note": "Day 10 Landlab build after S2b: wash exponent m 0.75 with erodibility set at a reference discharge, inherited hollows and roughness on the default surface (D206)",
+ "tool_calls": null,
+ "reply_chars": 0,
+ "usage": {},
+ "cost_usd_api_equiv": null,
+ "sim_py_lines": 269,
+ "contract": "v2",
+ "runs": {
+  "d42a": {
+   "tag": "d42a",
+   "exit": 0,
+   "seconds": 31.2,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "d42b": {
+   "tag": "d42b",
+   "exit": 0,
+   "seconds": 31.2,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "d43": {
+   "tag": "d43",
+   "exit": 0,
+   "seconds": 8.8,
+   "timed_out": false,
+   "last_error": ""
+  }
+ },
+ "files_present": {
+  "z_initial.npy": true,
+  "z_final.npy": true,
+  "telemetry.json": true,
+  "map.png": true,
+  "map.html": true,
+  "vegetation.npy": true,
+  "storms.csv": true
+ },
+ "telemetry": {
+  "seed": 42,
+  "grid_shape": [
+   120,
+   120
+  ],
+  "cell_size_m": 5.0,
+  "years_simulated": 2000.0,
+  "timesteps": 400,
+  "dt_years": 5.0,
+  "storm_count": 23882,
+  "mean_annual_rain_mm": 166.26,
+  "creep_diffusivity_m2_per_yr": 0.005,
+  "open_boundaries": [
+   "bottom"
+  ],
+  "sediment_exported_m3": 52069.58704906046,
+  "uplift_or_baselevel_m3": 0.0,
+  "mass_balance_error_pct": 1.8684061025811433e-11,
+  "exported_by_wash_m3": 51950.78479176354,
+  "exported_by_creep_m3": 118.80225729692029,
+  "wash_events_computed": 11482,
+  "runon_infiltrated_m3": 837426.55,
+  "pits_at_end": 0,
+  "runtime_s": 28.99
+ },
+ "telemetry_missing_keys": [],
+ "deterministic": true,
+ "seed_changes_result": true,
+ "finite": true,
+ "bookkeeping_self_consistent_pct": 1.8684061025811433e-11,
+ "A_default": {
+  "A1_rates": {
+   "years": 2000.0,
+   "mean_lowering_mm_per_yr": 0.07231887090147286,
+   "mean_surface_change_mm_per_yr": -0.07231887090149323,
+   "peak_erosion_mm_per_yr": 4.167952702627054,
+   "peak_erosion_share_of_relief": 0.09463863476662256,
+   "initial_relief_m": 88.08142072009306,
+   "flag_deep": false
+  },
+  "A2_downslope": {
+   "mean_z0_of_erosion_m": 32.72191265584704,
+   "mean_z0_of_deposition_m": 9.62662716326933,
+   "drop_m": 23.095285492577712,
+   "fail": false
+  },
+  "A3_implied_flux": {
+   "uphill_share": 0.025556395216012478,
+   "min_flux_share_of_gross": -0.03814381516318774
+  },
+  "A4_slope_area": {
+   "rho_erosion_vs_AS_high_area": 0.5326828973201756,
+   "rho_change_vs_curvature_low_area": 0.4530642062751901,
+   "low_area_shaped_by": "creep",
+   "fail": false
+  },
+  "A5_capacity_fall": {
+   "auc_by_exponents": {
+    "0.5,1": 0.692000428251744,
+    "1,1": 0.6443050426868829,
+    "1.5,1": 0.6078017335428133
+   },
+   "best_auc": 0.692000428251744,
+   "fail": false
+  },
+  "A6_artefacts": {
+   "two_cell_power_share": 0.08096755348758747,
+   "row_mean_share": 0.3811846266332475,
+   "column_mean_share": 0.04237272608458556,
+   "pit_cells_initial": 18,
+   "pit_cells_final": 30,
+   "pit_volume_final_m3": 78.03375522644356
+  }
+ },
+ "html": {
+  "html_kb": 0.1,
+  "external_refs": [],
+  "has_input_controls": false
+ },
+ "screenshot": true,
+ "B1_storms": {
+  "storms": 23882,
+  "storms_per_year": 11.941,
+  "mean_annual_rain_mm": 166.264726,
+  "depth_cv": 1.7120994251617105,
+  "top_tenth_share_of_rain": 0.49445651959875125,
+  "same_for_seeds_42_43": false,
+  "claimed_storm_count": 23882,
+  "claimed_mean_annual_rain_mm": 166.26,
+  "fail": false
+ },
+ "B2_vegetation": {
+  "rho_by_AS_bin": [
+   -0.2668527470068646,
+   -0.33209767041645855,
+   -0.3263849675445525,
+   -0.21348702648458992,
+   -0.14183480505272092,
+   -0.36303084541616615,
+   -0.49460838351870634,
+   -0.6086684467700956,
+   -0.5542879190845498,
+   -0.6219236096792277
+  ],
+  "median_rho": -0.34756425791631235,
+  "cover_mean": 0.28126291836749057,
+  "cover_share_over_half": 0.3132638888888889,
+  "fail": false
+ },
+ "test_runs": {
+  "scarp_bare": {
+   "tag": "scarp_bare",
+   "exit": 0,
+   "seconds": 2.4,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "scarp_veg": {
+   "tag": "scarp_veg",
+   "exit": 0,
+   "seconds": 2.8,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "ramp": {
+   "tag": "ramp",
+   "exit": 0,
+   "seconds": 22.7,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "basin": {
+   "tag": "basin",
+   "exit": 0,
+   "seconds": 33.6,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "basin_rain0": {
+   "tag": "basin_rain0",
+   "exit": 0,
+   "seconds": 2.3,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "hill": {
+   "tag": "hill",
+   "exit": 0,
+   "seconds": 34.6,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "hill_veg0": {
+   "tag": "hill_veg0",
+   "exit": 0,
+   "seconds": 23.0,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "hill_rain0": {
+   "tag": "hill_rain0",
+   "exit": 0,
+   "seconds": 2.6,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "hill_rain0_veg1": {
+   "tag": "hill_rain0_veg1",
+   "exit": 0,
+   "seconds": 2.7,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "hill_rain0_veg2": {
+   "tag": "hill_rain0_veg2",
+   "exit": 0,
+   "seconds": 2.5,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "hill_rain2": {
+   "tag": "hill_rain2",
+   "exit": 0,
+   "seconds": 42.4,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "hill_veg2": {
+   "tag": "hill_veg2",
+   "exit": 0,
+   "seconds": 35.4,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "hill_dt05": {
+   "tag": "hill_dt05",
+   "exit": 0,
+   "seconds": 61.8,
+   "timed_out": false,
+   "last_error": ""
+  }
+ },
+ "C1_scarp": {
+  "bare": {
+   "K_recovered_m2_per_yr": 0.004999999999962867,
+   "net_over_gross": 0.0,
+   "changed": true
+  },
+  "vegetated": {
+   "K_recovered_m2_per_yr": 0.005414155067422761,
+   "net_over_gross": 1.9226446960538489e-13,
+   "changed": true
+  },
+  "K_claimed_m2_per_yr": 0.005,
+  "K_relative_error": 7.426725900927522e-12,
+  "vegetation_effect_on_creep": 1.082831013492594,
+  "flag_K_outside_1e-4_1e-1": false,
+  "fail": false
+ },
+ "C2_ramp": {
+  "row_mean_change_m": [
+   0.0,
+   -0.265401,
+   -0.075607,
+   -0.055095,
+   -0.06434,
+   -0.076785,
+   -0.089017,
+   -0.100768,
+   -0.112086,
+   -0.123036,
+   -0.133668,
+   -0.144023,
+   -0.154133,
+   -0.164025,
+   -0.173721,
+   -0.183238,
+   -0.192591,
+   -0.201795,
+   -0.210859,
+   -0.219795,
+   -0.228611,
+   -0.237313,
+   -0.24591,
+   -0.254408,
+   -0.262811,
+   -0.271125,
+   -0.279354,
+   -0.287503,
+   -0.295575,
+   -0.303574,
+   -0.311503,
+   -0.319365,
+   -0.327163,
+   -0.334899,
+   -0.342575,
+   -0.350194,
+   -0.357758,
+   -0.365269,
+   -0.372729,
+   -0.380139,
+   -0.3875,
+   -0.394815,
+   -0.402086,
+   -0.409312,
+   -0.416495,
+   -0.423636,
+   -0.430729,
+   -0.437755,
+   -0.444636,
+   -0.451119,
+   -0.456457,
+   -0.458699,
+   -0.453339,
+   -0.431364,
+   -0.377455,
+   -0.270258,
+   -0.086904,
+   0.18831,
+   0.555855,
+   1.00052,
+   1.156054,
+   1.004033,
+   0.877618,
+   0.770755,
+   0.679547,
+   0.601138,
+   0.53332,
+   0.474348,
+   0.42282,
+   0.377601,
+   0.337756,
+   0.302518,
+   0.271244,
+   0.243398,
+   0.218527,
+   0.196249,
+   0.176239,
+   0.158217,
+   0.141946,
+   0.127219,
+   0.113859,
+   0.101711,
+   0.090643,
+   0.080536,
+   0.071288,
+   0.06281,
+   0.055023,
+   0.047857,
+   0.041251,
+   0.035149,
+   0.029504,
+   0.024273,
+   0.019416,
+   0.014901,
+   0.010696,
+   0.006774,
+   0.00311,
+   -0.000318,
+   -0.00353,
+   -0.006544,
+   -0.009377,
+   -0.012042,
+   -0.014553,
+   -0.01692,
+   -0.019152,
+   -0.02125,
+   -0.023209,
+   -0.025006,
+   -0.026597,
+   -0.027903,
+   -0.028809,
+   -0.029163,
+   -0.028798,
+   -0.027559,
+   -0.025341,
+   -0.022105,
+   -0.017882,
+   -0.012734,
+   -0.006738,
+   0.0
+  ],
+  "break_row": 60,
+  "deposition_peak_row": 61,
+  "peak_rows_after_break": 1,
+  "ramp_mean_change_m": -0.23484129478554372,
+  "fail": false
+ },
+ "C3_basin": {
+  "gross_moved_m3": 9446.370251257309,
+  "net_m3": 0.7260559990818649,
+  "net_share_of_gross": 7.686084493514608e-05,
+  "reported_export_m3": -0.7260560012582573,
+  "rain_share_of_change": 0.9832516004658631,
+  "informative_for_wash": true,
+  "export_share_of_gross": 7.686084516554064e-05,
+  "fail": false
+ },
+ "C4_hill": {
+  "A1_rates": {
+   "years": 2000.0,
+   "mean_lowering_mm_per_yr": 0.13199917011905152,
+   "mean_surface_change_mm_per_yr": -0.13199917011904594,
+   "peak_erosion_mm_per_yr": 2.997769470799543,
+   "peak_erosion_share_of_relief": 0.11996220487917544,
+   "initial_relief_m": 49.978565729412225,
+   "flag_deep": false
+  },
+  "A2_downslope": {
+   "mean_z0_of_erosion_m": 21.316492760004397,
+   "mean_z0_of_deposition_m": 10.653528719361917,
+   "drop_m": 10.66296404064248,
+   "fail": false
+  },
+  "A3_implied_flux": {
+   "uphill_share": 0.0004888413372766295,
+   "min_flux_share_of_gross": -0.001335948559333485
+  },
+  "A4_slope_area": {
+   "rho_erosion_vs_AS_high_area": 0.36560544978369386,
+   "rho_change_vs_curvature_low_area": -0.22420819147366206,
+   "low_area_shaped_by": "wash",
+   "fail": false
+  },
+  "A5_capacity_fall": {
+   "auc_by_exponents": {
+    "0.5,1": 0.6971347486893307,
+    "1,1": 0.6900959489162214,
+    "1.5,1": 0.6876323442315954
+   },
+   "best_auc": 0.6971347486893307,
+   "fail": false
+  },
+  "A6_artefacts": {
+   "two_cell_power_share": 0.08762201274898307,
+   "row_mean_share": 0.16365139071773435,
+   "column_mean_share": 0.08655135234422902,
+   "pit_cells_initial": 0,
+   "pit_cells_final": 0,
+   "pit_volume_final_m3": 0.0
+  }
+ },
+ "C5_mirror": {
+  "asymmetry": 2.695847440568484e-09,
+  "exact": true,
+  "fail": false
+ },
+ "C6_no_rain": {
+  "corr_with_K_t_laplacian": 0.9999569644344832,
+  "claims_linear_creep": true,
+  "fail": false
+ },
+ "C7_rain": {
+  "gross_rain1_m3": 68462.97600333758,
+  "gross_rain2_m3": 172158.12130075038,
+  "elasticity": 1.3303383284403283,
+  "threshold_like": true,
+  "fail": false
+ },
+ "C8_vegetation": {
+  "upper_slope_wash_loss_by_veg_scale_0_1_2_m3": [
+   43847.98901609877,
+   42140.94527146628,
+   41488.496737413036
+  ],
+  "total_moved_by_veg_scale_0_1_2_m3": [
+   47009.692794282484,
+   68462.97600333758,
+   70450.48071145562
+  ],
+  "separated_from_creep": true,
+  "monotonic_falling": true,
+  "fail": false
+ },
+ "C9_timestep": {
+  "export_rel_change": 0.002840749495221827,
+  "peak_erosion_rel_change": 0.002078273377883186,
+  "dz_corr": 0.9983163792017189,
+  "dt_years": [
+   5.0,
+   2.5
+  ],
+  "fail": false
+ },
+ "C4_crest_balance": {
+  "rho_creep_alone": 0.9737365263897452,
+  "rho_wash_alone": -0.6754371340446903,
+  "mean_abs_creep_m": 0.005661868766011219,
+  "mean_abs_wash_m": 0.11945217209234643,
+  "wash_to_creep": 21.097658216564486
+ },
+ "failed_checks": []
+}

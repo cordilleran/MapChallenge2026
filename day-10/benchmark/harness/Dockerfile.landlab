@@ -1,0 +1,10 @@
+# Evaluation image for the Landlab build: the same rules as Dockerfile, with Landlab added.
+# Python 3.13 and the pins of day-10/requirements.txt (landlab 2.11.0), copied here as landlab-requirements.txt.
+FROM python:3.13-slim
+COPY landlab-requirements.txt /tmp/req.txt
+RUN pip install --no-cache-dir -r /tmp/req.txt
+ENV MPLBACKEND=Agg PYTHONDONTWRITEBYTECODE=1 \
+    OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 \
+    MPLCONFIGDIR=/opt/mpl
+RUN mkdir -p /opt/mpl && python -c "import matplotlib.font_manager, landlab; print(landlab.__version__)" && chmod -R a+rwX /opt/mpl
+WORKDIR /work

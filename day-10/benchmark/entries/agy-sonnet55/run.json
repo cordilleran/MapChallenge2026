@@ -1,0 +1,9 @@
+{
+ "cell": "agy-sonnet55",
+ "harness": "agy",
+ "model": "claude-sonnet-5-5-medium",
+ "started": "2026-11-12T02:15:47.653187+00:00",
+ "wall_s": 328.6,
+ "exit": 0,
+ "prompt_chars": 3252
+}

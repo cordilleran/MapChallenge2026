@@ -10,6 +10,7 @@ project:
     - fonts/
     - img/
     - day09/
+    - day10/
     - favicon.ico
 website:
   favicon: favicon.svg    # the Raster tile's glyph (icons/29-raster.svg) with thinner lines, river blue; favicon.ico is the same at 16, 32 and 48 px

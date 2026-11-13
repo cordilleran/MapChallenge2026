@@ -1,0 +1,5 @@
+# Direct dependencies of sim.py, build_page.py and tests/ (Python 3.13). requirements.txt is the full lock.
+numpy==2.5.3
+scipy==1.18.1
+matplotlib==3.11.2
+landlab==2.11.0

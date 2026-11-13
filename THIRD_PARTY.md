@@ -25,6 +25,11 @@
 - **Natural Earth** 1:50m admin-0 countries (with the UN M49 and World Bank region fields) and 1:10m admin-1 states and provinces, and 1:50m lakes, simplified, in `site/day09/data/`; border lines are the edges these shapes share. Public domain.
 - **Claude Haiku** (Anthropic) read titles, abstracts, keywords and the opening and study-area sections of the papers to classify place roles, scope and setting; the library's texts are not redistributed.
 
+## Day 10 (Prompting only): software and benchmark entries
+- No third-party data: the hillslope, shrubs and storms are synthetic and generated from a seed.
+- **Landlab 2.11.0** (MIT; Hobley et al. 2017, Barnhart et al. 2020) supplies the process components; **NumPy** and **SciPy** (BSD-3-Clause) and **matplotlib** (matplotlib licence, PSF-based) are used by the simulator. They are installed from PyPI (`day-10/requirements.txt`), not redistributed.
+- `day-10/benchmark/entries/`: simulators and replies written by AI models (Gemini 4 Argon, Gemini 3.8 Flash and Gemini 4 Hydrogen through Google Antigravity; Claude Sonnet 5.5 and Opus 5.5 through Claude Code and Antigravity), published as test subjects under this repository's MIT licence.
+
 ## Software in this repository
 - **Leaflet 1.9.4**, BSD-2-Clause, © 2010-2023 Vladimir Agafonkin, © 2010-2011 CloudMade: `site/vendor/leaflet-1.9.4/` (licence text included).
 - **IBM Plex Mono**, © 2017 IBM Corp., and **Newsreader**, © 2020 The Newsreader Project Authors: SIL Open Font License 1.1, files and licence texts in `site/fonts/`.

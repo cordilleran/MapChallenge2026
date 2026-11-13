@@ -1,0 +1,10 @@
+{
+ "cell": "agy-flash38",
+ "harness": "agy",
+ "model": "gemini-3.8-flash-high",
+ "prompt": "python_prompt_v2.md",
+ "started": "2026-11-12T04:59:36.300518+00:00",
+ "wall_s": 781.9,
+ "exit": 0,
+ "prompt_chars": 5730
+}

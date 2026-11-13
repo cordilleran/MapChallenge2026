@@ -1,0 +1,10 @@
+{
+ "cell": "cc-sonnet55",
+ "harness": "claude-code",
+ "model": "claude-sonnet-5-5",
+ "effort": "medium",
+ "started": "2026-11-12T02:15:47.653238+00:00",
+ "wall_s": 602.8,
+ "exit": 0,
+ "prompt_chars": 3252
+}

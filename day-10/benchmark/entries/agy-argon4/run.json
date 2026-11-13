@@ -1,0 +1,9 @@
+{
+ "cell": "agy-argon4",
+ "harness": "agy",
+ "model": "gemini-4-argon-medium",
+ "started": "2026-11-12T02:15:47.653237+00:00",
+ "wall_s": 1122.8,
+ "exit": 0,
+ "prompt_chars": 3252
+}

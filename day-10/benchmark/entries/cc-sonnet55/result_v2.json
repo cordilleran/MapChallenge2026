@@ -1,0 +1,161 @@
+{
+ "cell": "cc-sonnet55",
+ "harness": "claude-code",
+ "model": "claude-sonnet-5-5",
+ "effort": "medium",
+ "started": "2026-11-12T02:15:47.653238+00:00",
+ "wall_s": 602.8,
+ "exit": 0,
+ "prompt_chars": 3252,
+ "tool_calls": 25,
+ "reply_chars": 5188,
+ "usage": {
+  "input_tokens": 40,
+  "cache_creation_input_tokens": 64855,
+  "cache_read_input_tokens": 1253760,
+  "output_tokens": 48614,
+  "output_tokens_details": {
+   "thinking_tokens": 26482
+  },
+  "server_tool_use": {
+   "web_search_requests": 0,
+   "web_fetch_requests": 0
+  },
+  "service_tier": "standard",
+  "cache_creation": {
+   "ephemeral_1h_input_tokens": 64855,
+   "ephemeral_5m_input_tokens": 0
+  },
+  "inference_geo": "global",
+  "iterations": [
+   {
+    "input_tokens": 2,
+    "output_tokens": 2078,
+    "cache_read_input_tokens": 75137,
+    "cache_creation_input_tokens": 544,
+    "cache_creation": {
+     "ephemeral_5m_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 544
+    },
+    "type": "message"
+   }
+  ],
+  "speed": "standard",
+  "fallback_credit": null
+ },
+ "cost_usd_api_equiv": 0.871016,
+ "sim_py_lines": 511,
+ "contract": "v1",
+ "runs": {
+  "d42a": {
+   "tag": "d42a",
+   "exit": 0,
+   "seconds": 40.4,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "d42b": {
+   "tag": "d42b",
+   "exit": 0,
+   "seconds": 40.7,
+   "timed_out": false,
+   "last_error": ""
+  },
+  "d43": {
+   "tag": "d43",
+   "exit": 0,
+   "seconds": 40.5,
+   "timed_out": false,
+   "last_error": ""
+  }
+ },
+ "files_present": {
+  "z_initial.npy": true,
+  "z_final.npy": true,
+  "telemetry.json": true,
+  "map.png": true,
+  "map.html": true
+ },
+ "telemetry": {
+  "seed": 42,
+  "grid_shape": [
+   100,
+   100
+  ],
+  "cell_size_m": 6.0,
+  "years_simulated": 5000.0,
+  "timesteps": 250,
+  "open_boundaries": [
+   "south"
+  ],
+  "sediment_exported_m3": 8276.688902860229,
+  "uplift_or_baselevel_m3": 0.0,
+  "max_erosion_m": 1.8696280223849007,
+  "max_deposition_m": 0.8413539036743432,
+  "mass_balance_error_pct": 1.160544935412536e-13
+ },
+ "telemetry_missing_keys": null,
+ "deterministic": true,
+ "seed_changes_result": true,
+ "finite": true,
+ "bookkeeping_self_consistent_pct": 2.347167631722595e-13,
+ "A_default": {
+  "A1_rates": {
+   "years": 5000.0,
+   "mean_lowering_mm_per_yr": 0.0045981605015890156,
+   "mean_surface_change_mm_per_yr": -0.004598160501588989,
+   "peak_erosion_mm_per_yr": 0.37392560447698014,
+   "peak_erosion_share_of_relief": 0.05957016951894157,
+   "initial_relief_m": 31.385306395517535,
+   "flag_deep": false
+  },
+  "A2_downslope": {
+   "mean_z0_of_erosion_m": 12.635985457611934,
+   "mean_z0_of_deposition_m": 4.877247231106641,
+   "drop_m": 7.758738226505293,
+   "fail": false
+  },
+  "A3_implied_flux": {
+   "uphill_share": 0.04535633564920282,
+   "min_flux_share_of_gross": -0.02531202027438082
+  },
+  "A4_slope_area": {
+   "rho_erosion_vs_AS_high_area": 0.24192810672005755,
+   "rho_change_vs_curvature_low_area": 0.5285334446354164,
+   "low_area_shaped_by": "creep",
+   "fail": false
+  },
+  "A5_capacity_fall": {
+   "auc_by_exponents": {
+    "0.5,1": 0.7028124037572624,
+    "1,1": 0.671114213411401,
+    "1.5,1": 0.648398291012892
+   },
+   "best_auc": 0.7028124037572624,
+   "fail": false
+  },
+  "A6_artefacts": {
+   "two_cell_power_share": 0.016686609015742877,
+   "row_mean_share": 0.25571479468894337,
+   "column_mean_share": 0.03337605486402856,
+   "pit_cells_initial": 283,
+   "pit_cells_final": 41,
+   "pit_volume_final_m3": 168.26008415284267
+  }
+ },
+ "html": {
+  "html_kb": 1392.4,
+  "external_refs": [],
+  "has_input_controls": true
+ },
+ "screenshot": true,
+ "B1_storms": {
+  "fail": null,
+  "note": "v1 contract"
+ },
+ "B2_vegetation": {
+  "fail": null,
+  "note": "v1 contract"
+ },
+ "failed_checks": []
+}

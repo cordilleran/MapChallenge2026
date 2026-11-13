@@ -1,0 +1,10 @@
+{
+ "cell": "agy-hydrogen4",
+ "harness": "agy",
+ "model": "gemini-4-hydrogen-high",
+ "prompt": "python_prompt_v2.md",
+ "started": "2026-11-12T21:21:22.471366+00:00",
+ "wall_s": 1143.3,
+ "exit": 0,
+ "prompt_chars": 5730
+}

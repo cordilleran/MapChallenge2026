@@ -1,0 +1,11 @@
+{
+ "cell": "cc-opus55",
+ "harness": "claude-code",
+ "model": "claude-opus-5-5",
+ "effort": "medium",
+ "prompt": "python_prompt_v2.md",
+ "started": "2026-11-12T05:12:38.275422+00:00",
+ "wall_s": 1584.6,
+ "exit": 0,
+ "prompt_chars": 5730
+}
