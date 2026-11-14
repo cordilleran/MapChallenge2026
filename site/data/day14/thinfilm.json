@@ -1,0 +1,73 @@
+{
+ "patch_mm": [
+  300,
+  30,
+  80,
+  80
+ ],
+ "px_mm": 0.5,
+ "measures": {
+  "photo": {
+   "perim_0.15": 0.3293,
+   "euler_0.15": 3.938,
+   "perim_0.25": 0.4494,
+   "euler_0.25": 3.016,
+   "perim_0.35": 0.5171,
+   "euler_0.35": 1.828,
+   "perim_0.5": 0.57,
+   "euler_0.5": -1.281,
+   "corr_len_mm": 1.0
+  },
+  "landlab": {
+   "perim_0.15": 0.0941,
+   "euler_0.15": 0.141,
+   "perim_0.25": 0.1168,
+   "euler_0.25": 0.172,
+   "perim_0.35": 0.1324,
+   "euler_0.35": 0.156,
+   "perim_0.5": 0.1389,
+   "euler_0.5": 0.047,
+   "corr_len_mm": 3.5,
+   "score_vs_photo": 0.874
+  },
+  "thinfilm_tau0.03": {
+   "perim_0.15": 0.0286,
+   "euler_0.15": 0.016,
+   "perim_0.25": 0.0281,
+   "euler_0.25": 0.016,
+   "perim_0.35": 0.028,
+   "euler_0.35": 0.016,
+   "perim_0.5": 0.029,
+   "euler_0.5": 0.016,
+   "corr_len_mm": 10.0,
+   "mass_left": 0.3476,
+   "score_vs_photo": 1.633
+  },
+  "thinfilm_tau0.6": {
+   "perim_0.15": 0.0578,
+   "euler_0.15": 0.281,
+   "perim_0.25": 0.0827,
+   "euler_0.25": 0.25,
+   "perim_0.35": 0.0952,
+   "euler_0.35": 0.188,
+   "perim_0.5": 0.0997,
+   "euler_0.5": 0.031,
+   "corr_len_mm": 4.5,
+   "mass_left": 0.9371,
+   "score_vs_photo": 1.064
+  },
+  "thinfilm_tau6": {
+   "perim_0.15": 0.1082,
+   "euler_0.15": 0.641,
+   "perim_0.25": 0.1455,
+   "euler_0.25": 0.578,
+   "perim_0.35": 0.1608,
+   "euler_0.35": 0.422,
+   "perim_0.5": 0.164,
+   "euler_0.5": 0.062,
+   "corr_len_mm": 3.0,
+   "mass_left": 0.9794,
+   "score_vs_photo": 0.761
+  }
+ }
+}

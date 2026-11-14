@@ -51,3 +51,20 @@ day-10/runs/
 
 # Day 10: the page data is inlined in app/index.html; the separate copy is rebuilt by build_page.py
 day-10/app/lab-data.json
+
+# Day 12: downloaded PCIC and OGGM files stay local (PCIC terms of use; size)
+day-12/data/
+day-12/.venv/
+
+# Day 13: downloaded DataBC, RDKB, GWELLS, levels and lidar stay local (size; RDKB and report terms)
+day-13/data/
+day-13/sources/
+
+# Day 13: QGIS working project (includes a held analysis; not for publication)
+day-13/qgis/
+
+# Day 14: the source photo (EXIF stripped) and the changelog ship (D258, GW 11-14); model runs and derived arrays stay local
+day-14/data/*
+!day-14/data/source/
+!day-14/data/CHANGELOG.md
+day-14/runs/

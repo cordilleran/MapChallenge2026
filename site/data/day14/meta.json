@@ -1,0 +1,18 @@
+{
+ "zmax": 5,
+ "width_px": 5120,
+ "height_px": 2080,
+ "px_per_mm_at_zmax": 4,
+ "model_dx_mm": 2.0,
+ "display_dx_mm": 0.25,
+ "ve": 150.0,
+ "photo_spectral_slope": -4.3,
+ "synth_slope_used": -3.5,
+ "synth_amplitude": 0.1,
+ "max_block_error_um": 68.82,
+ "mean_block_error_um": 1.33,
+ "tiles_per_set": 254,
+ "run": "base_2mm",
+ "photo_tiles": 254,
+ "photo_note": "the rectified photo resampled from about 0.34 mm to 0.25 mm a pixel"
+}

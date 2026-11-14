@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Bath, Drained</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="vendor/leaflet-1.9.4/leaflet.css">
+<link rel="stylesheet" href="css/day14.css">
+</head>
+<body class="d14">
+<div id="map" role="application" aria-label="Zoomable map of the drained bathtub floor, simulated mud film in hillshade, with the photograph available by swipe"></div>
+
+<div class="sheet" aria-hidden="false">
+  <p class="sheet-k">Sheet 1 of 1</p>
+  <p class="sheet-t">The Bath, Drained</p>
+  <p class="sheet-s">Floor of an enamelled tub after a muddy-dog bath · 18 March 2026</p>
+</div>
+
+<div class="ratio" id="ratio" role="status" aria-live="polite">
+  <span class="ratio-n" id="ratioN">–</span>
+  <span class="ratio-l" id="ratioL">map : tub</span>
+</div>
+
+<div class="scalebar" aria-hidden="true"><div class="sb-bar" id="sbBar"></div><span id="sbLab">1 cm</span></div>
+
+<div class="prov" id="prov" role="status" aria-live="polite"></div>
+
+<div class="drainbox" id="drainbox">
+  <label class="row" for="drain">Drain the bath <output id="drainOut" for="drain">drained</output></label>
+  <input type="range" id="drain" min="0" max="100" value="100" step="1" aria-describedby="drainHelp">
+</div>
+
+<button class="panel-toggle" id="panelToggle" aria-expanded="true" aria-controls="panel">Layers</button>
+<aside class="panel" id="panel">
+  <fieldset class="seg" aria-label="What to show">
+    <legend>Show</legend>
+    <label><input type="radio" name="view" value="model" checked> Model</label>
+    <label><input type="radio" name="view" value="swipe"> Swipe to photo</label>
+    <label><input type="radio" name="view" value="photo"> Photo</label>
+  </fieldset>
+  <fieldset class="seg" aria-label="Look of the model">
+    <legend>Look</legend>
+    <label><input type="radio" name="look" value="sepia" checked> Sepia</label>
+    <label><input type="radio" name="look" value="grey"> Grey, mud tinted</label>
+    <label><input type="radio" name="look" value="tone"> Wet mud (tone, gentle relief)</label>
+  </fieldset>
+  <p class="help" id="drainHelp">Slide left to put the water back: the model's pool as the plug was pulled, retreating toward the drain.</p>
+  <label class="chk"><input type="checkbox" id="iso"> Shoreline every 5 seconds</label>
+  <label class="chk"><input type="checkbox" id="drainMark" checked> Show the drain</label>
+  <label class="chk"><input type="checkbox" id="hatch"> Mark what is set by rule</label>
+  <div class="btns">
+    <button id="oneToOne" title="Zoom so the map is the size of the tub on your screen">1 : 1</button>
+    <button id="calib">Calibrate</button>
+    <button id="reset">Whole tub</button>
+  </div>
+  <p class="help" id="calibHelp"></p>
+  <dl class="key">
+    <dt><span class="sw sw-thick"></span></dt><dd>Thick mud (about 0.5 mm)</dd>
+    <dt><span class="sw sw-thin"></span></dt><dd>Thin film</dd>
+    <dt><span class="sw sw-bare"></span></dt><dd>Enamel scoured bare</dd>
+  </dl>
+  <p class="help">Relief exaggerated <b id="veOut">150</b>× (wet mud: 25×, and no synthesised detail). Model grid 2 mm; finer detail is synthesised. Lit from the upper left.</p>
+</aside>
+
+<dialog id="calDlg" aria-labelledby="calTitle">
+  <form method="dialog">
+    <p id="calTitle" class="cal-t">Make 1 : 1 true on this screen</p>
+    <p class="help">Hold a bank card flat against the screen and drag until the bar is exactly as wide as the card (85.6 mm).</p>
+    <div class="cal-bar" id="calBar"></div>
+    <input type="range" id="calR" min="120" max="900" step="1" aria-label="Width of the card on screen in pixels">
+    <div class="btns"><button value="ok">Done</button><button value="cancel" formnovalidate>Cancel</button></div>
+  </form>
+</dialog>
+
+<script src="vendor/leaflet-1.9.4/leaflet.js"></script>
+<script src="js/day14.js"></script>
+</body>
+</html>

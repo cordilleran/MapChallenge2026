@@ -1,0 +1,5 @@
+# Direct dependencies of day-14 sim.py and scripts (Python 3.13). The full lock is day-10/requirements.txt (same environment).
+numpy==2.5.3
+scipy==1.18.1
+landlab==2.11.0
+pillow==13.0.0
