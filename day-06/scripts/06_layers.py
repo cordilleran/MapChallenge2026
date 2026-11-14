@@ -2,7 +2,8 @@
 
 - contours: 100 ft contours with on_ice = 1 where they cross the 2021 ice (printed blue, as the
   1925 sheet prints contours on ice) and 0 elsewhere (printed brown); idx = 1,000 ft index contour.
-- ice2021, ice1913 (outlines), forefield (1913 ice minus 2021 ice: the ground ice has left).
+- ice2021, ice1985, ice1913 (outlines), forefield (1913 ice minus 2021 ice: the ground ice has left).
+  ice2021 is not drawn (the contours turn blue on it); ice1985 and ice1913 are drawn as ghost lines.
 - contours_m: the same for the metric set (25 m, index 250 m).
 - peaks: summits from peaks.py inside the frame, with ele_ft and ele_m for the label; official = 1
   for a CGNDB name (other OSM names, often climbers' labels, are printed as a height only); show_ele = 1
@@ -18,6 +19,10 @@
 - stream_names: for each CGNDB river or creek, a stretch of the OSM line of the same name, up to
   STREAM_LABEL_M long and centred where the line passes nearest the CGNDB point; the name is lettered
   along it, as on the sheet.
+- features: what the sheet names besides summits, lakes and creeks (11-13): falls (CGNDB names, placed on
+  the nearest OSM waterfall within SNAP_FALLS_M), passes (CGNDB names with Pass or Col, placed on the OSM
+  saddle; height from OSM where given, else the terrain model, ele_src says which), and huts and lodges
+  (OSM tourism=alpine_hut, wilderness_hut, chalet, hotel or hostel, and historic buildings).
 - graticule: 5-minute lines of latitude and longitude (NAD83) inside the frame, for the full sheet.
 """
 import json
@@ -45,7 +50,10 @@ SLOPE_SIGMA_PX = 25    # smoothing of the terrain (10 m cells) for the direction
 STREAM_LABEL_M = 3000  # length of the stretch of creek a name is lettered along
 STREAM_NEAR_M = 1000   # the stretch is taken from a line of that name this close to the CGNDB point
 STREAM_MIN_M = 600     # shorter than this, the name stays a point label
-KINDS = {"MTN": "mountain", "GLAC": "glacier", "LAKE": "lake", "RIV": "river", "FALL": "falls", "VALL": "valley"}
+KINDS = {"MTN": "mountain", "GLAC": "glacier", "LAKE": "lake", "RIV": "river"}  # falls and passes: features
+SNAP_FALLS_M = 600     # a CGNDB falls name moves to the nearest OSM waterfall this close
+SNAP_PASS_M = 1000     # a CGNDB pass moves to the OSM saddle of the same name, or the nearest this close
+HUTS = ("alpine_hut", "wilderness_hut", "chalet", "hotel", "hostel")
 
 
 def one(path, layer=None):
@@ -186,6 +194,7 @@ def main():
     utm.SetAxisMappingStrategy(osr.OAMS_TRADITIONAL_GIS_ORDER)
     frame = one(DERIVED / "modern.gpkg", "frame")
     ice21 = one(DERIVED / "modern.gpkg", "ice2021")
+    ice85 = one(DERIVED / "modern.gpkg", "ice1985")
     ice13 = one(DERIVED / "ice1913.gpkg").Intersection(frame)
 
     path = DERIVED / "map.gpkg"
@@ -204,6 +213,7 @@ def main():
     show13 = ice13.Buffer(SMOOTH_M).Buffer(-SMOOTH_M).SimplifyPreserveTopology(SIMPLIFY_M).Intersection(frame)
     poly_layer("frame", frame)
     poly_layer("ice2021", show21)
+    poly_layer("ice1985", ice85.SimplifyPreserveTopology(SIMPLIFY_M))
     poly_layer("ice1913", show13)
     poly_layer("forefield", show13.Difference(show21))
 
@@ -263,6 +273,8 @@ def main():
         ll.CreateField(ogr.FieldDefn(name, typ))
     lk = ogr.Open(str(DERIVED / "osm.gpkg"))
     for f in lk.GetLayerByName("lakes"):
+        if f["intermittent"] and f["kind"] == "river":
+            continue  # a braid plain, drawn as gravel flats: no water surface to give a height to
         g = f.GetGeometryRef().Intersection(frame)
         if g.IsEmpty() or g.GetArea() < MIN_LAKE_KM2 * 1e6:
             continue
@@ -346,6 +358,83 @@ def main():
         nf.SetField("kind", kind)
         nl.CreateFeature(nf)
     print(f"glacier names moved into the 2021 ice by {sorted(moved)} m")
+
+    # Falls, passes, huts and lodges.
+    fl = out.CreateLayer("features", utm, ogr.wkbPoint)
+    for name, typ in (("name", ogr.OFTString), ("kind", ogr.OFTString), ("ele_m", ogr.OFTInteger),
+                      ("ele_ft", ogr.OFTInteger), ("ele_src", ogr.OFTString)):
+        fl.CreateField(ogr.FieldDefn(name, typ))
+    extras = json.loads((RAW / "osm_extras.json").read_text())["elements"]
+
+    def pt(lon, lat):
+        q = ogr.Geometry(ogr.wkbPoint)
+        q.AddPoint_2D(lon, lat)
+        q.Transform(tr)
+        return q
+
+    def ll(e):
+        c = e.get("center", e)
+        return pt(c["lon"], c["lat"])
+
+    falls = [ll(e) for e in extras if e["type"] == "node"
+             and "waterfall" in (e["tags"].get("waterway"), e["tags"].get("natural"))]
+    saddles = [(e["tags"].get("name", ""), e["tags"].get("ele"), ll(e)) for e in extras if e["type"] == "node"
+               and (e["tags"].get("natural") == "saddle" or e["tags"].get("mountain_pass") == "yes")]
+    gt = dem.GetGeoTransform()
+
+    def dem_at(q):
+        c, r = int((q.GetX() - gt[0]) / gt[1]), int((q.GetY() - gt[3]) / gt[5])
+        return float(z[r, c])
+
+    def add_feature(q, name, kind, ele=None, src=""):
+        nf = ogr.Feature(fl.GetLayerDefn())
+        nf.SetGeometry(q)
+        nf.SetField("name", name)
+        nf.SetField("kind", kind)
+        if ele is not None:
+            nf.SetField("ele_m", int(ele + 0.5))
+            nf.SetField("ele_ft", int(ele / FT + 0.5))
+            nf.SetField("ele_src", src)
+        fl.CreateFeature(nf)
+
+    done = set()
+    counts = {"falls": 0, "falls snapped": 0, "pass": 0, "hut": 0}
+    for it in sorted(json.loads((RAW / "cgndb.json").read_text())["items"], key=lambda i: i["id"]):
+        code, name = it["concise"]["code"], it["name"]
+        is_pass = code == "VALL" and (" Pass" in name or " Col" in name)
+        if (code != "FALL" and not is_pass) or name in done:
+            continue
+        q = pt(it["longitude"], it["latitude"])
+        if not frame.Contains(q):
+            continue
+        done.add(name)
+        if code == "FALL":
+            near = min(falls, key=q.Distance, default=None)
+            if near is not None and q.Distance(near) < SNAP_FALLS_M:
+                q = near
+                counts["falls snapped"] += 1
+            add_feature(q, name, "falls")
+            counts["falls"] += 1
+            continue
+        same = [s for s in saddles if s[0] == name] or [s for s in saddles if q.Distance(s[2]) < SNAP_PASS_M]
+        ele, src = None, "model"
+        if same:
+            _, e, q = min(same, key=lambda s: q.Distance(s[2]))
+            try:
+                ele, src = float(e), "OSM"
+            except (TypeError, ValueError):
+                pass
+        add_feature(q, name, "pass", dem_at(q) if ele is None else ele, src)
+        counts["pass"] += 1
+    for e in extras:
+        t = e["tags"]
+        if not t.get("name") or not (t.get("tourism") in HUTS or (t.get("historic") and t.get("building"))):
+            continue
+        q = ll(e)
+        if frame.Contains(q):
+            add_feature(q, t["name"], "hut")
+            counts["hut"] += 1
+    print("features:", counts)
 
     # A 5-minute graticule in modern coordinates (NAD83), clipped to the frame. The frame itself is the
     # sheet's (its corners read as NAD27, plus the mean shift), so it sits about 120 m west and 115 m

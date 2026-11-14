@@ -1,11 +1,11 @@
 """Copy the Day 6 images to the site as WebP, and write the numbers the page quotes.
 
-Writes site/img/day06/{scan,scan_matched,2021,2021_m,sheet,sheet_m}.webp, site/img/day06_thumb.webp and
+Writes site/img/day06/{scan,scan_matched,2021,2021_m,sheet,sheet_m,legend,legend_m}.webp, site/img/day06_thumb.webp and
 site/data/day06.json (areas, ranges and georeferencing error, from derived/*.json).
 """
 import json
 
-from PIL import Image
+from PIL import Image, ImageChops
 from sheet import DERIVED, OUT
 
 SITE = OUT.parents[1] / "site"
@@ -33,6 +33,14 @@ def main():
         "sheet": webp(OUT / "day06_sheet.png", d / "sheet.webp", 2000),
         "sheet_m": webp(OUT / "day06_sheet_m.png", d / "sheet_m.webp", 2000),
     }
+    # The references alone, below the slider: cropped to their ink with a small margin.
+    for suffix in ("", "_m"):
+        im = Image.open(OUT / f"day06_legend{suffix}.png").convert("RGB")
+        box = ImageChops.difference(im, Image.new("RGB", im.size, im.getpixel((0, 0)))).getbbox()
+        pad = 20
+        im = im.crop((max(box[0] - pad, 0), max(box[1] - pad, 0), min(box[2] + pad, im.width), min(box[3] + pad, im.height)))
+        im.save(d / f"legend{suffix}.webp", "WEBP", quality=88, method=6)
+        sizes[f"legend{suffix}"] = im.size
     # Thumbnail: the Waputik Icefield and Hector Lake, from the modern map.
     im = Image.open(OUT / "day06_modern.png").convert("RGB")
     w, h = im.size

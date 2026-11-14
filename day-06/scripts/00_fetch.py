@@ -51,6 +51,11 @@ SOURCES = {
         "url": "https://overpass-api.de/api/interpreter",
         "licence": "ODbL 1.0",
     },
+    "osm_extras.json": {
+        "source": "OpenStreetMap contributors, Overpass API (huts and lodges, waterfalls, passes; added 11-13)",
+        "url": "https://overpass-api.de/api/interpreter",
+        "licence": "ODbL 1.0",
+    },
     "cgndb.json": {
         "source": "Canadian Geographical Names Database (Natural Resources Canada), geonames API",
         "url": "https://geogratis.gc.ca/services/geoname/en/geonames.json",
@@ -130,6 +135,20 @@ def fetch_peaks(path):
     path.write_bytes(get(SOURCES["osm.json"]["url"], urllib.parse.urlencode({"data": q}).encode()))
 
 
+def fetch_extras(path):
+    """What the 1925 sheet names besides summits, lakes and creeks: cabins, falls and passes (11-13)."""
+    bb = f"{S},{W},{N},{E}"
+    q = f"""[out:json][timeout:120];
+(
+  nwr["tourism"~"^(alpine_hut|wilderness_hut|chalet|hotel|hostel)$"]({bb});
+  nwr["historic"]["building"]({bb});
+  node["waterway"="waterfall"]({bb}); node["natural"="waterfall"]({bb});
+  node["mountain_pass"="yes"]({bb}); node["natural"="saddle"]({bb});
+);
+out tags center;"""
+    path.write_bytes(get(SOURCES[path.name]["url"], urllib.parse.urlencode({"data": q}).encode()))
+
+
 def fetch_names(path):
     qs = urllib.parse.urlencode({"bbox": f"{W},{S},{E},{N}", "num": 1000})
     body = get(SOURCES["cgndb.json"]["url"] + "?" + qs)
@@ -141,7 +160,8 @@ def fetch_names(path):
 def main():
     RAW.mkdir(parents=True, exist_ok=True)
     jobs = {"mrdem30_window.tif": fetch_dem, "glaciers_1984_2021.gpkg": fetch_glaciers,
-            "osm.json": fetch_osm, "osm_boundary.json": fetch_boundary, "cgndb.json": fetch_names, "osm_peaks.json": fetch_peaks}
+            "osm.json": fetch_osm, "osm_boundary.json": fetch_boundary, "cgndb.json": fetch_names, "osm_peaks.json": fetch_peaks,
+            "osm_extras.json": fetch_extras}
     man_path = RAW / "manifest.json"
     manifest = json.loads(man_path.read_text()) if man_path.exists() else {}
     for name, fn in jobs.items():

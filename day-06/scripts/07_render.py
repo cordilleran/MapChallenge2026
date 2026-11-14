@@ -36,6 +36,7 @@ from qgis.core import (
     QgsLineSymbol,
     QgsMarkerLineSymbolLayer,
     QgsMarkerSymbol,
+    QgsPointPatternFillSymbolLayer,
     QgsNullSymbolRenderer,
     QgsPalLayerSettings,
     QgsPrintLayout,
@@ -185,9 +186,15 @@ def build_layers(units):
     dp.setZoomedOutResamplingMethod(QgsRasterDataProvider.ResamplingMethod.Average)
     dp.setZoomedInResamplingMethod(QgsRasterDataProvider.ResamplingMethod.Bilinear)
 
-    forefield = vlayer("Ground uncovered since 1913", "forefield")
-    forefield.setRenderer(QgsSingleSymbolRenderer(QgsFillSymbol.createSimple(
-        {"color": INK["forefield"], "outline_style": "no"})))
+    # Ice lost since 1913: a warm grey stipple on the paper (D168). Not blue, which read as water.
+    forefield = vlayer("Ice lost since 1913", "forefield")
+    stipple = QgsPointPatternFillSymbolLayer()
+    stipple.setDistanceX(0.95)
+    stipple.setDistanceY(0.95)
+    stipple.setDisplacementX(0.475)
+    stipple.setSubSymbol(QgsMarkerSymbol.createSimple({"name": "circle", "color": INK["lost"], "size": "0.26",
+                                                        "outline_style": "no"}))
+    forefield.setRenderer(QgsSingleSymbolRenderer(symbol(stipple, kind=QgsFillSymbol)))
 
     contours = vlayer("Contours", u["contours"])
     rules(contours, [
@@ -220,6 +227,25 @@ def build_layers(units):
         ("official = 0 AND show_ele = 1", pal(ele, text(SANS, HEIGHT_PT, INK["black"]), Qgis.LabelPlacement.AroundPoint,
                                              4, dist=0.3)),
     ])
+    # Falls, passes, huts and lodges, as the 1925 sheet names them (06_layers.py: features).
+    falls = vlayer("Falls", "features", subset="kind = 'falls'")
+    bar = QgsSimpleMarkerSymbolLayer(Qgis.MarkerShape.Line, 1.4)
+    bar.setStrokeColor(QColor(INK["blue_idx"]))
+    bar.setStrokeWidth(0.35)
+    bar.setAngle(90)
+    falls.setRenderer(QgsSingleSymbolRenderer(symbol(bar, kind=QgsMarkerSymbol)))
+    labels(falls, [("1 = 1", pal(short(), text(SERIF, 6.0, INK["blue_idx"], italic=True),
+                                 Qgis.LabelPlacement.AroundPoint, 5, dist=0.6))])
+    huts = vlayer("Huts and lodges", "features", subset="kind = 'hut'")
+    huts.setRenderer(QgsSingleSymbolRenderer(marker(Qgis.MarkerShape.Square, 0.9, INK["black"], INK["black"], 0)))
+    labels(huts, [("1 = 1", pal("title(regexp_replace(\"name\", '^The ', ''))", text(SERIF, 5.8, INK["black"]),
+                                Qgis.LabelPlacement.AroundPoint, 4, dist=0.6))])
+    passes = vlayer("Passes", "features", subset="kind = 'pass'")
+    passes.setRenderer(QgsNullSymbolRenderer())  # the name and height stand on the saddle, as on the sheet
+    labels(passes, [("1 = 1", pal(f"'<span>' || upper(\"name\") || '</span><br><span style=\"font-size:{HEIGHT_PT}pt\">' "
+                                  f"|| {height} || '</span>'", text(SANS, 5.2, INK["black"], caps=True, spacing=0.25),
+                                  Qgis.LabelPlacement.OverPoint, 7, html=True))])
+
     high = vlayer("High points", "high_points")
     high.setRenderer(QgsSingleSymbolRenderer(marker(Qgis.MarkerShape.Circle, 0.4, INK["black"], INK["black"], 0)))
     labels(high, [("1 = 1", pal(height, text(SANS, HEIGHT_PT, INK["black"]), Qgis.LabelPlacement.AroundPoint, 3,
@@ -228,15 +254,21 @@ def build_layers(units):
     lake_h.setRenderer(QgsNullSymbolRenderer())
     labels(lake_h, [("1 = 1", pal(height, text(SANS, HEIGHT_PT, INK["black"]), Qgis.LabelPlacement.OverPoint, 9))])
 
-    ice21 = vlayer("Ice margin, 2021", "ice2021")
-    ice21.setRenderer(QgsSingleSymbolRenderer(symbol(
-        line(INK["blue_idx"], 0.22, dash=[1.2, 0.9]), kind=QgsFillSymbol)))
+    # The 2021 ice has no edge line, as on the 1925 sheet: its contours turn blue, and the stipple of
+    # the lost ice stops at it. The past margins are ghost lines: 1985 solid (a measured outline),
+    # 1913 dashed (read from a printed map). The 30 m outlines are smoothed for display only.
+    def ghost(*layers):
+        gen = QgsGeometryGeneratorSymbolLayer.create({"geometryModifier": "smooth(simplify($geometry, 20), 3)"})
+        gen.setSymbolType(Qgis.SymbolType.Line)
+        gen.setSubSymbol(symbol(*layers))
+        return QgsSingleSymbolRenderer(symbol(gen, kind=QgsFillSymbol))
 
+    ice85 = vlayer("Ice limit, 1985", "ice1985")
+    ice85.setRenderer(ghost(line(INK["ghost"], 0.26)))
     ice13 = vlayer("Ice limit, 1913", "ice1913")
-    ice13.setRenderer(QgsSingleSymbolRenderer(symbol(
-        line(INK["paper"], 1.0), line(INK["limit"], 0.45, dash=[3.0, 0.9, 0.5, 0.9]), kind=QgsFillSymbol)))
+    ice13.setRenderer(ghost(line(INK["paper"], 0.6), line(INK["ghost"], 0.26, dash=[1.6, 1.0])))
 
-    lakes = vlayer("Lakes", "lakes", "osm.gpkg")
+    lakes = vlayer("Water", "lakes", "osm.gpkg")
     fill = QgsFillSymbol.createSimple({"color": INK["water"], "outline_color": INK["water_line"],
                                        "outline_width": "0.25"})
     for d in (-30, -65, -105):  # water-lining: rings stepping in from the shore, as engraved
@@ -245,7 +277,13 @@ def build_layers(units):
         g.subSymbol().symbolLayer(0).setColor(QColor(INK["water_line"]))
         g.subSymbol().symbolLayer(0).setWidth(0.12)
         fill.appendSymbolLayer(g)
-    lakes.setRenderer(QgsSingleSymbolRenderer(fill))
+    # The braid plain (OSM intermittent river areas: the channel belt with its gravel bars) is not open
+    # water: drawn as flats, a fine dashed bank line with the channels over it, not a lake (11-13).
+    flats = symbol(line(INK["water_line"], 0.16, dash=[1.0, 0.7]), kind=QgsFillSymbol)
+    rules(lakes, [
+        ("Lakes", "NOT (intermittent = 1 AND kind = 'river')", fill),
+        ("Braided channel, gravel flats", "intermittent = 1 AND kind = 'river'", flats),
+    ])
 
     streams = vlayer("Rivers and creeks", "streams", "osm.gpkg")
     rules(streams, [
@@ -320,7 +358,7 @@ def build_layers(units):
         {"style": "no", "outline_color": INK["black"], "outline_width": "0.3"})))
 
     # First in the list draws on top. Lakes sit over the creeks and rivers that run into them.
-    vectors = [neat, outside, names, creeks, summits, high, lake_h, boundary, rail, roads, trails, ice13, ice21, lakes,
+    vectors = [neat, outside, names, creeks, passes, falls, huts, summits, high, lake_h, boundary, rail, roads, trails, ice13, ice85, lakes,
                streams, contours, forefield]
     return scan, vectors
 
@@ -445,6 +483,38 @@ def page(project, w, h):
     return layout
 
 
+LEGEND = ["Contours", "Ice limit, 1985", "Ice limit, 1913", "Ice lost since 1913", "Water",
+          "Rivers and creeks", "Falls", "Roads", "Trails", "Railway", "Alberta - British Columbia boundary", "Summits",
+          "Huts and lodges"]
+
+
+def make_legend(lay, project, m, x, y, w, title="REFERENCES", columns=4):
+    """The sheet's references (legend), three columns. Also exported alone for the page (below the slider)."""
+    legend = QgsLayoutItemLegend(lay)
+    if m:
+        legend.setLinkedMap(m)
+    legend.setSyncMode(Qgis.LegendSyncMode.Manual)
+    legend.setTitle(title)
+    root = legend.model().rootGroup()
+    root.removeAllChildren()
+    for name in LEGEND:
+        root.addLayer(project.mapLayersByName(name)[0])
+    legend.setColumnCount(columns)
+    legend.setSplitLayer(True)
+    legend.setEqualColumnWidth(True)
+    legend.setSymbolWidth(9)
+    legend.setSymbolHeight(3.6)
+    for style, fmt in ((QgsLegendStyle.Title, text(SANS, 8, INK["black"], spacing=0.8, buffer=False)),
+                       (QgsLegendStyle.Subgroup, text(SANS, 6.5, INK["black"], spacing=0.4, buffer=False)),
+                       (QgsLegendStyle.SymbolLabel, text(SERIF, 8, INK["black"], buffer=False))):
+        legend.rstyle(style).setTextFormat(fmt)
+    legend.setBackgroundEnabled(False)
+    legend.attemptMove(QgsLayoutPoint(x, y, QgsUnitTypes.LayoutMillimeters))
+    legend.attemptResize(QgsLayoutSize(w, 40, QgsUnitTypes.LayoutMillimeters))
+    lay.addLayoutItem(legend)
+    return legend
+
+
 def render(project, crs, units):
     u = UNITS[units]
     project.removeAllMapLayers()
@@ -468,6 +538,11 @@ def render(project, crs, units):
         lay = page(project, mw, mh)
         map_item(lay, layers, crs, rect, 0, 0)
         export(lay, OUT / name)
+
+    # The references alone, for the page: they sit below the slider, which shows the map body only.
+    lay = page(project, mw, 70)  # cropped to the legend by 08_site.py
+    make_legend(lay, project, None, 4, 2, mw - 8, title="", columns=3)
+    export(lay, OUT / f"day06_legend{u['suffix']}.png")
 
     # The full sheet.
     margin, top = 30, 46
@@ -503,34 +578,11 @@ def render(project, crs, units):
     label(lay, f"Scale 1:62,500  ·  {u['interval']}  ·  {u['heights']}  ·  Datum: mean sea level (CGVD2013)  ·  "
           "Graticule: NAD83", margin + 75,
           top + mh + 8, 150, 6, SERIF, 9, align=Qt.AlignmentFlag.AlignLeft)
-    legend = QgsLayoutItemLegend(lay)
-    legend.setLinkedMap(m)
-    legend.setSyncMode(Qgis.LegendSyncMode.Manual)
-    legend.setTitle("REFERENCES")
-    keep = ["Contours", "Ice limit, 1913", "Ground uncovered since 1913", "Ice margin, 2021", "Lakes",
-            "Rivers and creeks", "Roads", "Trails", "Railway", "Alberta - British Columbia boundary",
-            "Summits"]
-    root = legend.model().rootGroup()
-    root.removeAllChildren()
-    for name in keep:
-        root.addLayer(project.mapLayersByName(name)[0])
-    legend.setColumnCount(3)
-    legend.setSplitLayer(True)
-    legend.setEqualColumnWidth(True)
-    legend.setSymbolWidth(9)
-    legend.setSymbolHeight(3.6)
-    for style, fmt in ((QgsLegendStyle.Title, text(SANS, 8, INK["black"], spacing=0.8, buffer=False)),
-                       (QgsLegendStyle.Subgroup, text(SANS, 6.5, INK["black"], spacing=0.4, buffer=False)),
-                       (QgsLegendStyle.SymbolLabel, text(SERIF, 8, INK["black"], buffer=False))):
-        legend.rstyle(style).setTextFormat(fmt)
-    legend.setBackgroundEnabled(False)
-    legend.attemptMove(QgsLayoutPoint(margin, top + mh + 17, QgsUnitTypes.LayoutMillimeters))
-    legend.attemptResize(QgsLayoutSize(mw, 40, QgsUnitTypes.LayoutMillimeters))
-    lay.addLayoutItem(legend)
+    make_legend(lay, project, m, margin, top + mh + 17, mw)
     src = ("Terrain: NRCan MRDEM-30 (OGL-Canada). Ice 1985 and 2021: Bevington and Menounos 2022, "
            "doi:10.5281/zenodo.5900363 (CC BY 4.0). Ice 1913: blue contours of the 1925 sheet (scan: "
            "University of Alberta Library via the Internet Archive), mapped by colour; position within about 160 m. Water, roads, railway, boundary, "
-           "summits and their heights: © OpenStreetMap contributors (ODbL); lake and other heights from MRDEM-30. "
+           "summits and their heights, huts, waterfalls and the pass height: © OpenStreetMap contributors (ODbL); lake and other heights from MRDEM-30. "
            "Names: CGNDB (OGL-Canada).")
     label(lay, src, margin, ph - 12, mw, 10, SERIF, 7, align=Qt.AlignmentFlag.AlignLeft, italic=True)
     export(lay, OUT / f"day06_sheet{u['suffix']}.png")

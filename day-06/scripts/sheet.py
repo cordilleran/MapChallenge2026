@@ -30,5 +30,9 @@ BBOX_LL = (LON_W - 0.02, LAT_S - 0.015, LON_E + 0.02, LAT_N + 0.015)  # west, so
 INK = {
     "paper": "#efe8d6", "brown": "#c4835c", "brown_idx": "#a8613c", "blue": "#5b8db6",
     "blue_idx": "#3d6f9c", "water": "#d3e2e8", "water_line": "#4b7fa8", "red": "#c4473b",
-    "black": "#2a2724", "limit": "#163f66", "forefield": "#d9e3e3",
+    "black": "#2a2724", "limit": "#163f66",
+    # Ice of the past (11-13, D168): ghost grey lines for 1985 (solid) and 1913 (dashed), and a warm grey
+    # stipple on the ground lost since 1913. No blue, which read as water; the 2021 ice has no edge line,
+    # as on the 1925 sheet: its contours turn blue.
+    "ghost": "#9a9ca3", "lost": "#8c8379",
 }

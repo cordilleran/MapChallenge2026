@@ -1,7 +1,7 @@
 """Turn the Overpass download (raw-261109/osm.json) into map layers in EPSG:26911.
 
 Writes derived/osm.gpkg with the layers:
-- lakes (polygons: natural=water ways and multipolygon relations)
+- lakes (polygons: natural=water ways and multipolygon relations; intermittent = 1 for OSM intermittent=yes)
 - streams (waterway=river|stream|canal; attribute kind)
 - roads (highways for vehicles; attribute kind)
 - trails (path, footway, track, bridleway)
@@ -79,6 +79,9 @@ def main():
             for k in ("name", "kind"):
                 lyr.CreateField(ogr.FieldDefn(k, ogr.OFTString))
             lyr.CreateField(ogr.FieldDefn("tunnel", ogr.OFTInteger))
+            # intermittent = 1: water only at times (OSM intermittent=yes). On this sheet that is the braid
+            # plain of the Kicking Horse below Field: the whole channel belt, gravel bars included (11-13).
+            lyr.CreateField(ogr.FieldDefn("intermittent", ogr.OFTInteger))
             layers[layer] = lyr
         lyr = layers[layer]
         g = geom.Clone()
@@ -97,7 +100,7 @@ def main():
         if w["id"] in bnd_ways:
             add("boundary", line(w), kind="AB-BC", **base)
         elif t.get("natural") == "water" and closed:
-            add("lakes", ring_poly(w), kind=t.get("water", ""), **base)
+            add("lakes", ring_poly(w), kind=t.get("water", ""), intermittent=int(t.get("intermittent") == "yes"), **base)
         elif t.get("natural") == "glacier" and closed:
             add("glaciers_osm", ring_poly(w), **base)
         elif t.get("waterway") in ("river", "stream", "canal"):
@@ -114,7 +117,8 @@ def main():
             continue
         layer = "lakes" if t.get("natural") == "water" else "glaciers_osm" if t.get("natural") == "glacier" else None
         if layer:
-            add(layer, rel_poly(r), osm_id=r["id"], name=t.get("name", ""), kind=t.get("water", ""))
+            add(layer, rel_poly(r), osm_id=r["id"], name=t.get("name", ""), kind=t.get("water", ""),
+                intermittent=int(t.get("intermittent") == "yes"))
     print({k: v.GetFeatureCount() for k, v in layers.items()})
     ds = None
 

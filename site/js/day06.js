@@ -32,8 +32,8 @@
   // Pickers: each group of buttons sets one image source.
   const SRC = {
     units: {
-      ft: { base: "2021.webp", sheet: "sheet.webp", tiles: "sheet" },
-      m: { base: "2021_m.webp", sheet: "sheet_m.webp", tiles: "sheet_m" },
+      ft: { base: "2021.webp", sheet: "sheet.webp", tiles: "sheet", legend: "legend.webp" },
+      m: { base: "2021_m.webp", sheet: "sheet_m.webp", tiles: "sheet_m", legend: "legend_m.webp" },
     },
     scan: { matched: "scan_matched.webp", raw: "scan.webp" },
   };
@@ -50,6 +50,8 @@
   pick("data-units", (u) => {
     units = u;
     base.src = IMG + SRC.units[u].base;
+    const legend = document.getElementById("d6-legend");
+    if (legend) legend.src = IMG + SRC.units[u].legend;
     const plain = document.getElementById("d6-sheet");
     if (plain) plain.src = IMG + SRC.units[u].sheet;
     if (sheetViewer) {

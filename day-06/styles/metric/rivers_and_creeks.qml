@@ -29,7 +29,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleLine" enabled="1" id="{5093a314-816a-4286-a545-85430106bab4}" locked="0" pass="0">
+        <layer class="SimpleLine" enabled="1" id="{3806b30e-5b0b-428d-ba07-440c29fa681c}" locked="0" pass="0">
           <Option type="Map">
             <Option name="align_dash_pattern" type="QString" value="0"/>
             <Option name="capstyle" type="QString" value="square"/>
@@ -41,7 +41,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM"/>
             <Option name="draw_inside_polygon" type="QString" value="0"/>
             <Option name="joinstyle" type="QString" value="bevel"/>
-            <Option name="line_color" type="QString" value="152,125,183,255,rgb:0.5960785,0.4901961,0.7176471,1"/>
+            <Option name="line_color" type="QString" value="225,89,137,255,rgb:0.8823529,0.3490196,0.5372549,1"/>
             <Option name="line_style" type="QString" value="solid"/>
             <Option name="line_width" type="QString" value="0.6"/>
             <Option name="line_width_unit" type="QString" value="MM"/>
@@ -78,15 +78,15 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleFill" enabled="1" id="{394a1d74-748b-4b50-93d1-2b953fbf5679}" locked="0" pass="0">
+        <layer class="SimpleFill" enabled="1" id="{127e5070-1ca5-43a2-94d9-e36a817f664b}" locked="0" pass="0">
           <Option type="Map">
             <Option name="border_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
-            <Option name="color" type="QString" value="152,125,183,255,rgb:0.5960785,0.4901961,0.7176471,1"/>
+            <Option name="color" type="QString" value="225,89,137,255,rgb:0.8823529,0.3490196,0.5372549,1"/>
             <Option name="joinstyle" type="QString" value="bevel"/>
             <Option name="offset" type="QString" value="0,0"/>
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
             <Option name="offset_unit" type="QString" value="MM"/>
-            <Option name="outline_color" type="QString" value="109,89,131,255,rgb:0.4257572,0.3501335,0.5125963,1"/>
+            <Option name="outline_color" type="QString" value="161,64,98,255,rgb:0.6302434,0.2493019,0.3837796,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
             <Option name="outline_width" type="QString" value="0.2"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
@@ -111,18 +111,18 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleMarker" enabled="1" id="{78bc8018-208f-4032-8421-1312608b6bce}" locked="0" pass="0">
+        <layer class="SimpleMarker" enabled="1" id="{e6372359-3173-4620-b087-b27ba2e2d142}" locked="0" pass="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="cap_style" type="QString" value="square"/>
-            <Option name="color" type="QString" value="152,125,183,255,rgb:0.5960785,0.4901961,0.7176471,1"/>
+            <Option name="color" type="QString" value="225,89,137,255,rgb:0.8823529,0.3490196,0.5372549,1"/>
             <Option name="horizontal_anchor_point" type="QString" value="1"/>
             <Option name="joinstyle" type="QString" value="bevel"/>
             <Option name="name" type="QString" value="diamond"/>
             <Option name="offset" type="QString" value="0,0"/>
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
             <Option name="offset_unit" type="QString" value="MM"/>
-            <Option name="outline_color" type="QString" value="109,89,131,255,rgb:0.4257572,0.3501335,0.5125963,1"/>
+            <Option name="outline_color" type="QString" value="161,64,98,255,rgb:0.6302434,0.2493019,0.3837796,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
             <Option name="outline_width" type="QString" value="0.2"/>
             <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
@@ -145,9 +145,9 @@
     </profileMarkerSymbol>
   </elevation>
   <renderer-v2 enableorderby="0" forceraster="0" referencescale="-1" symbollevels="0" type="RuleRenderer">
-    <rules key="{729c91a3-e4b9-4de2-93ba-19ea604473c2}">
-      <rule filter="kind = 'river'" key="{99d3ed1a-86da-4c09-96b3-fb783dc50f82}" label="River" symbol="0"/>
-      <rule filter="kind &lt;> 'river'" key="{780a27ac-aa03-43cf-80ef-a7f55edc9250}" label="Creek" symbol="1"/>
+    <rules key="{645b124b-9d6e-4c7b-9593-02e80692f2e2}">
+      <rule filter="kind = 'river'" key="{88699313-5abc-4442-b949-463febebcfde}" label="River" symbol="0"/>
+      <rule filter="kind &lt;> 'river'" key="{9dd6b878-7edc-42b0-a421-e91aeb288a95}" label="Creek" symbol="1"/>
     </rules>
     <symbols>
       <symbol alpha="1" clip_to_extent="1" force_rhr="0" frame_rate="10" is_animated="0" name="0" type="line">
@@ -158,7 +158,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleLine" enabled="1" id="{b756722d-79b2-4bf9-89cd-154015037952}" locked="0" pass="0">
+        <layer class="SimpleLine" enabled="1" id="{7aa880d0-d003-47e4-8132-1a65be357449}" locked="0" pass="0">
           <Option type="Map">
             <Option name="align_dash_pattern" type="QString" value="0"/>
             <Option name="capstyle" type="QString" value="round"/>
@@ -205,7 +205,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleLine" enabled="1" id="{4dea3542-e25f-4245-bba8-67a4b0c84db3}" locked="0" pass="0">
+        <layer class="SimpleLine" enabled="1" id="{cc7c8741-3af9-4cd1-840c-6af2011feffd}" locked="0" pass="0">
           <Option type="Map">
             <Option name="align_dash_pattern" type="QString" value="0"/>
             <Option name="capstyle" type="QString" value="round"/>
@@ -307,6 +307,13 @@
         </config>
       </editWidget>
     </field>
+    <field configurationFlags="0" name="intermittent">
+      <editWidget type="">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
   </fieldConfiguration>
   <aliases>
     <alias field="fid" index="0" name=""/>
@@ -314,6 +321,7 @@
     <alias field="name" index="2" name=""/>
     <alias field="kind" index="3" name=""/>
     <alias field="tunnel" index="4" name=""/>
+    <alias field="intermittent" index="5" name=""/>
   </aliases>
   <defaults>
     <default applyOnUpdate="0" expression="" field="fid"/>
@@ -321,6 +329,7 @@
     <default applyOnUpdate="0" expression="" field="name"/>
     <default applyOnUpdate="0" expression="" field="kind"/>
     <default applyOnUpdate="0" expression="" field="tunnel"/>
+    <default applyOnUpdate="0" expression="" field="intermittent"/>
   </defaults>
   <constraints>
     <constraint constraints="3" exp_strength="0" field="fid" notnull_strength="1" unique_strength="1"/>
@@ -328,6 +337,7 @@
     <constraint constraints="0" exp_strength="0" field="name" notnull_strength="0" unique_strength="0"/>
     <constraint constraints="0" exp_strength="0" field="kind" notnull_strength="0" unique_strength="0"/>
     <constraint constraints="0" exp_strength="0" field="tunnel" notnull_strength="0" unique_strength="0"/>
+    <constraint constraints="0" exp_strength="0" field="intermittent" notnull_strength="0" unique_strength="0"/>
   </constraints>
   <constraintExpressions>
     <constraint desc="" exp="" field="fid"/>
@@ -335,6 +345,7 @@
     <constraint desc="" exp="" field="name"/>
     <constraint desc="" exp="" field="kind"/>
     <constraint desc="" exp="" field="tunnel"/>
+    <constraint desc="" exp="" field="intermittent"/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions/>

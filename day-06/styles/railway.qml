@@ -29,7 +29,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleLine" enabled="1" id="{8eba65cb-6821-4b37-870b-862193252056}" locked="0" pass="0">
+        <layer class="SimpleLine" enabled="1" id="{bf6ac40e-486b-4a84-a10f-193d2e647557}" locked="0" pass="0">
           <Option type="Map">
             <Option name="align_dash_pattern" type="QString" value="0"/>
             <Option name="capstyle" type="QString" value="square"/>
@@ -41,7 +41,7 @@
             <Option name="dash_pattern_offset_unit" type="QString" value="MM"/>
             <Option name="draw_inside_polygon" type="QString" value="0"/>
             <Option name="joinstyle" type="QString" value="bevel"/>
-            <Option name="line_color" type="QString" value="190,178,151,255,rgb:0.7450981,0.6980392,0.5921569,1"/>
+            <Option name="line_color" type="QString" value="190,207,80,255,rgb:0.7450981,0.8117647,0.3137255,1"/>
             <Option name="line_style" type="QString" value="solid"/>
             <Option name="line_width" type="QString" value="0.6"/>
             <Option name="line_width_unit" type="QString" value="MM"/>
@@ -78,15 +78,15 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleFill" enabled="1" id="{65abe313-572b-4acb-8913-db247d0f8dd2}" locked="0" pass="0">
+        <layer class="SimpleFill" enabled="1" id="{601e99bb-3a6f-47f0-864b-7ba8b1c5029a}" locked="0" pass="0">
           <Option type="Map">
             <Option name="border_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
-            <Option name="color" type="QString" value="190,178,151,255,rgb:0.7450981,0.6980392,0.5921569,1"/>
+            <Option name="color" type="QString" value="190,207,80,255,rgb:0.7450981,0.8117647,0.3137255,1"/>
             <Option name="joinstyle" type="QString" value="bevel"/>
             <Option name="offset" type="QString" value="0,0"/>
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
             <Option name="offset_unit" type="QString" value="MM"/>
-            <Option name="outline_color" type="QString" value="136,127,108,255,rgb:0.5322042,0.4985885,0.4229648,1"/>
+            <Option name="outline_color" type="QString" value="136,148,57,255,rgb:0.5322194,0.5798275,0.224094,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
             <Option name="outline_width" type="QString" value="0.2"/>
             <Option name="outline_width_unit" type="QString" value="MM"/>
@@ -111,18 +111,18 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleMarker" enabled="1" id="{31c60adf-d620-4ac8-9bc5-901d48874602}" locked="0" pass="0">
+        <layer class="SimpleMarker" enabled="1" id="{dbab870d-76ab-4dc8-aa3e-f9826a22ca9d}" locked="0" pass="0">
           <Option type="Map">
             <Option name="angle" type="QString" value="0"/>
             <Option name="cap_style" type="QString" value="square"/>
-            <Option name="color" type="QString" value="190,178,151,255,rgb:0.7450981,0.6980392,0.5921569,1"/>
+            <Option name="color" type="QString" value="190,207,80,255,rgb:0.7450981,0.8117647,0.3137255,1"/>
             <Option name="horizontal_anchor_point" type="QString" value="1"/>
             <Option name="joinstyle" type="QString" value="bevel"/>
             <Option name="name" type="QString" value="diamond"/>
             <Option name="offset" type="QString" value="0,0"/>
             <Option name="offset_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
             <Option name="offset_unit" type="QString" value="MM"/>
-            <Option name="outline_color" type="QString" value="136,127,108,255,rgb:0.5322042,0.4985885,0.4229648,1"/>
+            <Option name="outline_color" type="QString" value="136,148,57,255,rgb:0.5322194,0.5798275,0.224094,1"/>
             <Option name="outline_style" type="QString" value="solid"/>
             <Option name="outline_width" type="QString" value="0.2"/>
             <Option name="outline_width_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
@@ -145,9 +145,9 @@
     </profileMarkerSymbol>
   </elevation>
   <renderer-v2 enableorderby="0" forceraster="0" referencescale="-1" symbollevels="0" type="RuleRenderer">
-    <rules key="{8e1dca16-d349-40b6-be2e-4cffc386de62}">
-      <rule filter="tunnel = 0" key="{5a9ecca9-db35-4673-a139-b74c430b7932}" label="Railway" symbol="0"/>
-      <rule filter="tunnel = 1" key="{a3b7e74c-2c98-4157-afc7-5ca5187c24e3}" label="Railway in tunnel" symbol="1"/>
+    <rules key="{765e5703-3b99-4d5b-9a4c-f91617c180a9}">
+      <rule filter="tunnel = 0" key="{76d79c22-587a-4c3e-9ce4-2f668e815035}" label="Railway" symbol="0"/>
+      <rule filter="tunnel = 1" key="{4536ea4e-b0b2-458c-93ff-90b520f71d75}" label="Railway in tunnel" symbol="1"/>
     </rules>
     <symbols>
       <symbol alpha="1" clip_to_extent="1" force_rhr="0" frame_rate="10" is_animated="0" name="0" type="line">
@@ -158,7 +158,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleLine" enabled="1" id="{6fd51f93-045e-416a-8957-3a0e90e1ce96}" locked="0" pass="0">
+        <layer class="SimpleLine" enabled="1" id="{71c0701c-2857-4fff-a6d9-9176e9817dcd}" locked="0" pass="0">
           <Option type="Map">
             <Option name="align_dash_pattern" type="QString" value="0"/>
             <Option name="capstyle" type="QString" value="round"/>
@@ -196,7 +196,7 @@
             </Option>
           </data_defined_properties>
         </layer>
-        <layer class="MarkerLine" enabled="1" id="{b3c0e8a9-957e-424c-b84b-9c005da122cb}" locked="0" pass="0">
+        <layer class="MarkerLine" enabled="1" id="{b1943625-9084-4963-bd17-27f121c1df05}" locked="0" pass="0">
           <Option type="Map">
             <Option name="average_angle_length" type="QString" value="4"/>
             <Option name="average_angle_map_unit_scale" type="QString" value="3x:0,0,0,0,0,0"/>
@@ -237,7 +237,7 @@
                 <Option name="type" type="QString" value="collection"/>
               </Option>
             </data_defined_properties>
-            <layer class="SimpleMarker" enabled="1" id="{a33a906b-67e3-4104-92ef-24fc768aa60c}" locked="0" pass="0">
+            <layer class="SimpleMarker" enabled="1" id="{425e9b5a-fe87-4480-9f7d-3d501f2bc492}" locked="0" pass="0">
               <Option type="Map">
                 <Option name="angle" type="QString" value="0"/>
                 <Option name="cap_style" type="QString" value="square"/>
@@ -278,7 +278,7 @@
             <Option name="type" type="QString" value="collection"/>
           </Option>
         </data_defined_properties>
-        <layer class="SimpleLine" enabled="1" id="{76b11e2b-97b0-4bbf-b955-3f5785fd1d6b}" locked="0" pass="0">
+        <layer class="SimpleLine" enabled="1" id="{ce8d833c-3d79-48ff-8b72-3ed740eef897}" locked="0" pass="0">
           <Option type="Map">
             <Option name="align_dash_pattern" type="QString" value="0"/>
             <Option name="capstyle" type="QString" value="round"/>
@@ -380,6 +380,13 @@
         </config>
       </editWidget>
     </field>
+    <field configurationFlags="0" name="intermittent">
+      <editWidget type="">
+        <config>
+          <Option/>
+        </config>
+      </editWidget>
+    </field>
   </fieldConfiguration>
   <aliases>
     <alias field="fid" index="0" name=""/>
@@ -387,6 +394,7 @@
     <alias field="name" index="2" name=""/>
     <alias field="kind" index="3" name=""/>
     <alias field="tunnel" index="4" name=""/>
+    <alias field="intermittent" index="5" name=""/>
   </aliases>
   <defaults>
     <default applyOnUpdate="0" expression="" field="fid"/>
@@ -394,6 +402,7 @@
     <default applyOnUpdate="0" expression="" field="name"/>
     <default applyOnUpdate="0" expression="" field="kind"/>
     <default applyOnUpdate="0" expression="" field="tunnel"/>
+    <default applyOnUpdate="0" expression="" field="intermittent"/>
   </defaults>
   <constraints>
     <constraint constraints="3" exp_strength="0" field="fid" notnull_strength="1" unique_strength="1"/>
@@ -401,6 +410,7 @@
     <constraint constraints="0" exp_strength="0" field="name" notnull_strength="0" unique_strength="0"/>
     <constraint constraints="0" exp_strength="0" field="kind" notnull_strength="0" unique_strength="0"/>
     <constraint constraints="0" exp_strength="0" field="tunnel" notnull_strength="0" unique_strength="0"/>
+    <constraint constraints="0" exp_strength="0" field="intermittent" notnull_strength="0" unique_strength="0"/>
   </constraints>
   <constraintExpressions>
     <constraint desc="" exp="" field="fid"/>
@@ -408,6 +418,7 @@
     <constraint desc="" exp="" field="name"/>
     <constraint desc="" exp="" field="kind"/>
     <constraint desc="" exp="" field="tunnel"/>
+    <constraint desc="" exp="" field="intermittent"/>
   </constraintExpressions>
   <expressionfields/>
   <attributeactions/>

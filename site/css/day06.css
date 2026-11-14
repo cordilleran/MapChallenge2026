@@ -7,7 +7,7 @@
 #d6-compare .tag { position: absolute; top: 8px; padding: 2px 6px; font-size: .8rem; background: rgba(239, 232, 214, .9); color: #2a2724; pointer-events: none; }
 #d6-compare .tag.l { left: 8px; }
 #d6-compare .tag.r { right: 8px; }
-.d6-range { width: 100%; margin: .5rem 0 0; }
+.d6-range { width: 100%; margin: .25rem 0 .5rem; }
 .d6-tools { display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0 0 10px; }
 /* Fold-down text sections: the heading is the control. */
 .d6-fold { margin: 1.5rem 0 0; border-top: 1px solid #c8bfa8; }
@@ -23,3 +23,7 @@
 .d6-deep { position: relative; width: 100%; height: min(80vh, 900px); background: #efe8d6; outline: 1px solid #c8bfa8; }
 .d6-deep > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: transparent; }
 .d6-deep .navigator { background: #efe8d6 !important; }
+/* 11-13: the slider control sits above the map; the references (legend) and a figure text below it. */
+.d6-map { margin: 0; }
+.d6-legend { display: block; width: 100%; max-width: 640px; height: auto; margin: .75rem 0 0; }
+.d6-map figcaption { margin-top: .5rem; }
