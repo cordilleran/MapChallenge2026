@@ -205,8 +205,8 @@ All sources are public; nothing needs an API key except the Copernicus Climate D
    - For each US, MN or WI route leaving the frame: the shortest path along that route's own ways, outside the frame, to the first town beyond the edge.
    - The town is the nearest city or town within 80 km, else the nearest village, and must lie within 1.5 km of the road. Notes over 50 miles are left out.
    - Interstates are left out: they were not built here in 1958.
-8. **`03_map.R`** draws the page, variant A or B (B adds the memorial note). It also writes `out/day07_B_layout.json`, the pixel positions that `04_site_images.R` crops the page, detail and calendar images from.
-9. **`04b_tiles.py`** rasterises the PDF at 762 dpi with `pdftoppm` (so the collar text is as sharp as the map) and cuts a Deep Zoom WebP pyramid for the site's zoom viewer (`site/img/day07/tiles/`, 8,382 x 12,954 px, 620 tiles, 11 MB). The viewer (`site/js/day07.js`, OpenSeadragon 5.0.1) stops at three times its opening view.
+8. **`03_map.R`** draws the page, variant A or B (B adds the memorial note). It also writes `out/day07_B_layout.json`: the pixel positions that `04_site_images.R` crops the page, detail and calendar images from, and the page-to-ground transform. `04_site_images.R` uses that transform to cut the same Hibbing window from the 1958 RGB mosaic (`htmc/sheets1958_utm15.tif`), averaged to the page's pixel, so the page shows the sheets as scanned beside what this map made of them.
+9. **`04b_tiles.py`** rasterises the PDF at 762 dpi with `pdftoppm` (so the collar text is as sharp as the map) and cuts a Deep Zoom WebP pyramid for the site's zoom viewer (`site/img/day07/tiles/`, 8,382 x 12,954 px, 620 tiles, 11 MB). The viewer (`site/js/day07.js`, OpenSeadragon 5.0.1) stops at five times its opening view.
 
 ## Reproduce
 

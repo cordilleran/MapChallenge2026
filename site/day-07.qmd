@@ -20,9 +20,10 @@ format:
 </header>
 
 ```{=html}
-<link rel="stylesheet" href="css/day07.css?v=20261116a">
+<link rel="stylesheet" href="css/day07.css?v=20261116b">
 <figure class="wide"><div id="d7-viewer" class="d7-deep" role="img" aria-label="The whole sheet: the 1958 map of Duluth to Hibbing in watercolour washes with the song's notes, the collar of latitude, township and road distances, and the lower collar of legend, scales, declination, location diagram and story, zoomable, with a small overview"><img src="img/day07_page.webp" alt="The whole sheet: the 1958 map of Duluth to Hibbing with the song's notes, its collar and lower collar" width="1200" height="1855"></div><figcaption>The whole sheet, Tabloid (11 × 17 in), 1:641,000, at the 1958 scans' own resolution. Zoom with the + and − buttons, a double click or a pinch; drag to move. The small sheet in the corner shows where you are. The zoom viewer is not yet made for screen readers; the sections below describe the map in words.</figcaption></figure>
 <div class="d7-pair">
+<figure><img src="img/day07_divide_1958.webp" alt="The same window on the 1958 USGS Hibbing and Two Harbors sheets as scanned: bright green woods, red roads and section lines, orange towns, blue lakes" width="1400" height="1000" loading="lazy"><figcaption>The same window on the 1958 sheets, as scanned: where the map began.</figcaption></figure>
 <figure><img src="img/day07_divide.webp" alt="Detail: Hibbing and the Hill of Three Waters, where the continental divides meet, with the iron pits of the Mesabi in rust" width="1400" height="1000" loading="lazy"><figcaption>Hibbing and the Hill of Three Waters: a raindrop here can run to Hudson Bay, the Gulf of Mexico or the Atlantic.</figcaption></figure>
 <figure><img src="img/day07_detail.webp" alt="Detail: Duluth, the ore docks and Minnesota Point at the head of Lake Superior" width="1400" height="1000" loading="lazy"><figcaption>Duluth, where Dylan was born, the ore docks and Minnesota Point.</figcaption></figure>
 </div>

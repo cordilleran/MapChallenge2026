@@ -1143,8 +1143,11 @@ write_layout <- function(page, layers, path) {
     duluth = st_coordinates(layers$places[layers$places$id == "duluth", ])[1, 1:2],
     three_waters = st_coordinates(layers$three_waters)[1, 1:2]
   ) |> map(px)
-  jsonlite::write_json(c(spots, list(page_px = round(c(PAGE$w_mm, PAGE$h_mm) / 25.4 * DPI))),
-                       path, auto_unbox = TRUE, pretty = TRUE)
+  # Page pixels to map metres, for step 04's 1958 sample: x = x0 + px * m_per_px, y = y_top - py * m_per_px
+  ground <- list(x0 = page$xlim[1], y_top = page$ylim[2], m_per_px = page$m * 25.4 / DPI,
+                 map_left_px = round(page$left_mm / 25.4 * DPI))
+  jsonlite::write_json(c(spots, list(page_px = round(c(PAGE$w_mm, PAGE$h_mm) / 25.4 * DPI), ground = ground)),
+                       path, auto_unbox = TRUE, pretty = TRUE, digits = NA)
 }
 
 save_pdf <- function(p, path) {
