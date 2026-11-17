@@ -18,6 +18,13 @@
 - **Names:** Canadian Geographical Names Database, Natural Resources Canada (Open Government Licence - Canada); USGS Geographic Names Information System (public domain). Published summit heights from OpenStreetMap (ODbL) for 16 peaks.
 - **Vectors:** park boundary, Government of Alberta (Open Government Licence - Alberta); 2017 Kenow fire perimeter, Canadian Wildland Fire Information System, National Burned Area Composite (Open Government Licence - Canada); Red Rock Parkway and trails, © OpenStreetMap contributors (ODbL).
 
+## Day 7 (10 minute map): data and fonts
+- **USGS 1:250,000 sheets of 1958** (Duluth, Ashland, Hibbing, Two Harbors), Historical Topographic Map Collection: public domain. Separated into inks and reprinted; the Duluth sheet's legend is reproduced in the lower collar.
+- **USGS Watershed Boundary Dataset**, **BLM PLSS CadNSDI**, **USFWS National Wetlands Inventory**, **NOAA NCEI Lake Superior bathymetry**: U.S. government works, public domain. **AWS Terrain Tiles** (via elevatr): see the Terrain Tiles attribution.
+- **ERA5** (Copernicus Climate Change Service), through the CDS and Open-Meteo: CC BY 4.0. *Contains modified Copernicus Climate Change Service information 2026.*
+- **GBIF** occurrence records (CC0 and CC BY 4.0 only), cited as GBIF.org (16 November 2026), derived dataset https://doi.org/10.15468/dd.8w6ahv; the 2,051 records used are redistributed in `day-07/data/gbif_doves_used.csv` under their own licences (each row names its licence and its source dataset); **OpenStreetMap** (ODbL), © OpenStreetMap contributors; **Royce cessions** (USDA Forest Service EDW), used only for the treaty check.
+- **Fonts** in `day-07/fonts/`, licence texts included: Jost and Caveat and EB Garamond, SIL Open Font License 1.1; Special Elite, Apache License 2.0.
+
 ## Day 9 (Urban-rural): data
 - **OpenAlex** (Priem, Piwowar and Orr 2022): works, author institutions, topics and keywords, read from the public API on 8 November 2026. CC0. <https://openalex.org>
 - **GeoNames** gazetteer (allCountries, countryInfo, admin1 codes), downloaded 8 November 2026. CC BY 4.0. <https://www.geonames.org>

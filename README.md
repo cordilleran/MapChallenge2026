@@ -12,6 +12,7 @@ Code and maps for the [30 Day Map Challenge](https://30daymapchallenge.com/) 202
 | 4 | Clusters | [One storm night, four scales](day-04/) |
 | 5 | Senses: Sight | [Six views on a valley](day-05/) |
 | 6 | Vintage | [Sheet No. 16, repeated](day-06/) |
+| 7 | 10 minute map | [Ten Minutes in April, 1962](day-07/) |
 | 9 | Urban-rural | [Written in cities, looking out](day-09/) |
 | 10 | Prompting only | [A dryland hillslope, four thousand years of storms](day-10/) |
 | 11 | Senses: Sound | [2424/461, mapped again](day-11/) |

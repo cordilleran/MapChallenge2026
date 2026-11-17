@@ -1,0 +1,17 @@
+/* Day 7: the whole sheet in a tiled viewer (OpenSeadragon), with an overview in the corner.
+   Before the viewer opens (or without scripts) the page shows as a plain image. */
+.d7-deep { position: relative; width: 100%; height: min(85vh, 1000px); background: #efece6; outline: 1px solid #c8bfa8; }
+.d7-deep > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: transparent; }
+.d7-deep .navigator { background: #efece6 !important; }
+.d7-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 1rem 0 0; }
+.d7-pair img { width: 100%; height: auto; display: block; }
+@media (max-width: 640px) { .d7-pair { grid-template-columns: 1fr; } }
+/* Fold-down text sections: the heading is the control (as Day 6). */
+.d7-fold { margin: 1.5rem 0 0; border-top: 1px solid #c8bfa8; }
+.d7-fold > summary { cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: .5rem; }
+.d7-fold > summary::-webkit-details-marker { display: none; }
+.d7-fold > summary::before { content: "▸"; color: #6e5340; font-size: .9em; transition: transform .15s; }
+.d7-fold[open] > summary::before { transform: rotate(90deg); }
+.d7-fold > summary h2 { display: inline; margin: .6rem 0; }
+.d7-fold > summary:focus-visible { outline: 2px solid #6e5340; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .d7-fold > summary::before { transition: none; } }
