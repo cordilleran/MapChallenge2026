@@ -36,7 +36,7 @@ format:
 <img id="d6-legend" class="d6-legend" src="img/day06/legend.webp" alt="References: contours, contours on ice in 2021, ice limits of 1985 and 1913, ice lost since 1913, lakes, braided channel and gravel flats, rivers and creeks, falls, roads, trails, railway, the provincial boundary, summits, huts and lodges" width="1278" height="488">
 <figcaption>Left of the divider, the 1925 sheet as printed; right, the same ground in 2021, drawn the same way. Where the contours are blue, there was ice in 2021. The solid grey line is the edge of the ice in 1985, from satellite images. The dashed grey line is the edge in 1913, read from the sheet's blue contours, so it is less certain (within about 160 m). The grey dots cover ground that was ice in 1913 and was bare in 2021. Their inner edge is the 2021 ice margin, which is not drawn as a line, as on the 1925 sheet.</figcaption>
 </figure>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/5.0.1/openseadragon.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/5.0.1/openseadragon.min.js" integrity="sha512-gPZzE+sKmE0kvcjMxW431ef5b5T5QOADV9Gij0isPw2oLATd1IZW7dmDmKh7F2e5BfwjQyAfFp3/OF0fVMOF7Q==" crossorigin="anonymous"></script>
 <script defer src="js/day06.js?v=20261113a"></script>
 ```
 
