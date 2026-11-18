@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mountain's Shadow</title>
+<link rel="stylesheet" href="css/day17_shade.css">
+<script type="importmap">{ "imports": { "three": "./vendor/three-0.186.1/three.module.js" } }</script>
+</head>
+<body>
+<div id="view" role="region" aria-label="3D map of the Grand Forks valley. Darker ground spends more of the daylight year in shadow. Drag to orbit, right-drag or two fingers to pan, scroll or pinch to zoom."></div>
+<div id="labels" aria-hidden="true"></div>
+<aside id="panel" aria-label="View controls">
+  <button id="toggle" aria-expanded="true" aria-controls="body">Mountain's Shadow</button>
+  <div id="body">
+    <p class="tag">Grand Forks, BC, and the Kettle valley. The grey tone is the share of daylight hours in shadow in 2026. <a href="day-17.html" target="_top">About this map</a></p>
+    <fieldset>
+      <legend>When</legend>
+      <label><input type="radio" name="when" value="year" checked> The whole year</label>
+      <label><input type="radio" name="when" value="dec"> December</label>
+      <label><input type="radio" name="when" value="jun"> June</label>
+      <label><input type="radio" name="when" value="date"> One date</label>
+      <label class="range" id="date-row">Date <output id="date-out"></output>
+        <input id="date" type="range" min="1" max="365" step="1" value="355"></label>
+      <button id="play" type="button" aria-pressed="false">Play the year</button>
+    </fieldset>
+    <fieldset>
+      <legend>What casts the shade</legend>
+      <label><input type="radio" name="src" value="all" checked> Everything: hills, trees, buildings</label>
+      <label><input type="radio" name="src" value="hills"> Hills alone (bare earth)</label>
+      <label><input type="radio" name="src" value="objects"> Added by trees and buildings</label>
+    </fieldset>
+    <fieldset>
+      <legend>Drawing</legend>
+      <!-- charcoal drawing set aside for now (D352); ?style=charcoal still turns it on -->
+      <label><input type="checkbox" id="contours" checked> Contours, 50 m</label>
+      <label><input type="checkbox" id="names" checked> Names</label>
+      <label class="range">Vertical exaggeration <output id="ex-out"></output>
+        <input id="ex" type="range" min="1" max="4" step="0.5" value="1.5"></label>
+    </fieldset>
+    <div class="key">
+      <p class="key-h" id="key-h">Share of daylight in shadow</p>
+      <div class="ramp" aria-hidden="true"></div>
+      <div class="ticks"><span>0%</span><span>25</span><span>50</span><span>75</span><span>100%</span></div>
+      <p class="note" id="key-note">Paper: sun whenever the sun is up. Black: shadow nearly all day.</p>
+    </div>
+    <div class="views">
+      <button type="button" data-view="town">Town</button>
+      <button type="button" data-view="valley">Valley</button>
+      <button type="button" data-view="south">From the south</button>
+      <button type="button" data-view="top">Overhead</button>
+    </div>
+  </div>
+</aside>
+<div id="info" aria-live="polite"><p class="note">Point at the ground to read it.</p></div>
+<svg id="compass" viewBox="-20 -20 40 40" aria-label="North arrow"><g id="needle"><path d="M0,-15 L5,6 L0,2 L-5,6 Z"/><text y="-17" text-anchor="middle">N</text></g></svg>
+<p id="status" role="status">Loading the valley…</p>
+<p id="credit">LiDAR: Province of BC 2025 (OGL-BC), USGS 3DEP 2022 · terrain beyond: GEM-15, produced by Google (CC BY 4.0) · names: GeoNames (CC BY 4.0) · Sun: pvlib</p>
+<script type="module" src="js/day17_shade.js"></script>
+</body>
+</html>

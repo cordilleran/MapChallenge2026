@@ -1,0 +1,74 @@
+[
+ {
+  "name": "Christina Lake",
+  "x": 411681,
+  "y": 5432569,
+  "kind": "place"
+ },
+ {
+  "name": "Danville",
+  "x": 389680,
+  "y": 5427707,
+  "kind": "place"
+ },
+ {
+  "name": "Eagle Mountain",
+  "x": 388462,
+  "y": 5434748,
+  "kind": "peak",
+  "z": 1254,
+  "snap_m": 841
+ },
+ {
+  "name": "Gilpin",
+  "x": 403715,
+  "y": 5429371,
+  "kind": "place"
+ },
+ {
+  "name": "Grand Forks",
+  "x": 395068,
+  "y": 5432127,
+  "kind": "place"
+ },
+ {
+  "name": "Hardy Mountain",
+  "x": 387998,
+  "y": 5435902,
+  "kind": "peak",
+  "z": 1280,
+  "snap_m": 1052
+ },
+ {
+  "name": "Mount Morrissey",
+  "x": 402712,
+  "y": 5435752,
+  "kind": "peak",
+  "z": 1738,
+  "snap_m": 274
+ },
+ {
+  "name": "Mount Wright",
+  "x": 381548,
+  "y": 5431432,
+  "kind": "peak",
+  "z": 1582,
+  "snap_m": 967
+ },
+ {
+  "name": "Owl Mountain",
+  "x": 405608,
+  "y": 5425238,
+  "kind": "peak",
+  "z": 1460,
+  "snap_m": 1056
+ },
+ {
+  "name": "Thimble Mountain",
+  "x": 391222,
+  "y": 5442382,
+  "kind": "peak",
+  "z": 1310,
+  "snap_m": 121
+ }
+]

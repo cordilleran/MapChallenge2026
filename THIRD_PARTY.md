@@ -42,8 +42,16 @@
 - **Photograph:** the author's own (18 March 2026), location metadata removed; the photo (`day-14/data/source/`) and its rectified tiles are published under CC BY 4.0 with the rest of the content. No third-party data.
 - **Landlab 2.11.0** (MIT; Hobley et al. 2017) supplies `OverlandFlow` and `FlowAccumulator`; **NumPy**, **SciPy** (BSD-3-Clause) and **Pillow** (MIT-CMU) are used by the scripts. Installed from PyPI (`day-10/requirements.txt`), not redistributed. The map uses the vendored Leaflet listed below.
 
+## Day 17 (Light and dark): data and software
+- **BC LiDAR** 2025 DSM and DEM (LidarBC, Province of British Columbia). *Contains information licensed under the Open Government Licence - British Columbia.*
+- **USGS 3D Elevation Program**, WA NorthEast 2022: point cloud (EPT) for the DSM south of the border, and the 1 m DEM. U.S. government work, public domain.
+- **GEM-15** v1 surface and terrain models (Batchu et al. 2026, EarthArXiv preprint, doi:10.31223/X55N75), CC BY 4.0. *This dataset is produced by Google.* The regional ring and the fill for LiDAR gaps.
+- **GeoNames** place names, CC BY 4.0.
+- **pvlib** (BSD-3-Clause; Anderson et al. 2023), **numba** (BSD-2-Clause), **NumPy**, **SciPy**, **pandas** (BSD-3-Clause), **rasterio** (BSD-3-Clause), **pyproj** (MIT) and **Pillow** (MIT-CMU) are used by the scripts; installed from PyPI (`day-17/requirements.txt`), not redistributed. The map uses the vendored three.js listed below.
+
 ## Software in this repository
 - **Leaflet 1.9.4**, BSD-2-Clause, © 2010-2023 Vladimir Agafonkin, © 2010-2011 CloudMade: `site/vendor/leaflet-1.9.4/` (licence text included).
+- **three.js 0.186.1**, MIT, © 2010-2026 three.js authors: `site/vendor/three-0.186.1/` (`three.module.js`, `three.core.js`, `OrbitControls.js`; licence text and CITATION.cff included). From the npm package (integrity checked against the registry).
 - **IBM Plex Mono**, © 2017 IBM Corp., and **Newsreader**, © 2020 The Newsreader Project Authors: SIL Open Font License 1.1, files and licence texts in `site/fonts/`.
 
 ## Third-party requests
