@@ -72,6 +72,7 @@
       seen.disconnect();
       const viewer = window.OpenSeadragon({
         element: box,
+        drawer: "canvas",   // the WebGL drawer can swap red and blue on tiles after full screen (seen on Day 15 in Firefox, 11-19)
         prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/5.0.1/images/",
         tileSources: dzi(tiles()),
         showNavigator: true,

@@ -37,7 +37,7 @@ format:
 <figcaption>Left of the divider, the 1925 sheet as printed; right, the same ground in 2021, drawn the same way. Where the contours are blue, there was ice in 2021. The solid grey line is the edge of the ice in 1985, from satellite images. The dashed grey line is the edge in 1913, read from the sheet's blue contours, so it is less certain (within about 160 m). The grey dots cover ground that was ice in 1913 and was bare in 2021. Their inner edge is the 2021 ice margin, which is not drawn as a line, as on the 1925 sheet.</figcaption>
 </figure>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/5.0.1/openseadragon.min.js" integrity="sha512-gPZzE+sKmE0kvcjMxW431ef5b5T5QOADV9Gij0isPw2oLATd1IZW7dmDmKh7F2e5BfwjQyAfFp3/OF0fVMOF7Q==" crossorigin="anonymous"></script>
-<script defer src="js/day06.js?v=20261113a"></script>
+<script defer src="js/day06.js?v=20261119a"></script>
 ```
 
 <figure class="wide"><div id="d6-sheet-viewer" class="d6-deep" role="img" aria-label="The full repeat sheet with title, map, scale, references and sources, zoomable, with a small overview of the whole sheet"><img id="d6-sheet" src="img/day06/sheet.webp" alt="The full repeat sheet with title, map, scale, references and sources" width="2000" height="2770"></div><figcaption>The full repeat, 1:62,500, drawn at 600 dpi like the scan below. Zoom with the + and − buttons, a double click or a pinch; drag to move. The units buttons at the top of the page switch it between feet and metres.</figcaption></figure>
