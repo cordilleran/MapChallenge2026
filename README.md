@@ -17,6 +17,7 @@ Code and maps for the [30 Day Map Challenge](https://30daymapchallenge.com/) 202
 | 10 | Prompting only | [A dryland hillslope, four thousand years of storms](day-10/) |
 | 11 | Senses: Sound | [2424/461, mapped again](day-11/) |
 | 14 | Borgesian map | [The Bath, Drained](day-14/) |
+| 15 | Inside out | [The Underside of the World](day-15/) |
 | 17 | Light and dark | [Mountain's Shadow](day-17/) |
 
 Each day has its own folder (`day-NN/`) with a README on its data, method, limits and how to reproduce it. The shared look (colours, fonts, display projection, north arrow and scale bar) is in `shared/R/`. Large data stays outside the repo. The site is built from `site/`; after editing `site/days.yml`, run `Rscript site/calendar.R`.

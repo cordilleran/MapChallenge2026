@@ -42,6 +42,13 @@
 - **Photograph:** the author's own (18 March 2026), location metadata removed; the photo (`day-14/data/source/`) and its rectified tiles are published under CC BY 4.0 with the rest of the content. No third-party data.
 - **Landlab 2.11.0** (MIT; Hobley et al. 2017) supplies `OverlandFlow` and `FlowAccumulator`; **NumPy**, **SciPy** (BSD-3-Clause) and **Pillow** (MIT-CMU) are used by the scripts. Installed from PyPI (`day-10/requirements.txt`), not redistributed. The map uses the vendored Leaflet listed below.
 
+## Day 15 (Inside out): data and software
+- **Earth2014** bedrock model (Hirt and Rexer 2015, Curtin University), spherical harmonics to degree 2,160, read through pyshtools. No licence is stated; the readme asks for the citation, which the page gives. Only images derived from it are published here; the model is not redistributed.
+- **EGM2008** geoid (Pavlis et al. 2012, U.S. National Geospatial-Intelligence Agency), read through pyshtools; images only.
+- **Blue Marble Next Generation**, August 2004 (NASA Earth Observatory; Stöckli et al. 2005). NASA imagery, credited on the page; used as the colour of the third view.
+- **pyshtools** (BSD-3-Clause; Wieczorek and Meschede 2018), **cmcrameri** (MIT; colour maps by Crameri, MIT), **NumPy**, **SciPy** (BSD-3-Clause), **Matplotlib** (PSF-based) and **Pillow** (MIT-CMU) are used by the scripts; installed from PyPI (`day-15/static/requirements.txt`), not redistributed.
+- **OpenSeadragon 5.0.1** (BSD-3-Clause), loaded from cdnjs with an integrity hash, as on Day 6.
+
 ## Day 17 (Light and dark): data and software
 - **BC LiDAR** 2025 DSM and DEM (LidarBC, Province of British Columbia). *Contains information licensed under the Open Government Licence - British Columbia.*
 - **USGS 3D Elevation Program**, WA NorthEast 2022: point cloud (EPT) for the DSM south of the border, and the 1 m DEM. U.S. government work, public domain.

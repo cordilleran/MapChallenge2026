@@ -13,7 +13,7 @@
 - {day: 12, theme: "Power", icon: "12-power", status: planned, thumb: "", href: ""}
 - {day: 13, theme: "Interactions", icon: "13-interactions", status: planned, thumb: "", href: ""}
 - {day: 14, theme: "Borgesian map", icon: "14-borgesian", status: done, thumb: "img/day14_thumb.webp", href: "day-14.html"}
-- {day: 15, theme: "Inside out", icon: "15-inside-out", status: planned, thumb: "", href: ""}
+- {day: 15, theme: "Inside out", icon: "15-inside-out", status: done, thumb: "img/day15_thumb.webp", href: "day-15.html"}
 - {day: 16, theme: "Collaborative map", icon: "16-collaborative", status: planned, thumb: "", href: ""}
 - {day: 17, theme: "Light & dark", icon: "17-light-dark", status: done, thumb: "img/day17_thumb.webp", href: "day-17.html"}
 - {day: 18, theme: "NULL", icon: "18-null", status: planned, thumb: "", href: ""}
