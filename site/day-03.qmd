@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 3 Polygons: lines on a known world"
+description: "A simulated world where the true answer is known. Choose how it is sampled and how it is cut into polygons, and see how far each number lands from the truth, and why."
+image: img/og/day03.png
 format:
   html:
     theme: none
@@ -17,6 +19,7 @@ format:
 <p class="kicker">Day 3 · Polygons · 3 November 2026</p>
 <h1>Lines on a known world</h1>
 <p class="sub">A simulated world where the true answer is known. Choose how it is sampled and how it is cut into polygons, and see how far each number lands from the truth, and why.</p>
+{{< dates >}}
 </header>
 
 ```{=html}

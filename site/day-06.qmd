@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 6 Vintage: Sheet No. 16, repeated"
+description: "The Interprovincial Boundary Commission's 1925 sheet of Kicking Horse Pass, the Waputik Icefield and the Yoho Valley, drawn again from 2021 terrain and ice in the sheet's own manner."
+image: img/og/day06.png
 format:
   html:
     theme: none
@@ -17,6 +19,7 @@ format:
 <p class="kicker">Day 6 · Vintage · 6 November 2026</p>
 <h1>Sheet No. 16, repeated</h1>
 <p class="sub">The Interprovincial Boundary Commission's 1925 sheet of Kicking Horse Pass, the Waputik Icefield and the Yoho Valley, drawn again from 2021 terrain and ice in the sheet's own manner. Glaciers there have no fill and no edge line: contours turn from brown to blue where they cross ice. Grey lines are where the ice reached in 1985 and when the sheet was surveyed.</p>
+{{< dates >}}
 </header>
 
 ```{=html}

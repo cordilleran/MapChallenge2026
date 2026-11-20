@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 11 Senses: Sound: 2424/461, mapped again"
+description: "2,424 lightning flashes in 461 minutes over the Cariboo and Chilcotin on 30 June 2021, played as thunder, wind and weather from a pin that follows the storm. The sound is as it was."
+image: img/og/day11.png
 format:
   html:
     theme: none
@@ -17,6 +19,7 @@ format:
 <p class="kicker">Day 11 · Senses: Sound · 11 November 2026</p>
 <h1>2424/461, mapped again</h1>
 <p class="sub">2,424 lightning flashes in 461 minutes over the Cariboo and Chilcotin on 30 June 2021, played as thunder, wind and weather from a pin that follows the storm. The sound is as it was. The map under it is new, rebuilt with what the first ten days of this challenge taught.</p>
+{{< dates >}}
 </header>
 
 ```{=html}

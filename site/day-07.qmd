@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 7 10 minute map: Ten Minutes in April, 1962"
+description: "A geography of Blowin' in the Wind. Dylan said he wrote the song in ten minutes in April 1962."
+image: img/og/day07.png
 format:
   html:
     theme: none
@@ -17,6 +19,7 @@ format:
 <p class="kicker">Day 7 · 10 minute map · 7 November 2026</p>
 <h1>Ten Minutes in April, 1962</h1>
 <p class="sub">A geography of <i>Blowin' in the Wind</i>. Dylan said he wrote the song in ten minutes in April 1962. This is the land he came from, Duluth to Hibbing, as the four USGS sheets of 1958 drew it, with the wind and the waves of that April, set out on the page of a 1958 sheet.</p>
+{{< dates >}}
 </header>
 
 ```{=html}

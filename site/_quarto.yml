@@ -12,5 +12,11 @@ project:
     - day09/
     - day10/
     - favicon.ico
+shortcodes:
+  - dates.lua    # {{< dates >}}: posted and revised line under each day's title, from data/dates.json (page_dates.py)
 website:
+  site-url: https://cordilleran.github.io/MapChallenge2026/
+  open-graph: true      # link previews: each day page sets description and image (img/og/)
+  twitter-card:
+    card-style: summary   # the day thumbnails are small squares
   favicon: favicon.svg    # the Raster tile's glyph (icons/29-raster.svg) with thinner lines, river blue; favicon.ico is the same at 16, 32 and 48 px

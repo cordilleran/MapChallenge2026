@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 1 map: every junction on the Kettle River"
+description: "The same 12,914 junctions as the static maps. Zoom in and smaller streams appear; hover or tap a junction to read the streams that meet there and the area they drain."
+image: img/og/day01.png
 format:
   html:
     theme: none
@@ -18,6 +20,7 @@ format:
 <p class="kicker">Day 1 · Points · dynamic map</p>
 <h1>Every junction on the Kettle River</h1>
 <p class="sub">The same 12,914 junctions as the static maps. Zoom in and smaller streams appear; hover or tap a junction to read the streams that meet there and the area they drain.</p>
+{{< dates >}}
 </header>
 
 ```{=html}

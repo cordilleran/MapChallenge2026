@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 17 Light and dark: Mountain's Shadow"
+description: "How much of the daylight year each place in the Grand Forks valley spends in shadow, cast by hills, trees and buildings, from airborne LiDAR."
+image: img/og/day17.png
 format:
   html:
     theme: none
@@ -17,6 +19,7 @@ format:
 <p class="kicker">Day 17 · Light and dark · 17 November 2026</p>
 <h1>Mountain's Shadow</h1>
 <p class="sub">How much of the daylight year each place in the Grand Forks valley spends in shadow, cast by hills, trees and buildings, from airborne LiDAR. White gets the sun whenever it is up; black almost never does.</p>
+{{< dates >}}
 </header>
 
 ```{=html}

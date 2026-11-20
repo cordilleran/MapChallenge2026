@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 15 Inside out: The Underside of the World"
+description: "Stand at the centre of the Earth and look up. Colour is how far away the ground is."
+image: img/og/day15.png
 format:
   html:
     theme: none
@@ -17,6 +19,7 @@ format:
 <p class="kicker">Day 15 · Inside out · 15 November 2026</p>
 <h1>The Underside of the World</h1>
 <p class="sub">Stand at the centre of the Earth and look up. Colour is how far away the ground is.</p>
+{{< dates >}}
 </header>
 
 ```{=html}
@@ -39,7 +42,7 @@ format:
   <button type="button" data-view="hillshade" aria-pressed="false">Relief</button>
   <button type="button" data-view="fused" aria-pressed="false">Colour</button>
 </div>
-<div class="d15-viewer" id="d15-viewer" role="region" aria-label="Zoomable world map">
+<div class="d15-viewer" id="d15-viewer" role="region" aria-label="Zoomable world map" data-still="img/day15/world_hypso.webp" data-still-alt="The whole surface of the Earth seen from its centre, coloured by distance from it: the poles nearest in blue, the equator farthest in pink.">
   <img src="img/day15/world_hypso.webp" alt="The whole surface of the Earth seen from its centre, on an equal-area map with east to the left." width="2000" height="977">
 </div>
 <p class="d15-key" data-view="hypso"><span><span data-k="lo">–</span> km</span><span class="bar" id="d15-legend"></span><span><span data-k="hi">–</span> km from the centre</span></p>

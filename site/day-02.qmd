@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 2 Lines: how the Granby bends"
+description: "Every channel in the Granby River basin, 3,556 km of stream, in 3,399 lengths coloured by how much each one bends."
+image: img/og/day02.png
 format:
   html:
     theme: none
@@ -17,6 +19,7 @@ format:
 <p class="kicker">Day 2 · Lines · 2 November 2026</p>
 <h1>How the Granby bends</h1>
 <p class="sub">Every channel in the Granby River basin, 3,556 km of stream, in 3,399 lengths coloured by how much each one bends.</p>
+{{< dates >}}
 </header>
 
 <figure class="wide"><img src="img/day02_page.webp" alt="The Granby River basin as lines coloured from dim blue (straight) to amber (sinuous), wider for larger streams, with an inset of sinuosity against gradient"><figcaption>Width grows with Strahler order. <a href="files/day02_final.pdf">Letter PDF</a></figcaption></figure>

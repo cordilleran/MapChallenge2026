@@ -26,6 +26,7 @@ header{margin-bottom:28px}
 .kicker{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--river);margin:0 0 12px}
 h1{font:400 clamp(36px,6vw,56px)/1.02 var(--serif);letter-spacing:-.01em;margin:0 0 12px}
 .sub{font:400 15px/1.5 var(--serif);color:var(--muted);margin:0;max-width:56ch}
+.dates{font:500 11px/1.4 var(--mono);letter-spacing:.06em;color:var(--muted);margin:10px 0 0}
 .count{font:500 12px var(--mono);color:var(--amber);margin-left:8px;letter-spacing:.06em;white-space:nowrap}
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
 .wd{font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:0 2px 6px}

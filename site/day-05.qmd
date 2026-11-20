@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 5 Senses: Sight: six views on a valley"
+description: "From six camera stations M.P. Bridgland's survey used in 1914 around the upper Blakiston Valley, Waterton Lakes National Park, what can be seen, how sure we can be, and what a photograph frames."
+image: img/og/day05.png
 format:
   html:
     theme: none
@@ -33,6 +35,7 @@ From six camera stations M.P. Bridgland's survey used in 1914 around the upper B
 
 </p>
 
+{{< dates >}}
 </header>
 
 ```{=html}

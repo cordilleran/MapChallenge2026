@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 14 Borgesian map: The Bath, Drained"
+description: "After a muddy run, the dogs had a bath. When the plug was pulled, the water left a map on the floor of the tub: a model of how that map was made."
+image: img/og/day14.png
 format:
   html:
     theme: none
@@ -17,6 +19,7 @@ format:
 <p class="kicker">Day 14 · Borgesian map · 14 November 2026</p>
 <h1>The Bath, Drained</h1>
 <p class="sub">After a muddy run, the dogs had a bath. When the plug was pulled, the water left a map on the floor of the tub: a thin film of silt cut by pale, branching channels, like a reservoir bed after the dam is opened. This is a model of how that map was made, drawn at the scale of the tub and finer.</p>
+{{< dates >}}
 </header>
 
 ```{=html}

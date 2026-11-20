@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 4 Clusters: one storm night, four scales"
+description: "Lightning over central British Columbia on the night of 30 June to 1 July 2021, as the GOES-17 satellite saw it."
+image: img/og/day04.png
 format:
   html:
     theme: none
@@ -17,6 +19,7 @@ format:
 <p class="kicker">Day 4 · Clusters · 4 November 2026</p>
 <h1>One storm night, four scales</h1>
 <p class="sub">Lightning over central British Columbia on the night of 30 June to 1 July 2021, as the GOES-17 satellite saw it. Zoom from cells down to single flashes, decide what counts as a cluster, then ask whether flashes that are close in space and time stay close once you ride along with the storm.</p>
+{{< dates >}}
 </header>
 
 ```{=html}

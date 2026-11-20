@@ -1,5 +1,7 @@
 ---
 pagetitle: "Day 1 Points: Kettle River confluences"
+description: "Every junction in a river network is a point on a map, inheriting the flow from the main stem and its tributaries."
+image: img/og/day01.png
 format:
   html:
     theme: none
@@ -18,6 +20,7 @@ format:
 <h1>Every junction on the Kettle River</h1>
 <p class="sub">Every junction in a river network is a point on a map, inheriting the flow from the main stem and its tributaries. Here each one of 12,914 junctions in the Kettle River basin, from the headwaters in British Columbia to the Columbia River in Washington, is drawn as one small glyph.</p>
 <p class="sub"><a class="cta" href="day-01-map.html">Open the dynamic map</a> (zoom, hover for stream names and upstream area, Strahler or Shreve)</p>
+{{< dates >}}
 </header>
 
 ## The two maps, same junctions
